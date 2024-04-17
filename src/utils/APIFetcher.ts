@@ -31,6 +31,10 @@ export async function apiFetch({ path, method, body, onSuccess, onFailed }: Make
     onSuccess(response);
 }
 
+export function makeAPIUrl(path: string): string {
+    return `${API_URL}${path}`;
+}
+
 export interface MakeRequestParam {
     path: string,
     method: 'GET' | 'POST' | 'PUT' | 'DELETE',
