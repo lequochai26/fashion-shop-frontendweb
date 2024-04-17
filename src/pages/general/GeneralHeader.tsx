@@ -48,6 +48,10 @@ export default function GeneralHeader() {
         redirect("/");
     }
 
+    async function onAvatarClick() {
+        redirect("/usercentral");
+    }
+
     // Element:
     return (
         <div
@@ -73,6 +77,7 @@ export default function GeneralHeader() {
                     : `${API_URL}/assets/avatar/default.png`
                 }
                 className="w-16 h-16 inline-block rounded-full ml-3 cursor-pointer mr-3"
+                onClick={onAvatarClick}
             />
 
             <p
