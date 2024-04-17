@@ -33,8 +33,14 @@ export default function GeneralHeader() {
     // Element:
     return (
         <div
-            className="flex items-center justify-items-center h-24 border border-solid border-black"
+            className="flex flex-row-reverse items-center justify-items-center h-24 border border-solid border-black"
         >
+            <img
+                alt="Cart Button"
+                src="/shopping-cart.png"
+                className="w-14 h-14 cursor-pointer mr-3"
+            />
+
             <img
                 alt="User Avatar"
                 src={
@@ -42,20 +48,30 @@ export default function GeneralHeader() {
                     ? `${API_URL}${user.avatar}`
                     : `${API_URL}/assets/avatar/default.png`
                 }
-                className="w-16 h-16 inline-block mr-3 rounded-full ml-3 cursor-pointer"
+                className="w-16 h-16 inline-block rounded-full ml-3 cursor-pointer mr-3"
             />
 
             <p
-                className="inline-block font-bold text-2xl text-left flex-1"
+                className="inline-block font-bold text-2xl text-right flex-1"
             >
                 { user?.fullName }
             </p>
 
-            <img
-                alt="Cart Button"
-                src="/shopping-cart.png"
-                className="w-14 h-14 mr-3 cursor-pointer"
-            />
+            <div
+                className="w-fit h-fit ml-3 cursor-pointer"
+            >
+                <img
+                    alt="Fashion Shop's Logo"
+                    src="/logo.png"
+                    className="w-20 h-20 inline-block mr-3"
+                />
+
+                <p
+                    className="inline-block w-fit h-fit font-bold text-2xl"
+                >
+                    Fashion Shop
+                </p>
+            </div>
         </div>
     )
 }
