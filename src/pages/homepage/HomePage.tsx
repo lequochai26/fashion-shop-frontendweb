@@ -5,6 +5,7 @@ import LoadAllItemsController, { LoadAllItemsParam } from "../../controllers/hom
 import { makeAPIUrl } from "../../utils/APIFetcher";
 import LoadItemsByKeywordController, { LoadItemsByKeywordParam } from "../../controllers/homepage/LoadItemsByKeywordController";
 import AddToCartController, { AddToCartParam } from "../../controllers/homepage/AddToCartController";
+import { redirect } from "../../utils/Redirector";
 
 export default function HomePage() {
     // States:
@@ -48,6 +49,7 @@ export default function HomePage() {
         addToCartController.execute({
             item: item,
             onSuccess: function () {
+                (window as any).reloadGeneralHeader();
                 alert("Thêm sản phẩm vào giỏ hàng thành công!")
             },
             onError: function (error: any) {
@@ -55,6 +57,10 @@ export default function HomePage() {
                 console.error(error);
             }
         });
+    }
+
+    async function onItemNameClick(item: Item) {
+        redirect(`/itemdetail?id=${item.id}`);
     }
 
     // Init:
@@ -115,7 +121,10 @@ export default function HomePage() {
                                     </div>
 
                                     {/* Name */}
-                                    <p className="w-11/12 h-fit font-bold text-xl mb-3">
+                                    <p
+                                        className="w-11/12 h-fit font-bold text-xl mb-3 cursor-pointer"
+                                        onClick={() => onItemNameClick(item)}
+                                    >
                                         {item.name}
                                     </p>
 
