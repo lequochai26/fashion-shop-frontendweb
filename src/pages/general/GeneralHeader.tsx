@@ -4,6 +4,7 @@ import { API_URL } from "../../utils/APIFetcher";
 import Controller from "../../controllers/Controller";
 import LoadLoggedInUserController, { LoadLoggedInUserControllerParam } from "../../controllers/general/LoadLoggedInUserController";
 import GetCartItemAmountController, { GetCartItemAmountParam } from "../../controllers/general/GetCartItemAmountController";
+import { redirect } from "../../utils/Redirector";
 
 export default function GeneralHeader() {
     // States:
@@ -42,6 +43,11 @@ export default function GeneralHeader() {
         []
     );
 
+    // Event handlers:
+    async function onLogoClick() {
+        redirect("/");
+    }
+
     // Element:
     return (
         <div
@@ -77,6 +83,7 @@ export default function GeneralHeader() {
 
             <div
                 className="w-fit h-fit ml-3 cursor-pointer"
+                onClick={onLogoClick}
             >
                 <img
                     alt="Fashion Shop's Logo"
