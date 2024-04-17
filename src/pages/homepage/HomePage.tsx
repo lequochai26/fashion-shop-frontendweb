@@ -49,6 +49,7 @@ export default function HomePage() {
         addToCartController.execute({
             item: item,
             onSuccess: function () {
+                (window as any).reloadGeneralHeader();
                 alert("Thêm sản phẩm vào giỏ hàng thành công!")
             },
             onError: function (error: any) {
