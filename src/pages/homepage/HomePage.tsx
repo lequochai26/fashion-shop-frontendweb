@@ -29,7 +29,7 @@ export default function HomePage() {
 
     // Component return:
     return (
-        <div className="w-screen h-fit">
+        <div className="w-full h-fit">
             {/* Search-bar */}
             <div className="w-full h-16 flex items-center justify-start border border-black border-solid">
                 {/* Keyword input field */}
@@ -47,7 +47,7 @@ export default function HomePage() {
             </div>
 
             {/* Items list */}
-            <div className="w-full h-fit flex flex-wrap justify-left">
+            <div className="w-full h-fit flex flex-wrap justify-center">
                 {
                     items.map(
                         function (item: Item, index: number) {
