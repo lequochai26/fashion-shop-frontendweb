@@ -1,7 +1,7 @@
 import Item from "./Item";
 
 export default interface CartItem {
-    item?: Item | undefined;
+    item: Item;
     amount: number;
     metadata: any
 }

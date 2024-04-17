@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import GeneralHeader from './pages/general/GeneralHeader';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/homepage/HomePage';
+import CartPage from './pages/cartpage/CartPage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -14,12 +15,16 @@ root.render(
   <React.StrictMode>
     <div className="w-screen h-screen flex flex-col justify-start">
       <GeneralHeader />
-      <div className="flex-1 overflow-scroll">
+      <div className="flex flex-row justify-center flex-1 overflow-scroll">
         <BrowserRouter>
           <Routes>
             <Route
               path='/'
               Component={HomePage}
+            />
+            <Route
+              path="/cart"
+              Component={CartPage}
             />
           </Routes>
         </BrowserRouter>
