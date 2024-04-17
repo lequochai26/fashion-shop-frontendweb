@@ -1,31 +1,29 @@
 import { useEffect, useState } from "react"
 import User from "../../entities/User";
-import { API_URL, apiFetch } from "../../utils/APIFetcher";
-import RestResponse from "../../interfaces/RestResponse";
+import { API_URL } from "../../utils/APIFetcher";
+import Controller from "../../controllers/Controller";
+import LoadLoggedInUserController, { LoadLoggedInUserControllerParam } from "../../controllers/general/LoadLoggedInUserController";
 
 export default function GeneralHeader() {
     // States:
     const [ user, setUser ] = useState<User>();
 
+    // Controllers:
+    const loadLoggedInUserController: Controller<LoadLoggedInUserControllerParam> = new LoadLoggedInUserController()
+
     // Init
     useEffect(
         function () {
-            apiFetch(
+            loadLoggedInUserController.execute(
                 {
-                    path: "/user?method=getLoggedIn",
-                    method: "GET",
-                    onSuccess: async function (response: Response) {
-                        const { success, result }: RestResponse<User> = await response.json();
-
-                        if (success) {
-                            setUser(result);
-                        }
+                    onSuccess: function (user: User) {
+                        setUser(user)
                     },
-                    onFailed: async function (error: any) {
+                    onError: function (error: any) {
                         console.error(error);
                     }
                 }
-            )
+            );
         },
         []
     );
