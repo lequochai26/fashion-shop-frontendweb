@@ -16,9 +16,7 @@ export default function GeneralHeader() {
         function () {
             loadLoggedInUserController.execute(
                 {
-                    onSuccess: function (user: User) {
-                        setUser(user)
-                    },
+                    onSuccess: setUser,
                     onError: function (error: any) {
                         console.error(error);
                     }
