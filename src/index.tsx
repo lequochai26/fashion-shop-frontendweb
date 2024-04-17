@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import GeneralHeader from './pages/general/GeneralHeader';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import HomePage from './pages/homepage/HomePage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -16,7 +17,7 @@ root.render(
       <Routes>
         <Route
           path='/'
-          Component={App}
+          Component={HomePage}
         />
       </Routes>
     </BrowserRouter>
