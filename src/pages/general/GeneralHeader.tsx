@@ -52,12 +52,19 @@ export default function GeneralHeader() {
         redirect("/usercentral");
     }
 
+    async function onCartButtonClick() {
+        redirect("/cart");
+    }
+
     // Element:
     return (
         <div
             className="flex flex-row-reverse items-center justify-items-center h-24 border border-solid border-black"
         >
-            <div className="border border-black border-solid rounded-md cursor-pointer mr-3 p-2">
+            <div
+                className="border border-black border-solid rounded-md cursor-pointer mr-3 p-2"
+                onClick={onCartButtonClick}
+            >
                 <p className="inline-block font-bold text-lg mr-3">
                     Giỏ hàng ({cartItemAmount})
                 </p>
