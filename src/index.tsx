@@ -12,15 +12,19 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <GeneralHeader />
-    <BrowserRouter>
-      <Routes>
-        <Route
-          path='/'
-          Component={HomePage}
-        />
-      </Routes>
-    </BrowserRouter>
+    <div className="w-screen h-screen flex flex-col justify-start">
+      <GeneralHeader />
+      <div className="flex-1 overflow-scroll">
+        <BrowserRouter>
+          <Routes>
+            <Route
+              path='/'
+              Component={HomePage}
+            />
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </div>
   </React.StrictMode>
 );
 
