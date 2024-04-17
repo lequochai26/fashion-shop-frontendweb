@@ -3,13 +3,59 @@ import Item from "../../entities/Item/Item";
 import Controller from "../../controllers/Controller";
 import LoadAllItemsController, { LoadAllItemsParam } from "../../controllers/homepage/LoadAllItemsController";
 import { makeAPIUrl } from "../../utils/APIFetcher";
+import LoadItemsByKeywordController, { LoadItemsByKeywordParam } from "../../controllers/homepage/LoadItemsByKeywordController";
+import AddToCartController, { AddToCartParam } from "../../controllers/homepage/AddToCartController";
 
 export default function HomePage() {
     // States:
     const [ items, setItems ] = useState<Item[]>([]);
+    const [ keyword, setKeyword ] = useState<string>("");
 
     // Controllers:
     const loadAllItemsController: Controller<LoadAllItemsParam> = new LoadAllItemsController();
+    const loadItemsByKeywordController: Controller<LoadItemsByKeywordParam> = new LoadItemsByKeywordController();
+    const addToCartController: Controller<AddToCartParam> = new AddToCartController();
+
+    // Event handlers:
+    async function onKeywordChange(event: any) {
+        setKeyword(event.target.value);
+    }
+
+    async function onSearchButtonClick() {
+        loadItemsByKeywordController.execute(
+            {
+                keyword,
+                onSuccess: function (items) {
+                    setItems(items);
+                },
+                onError: function (error: any) {
+                    console.error(error);
+                }
+            }
+        )
+    }
+
+    async function onReloadButtonClick() {
+        loadAllItemsController.execute({
+            onSuccess: setItems,
+            onError: function (error: any) {
+                console.error(error)
+            }
+        });
+    }
+
+    async function onAddToCartButtonClick(item: Item) {
+        addToCartController.execute({
+            item: item,
+            onSuccess: function () {
+                alert("Thêm sản phẩm vào giỏ hàng thành công!")
+            },
+            onError: function (error: any) {
+                alert("Đã có lỗi xảy ra!");
+                console.error(error);
+            }
+        });
+    }
 
     // Init:
     useEffect(
@@ -33,15 +79,21 @@ export default function HomePage() {
             {/* Search-bar */}
             <div className="w-full h-16 flex items-center justify-start border border-black border-solid">
                 {/* Keyword input field */}
-                <input type="text" placeholder="Từ khóa tìm kiếm" className="border border-black border-solid rounded-md p-2 pl-4 w-1/2 ml-3" />
+                <input type="text" placeholder="Từ khóa tìm kiếm" className="border border-black border-solid rounded-md p-2 pl-4 w-1/2 ml-3" value={keyword} onChange={onKeywordChange} />
 
                 {/* Search button */}
-                <button className="bg-white p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3">
+                <button
+                    className="bg-white p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3"
+                    onClick={onSearchButtonClick}
+                >
                     Tìm kiếm
                 </button>
 
                 {/* Reload button */}
-                <button className="bg-white p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3">
+                <button
+                    className="bg-white p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3"
+                    onClick={onReloadButtonClick}
+                >
                     Tải lại
                 </button>
             </div>
@@ -50,9 +102,9 @@ export default function HomePage() {
             <div className="w-full h-fit flex flex-wrap justify-center">
                 {
                     items.map(
-                        function (item: Item, index: number) {
+                        function (item: Item) {
                             return (
-                                <div key={index} className="w-fit h-fit border border-black border-solid flex flex-col justify-center items-center m-3 p-3">
+                                <div key={item.id} className="w-fit h-fit border border-black border-solid flex flex-col justify-center items-center m-3 p-3">
                                     {/* Avatar */}
                                     <div>
                                         <img
@@ -73,7 +125,10 @@ export default function HomePage() {
                                     </p>
 
                                     {/* Add to cart button */}
-                                    <button className="border border-black border-solid rounded-md p-2">
+                                    <button
+                                        className="border border-black border-solid rounded-md p-2"
+                                        onClick={() => onAddToCartButtonClick(item)}
+                                    >
                                         Thêm vào giỏ hàng
                                     </button>
                                 </div>
@@ -85,3 +140,5 @@ export default function HomePage() {
         </div>
     );
 }
+
+// localhost:3001/itemdetail?id=ITEM01
