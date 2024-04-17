@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import GeneralHeader from './pages/general/GeneralHeader';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -11,7 +12,14 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <GeneralHeader />
-    <App />
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path='/'
+          Component={App}
+        />
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 );
 
