@@ -3,26 +3,42 @@ import User from "../../entities/User";
 import { API_URL } from "../../utils/APIFetcher";
 import Controller from "../../controllers/Controller";
 import LoadLoggedInUserController, { LoadLoggedInUserControllerParam } from "../../controllers/general/LoadLoggedInUserController";
+import GetCartItemAmountController, { GetCartItemAmountParam } from "../../controllers/general/GetCartItemAmountController";
 
 export default function GeneralHeader() {
     // States:
     const [ user, setUser ] = useState<User>();
+    const [ cartItemAmount, setCartItemAmount ] = useState<number>(0);
 
     // Controllers:
     const loadLoggedInUserController: Controller<LoadLoggedInUserControllerParam> = new LoadLoggedInUserController()
+    const getCartItemAmountController: Controller<GetCartItemAmountParam> = new GetCartItemAmountController();
 
     // Init
-    useEffect(
-        function () {
-            loadLoggedInUserController.execute(
-                {
-                    onSuccess: setUser,
-                    onError: function (error: any) {
-                        console.error(error);
-                    }
+    function init() {
+        loadLoggedInUserController.execute(
+            {
+                onSuccess: setUser,
+                onError: function (error: any) {
+                    console.error(error);
                 }
-            );
-        },
+            }
+        );
+    
+        getCartItemAmountController.execute(
+            {
+                onSuccess: setCartItemAmount,
+                onError: function (error: any) {
+                    console.error(error);
+                }
+            }
+        );
+    }
+
+    (window as any).reloadGeneralHeader = init;
+
+    useEffect(
+        init,
         []
     );
 
@@ -31,11 +47,17 @@ export default function GeneralHeader() {
         <div
             className="flex flex-row-reverse items-center justify-items-center h-24 border border-solid border-black"
         >
-            <img
-                alt="Cart Button"
-                src="/shopping-cart.png"
-                className="w-14 h-14 cursor-pointer mr-3"
-            />
+            <div className="border border-black border-solid rounded-md cursor-pointer mr-3 p-2">
+                <p className="inline-block font-bold text-lg mr-3">
+                    Giỏ hàng ({cartItemAmount})
+                </p>
+
+                <img
+                    alt="Cart Button"
+                    src="/shopping-cart.png"
+                    className="inline-block w-9 h-9"
+                />
+            </div>
 
             <img
                 alt="User Avatar"
