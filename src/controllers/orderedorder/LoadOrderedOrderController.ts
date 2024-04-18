@@ -3,7 +3,7 @@ import { apiFetch } from "../../utils/APIFetcher";
 import Controller from "../Controller";
 import OrderInfo from "../../entities/order/Order";
 
-export default class OrderedOrderController implements Controller<OrderedOrderControllerParam>{
+export default class LoadOrderedOrderController implements Controller<OrderedOrderControllerParam>{
     //Constructors:
     public constructor() {}
 
