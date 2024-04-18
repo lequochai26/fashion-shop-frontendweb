@@ -47,7 +47,7 @@ root.render(
               Component={LoginPage}
             />
             <Route
-              path="/orderedorder"
+              path="/orderedorders"
               Component={OrderedOrdersPage}
             />
             <Route
