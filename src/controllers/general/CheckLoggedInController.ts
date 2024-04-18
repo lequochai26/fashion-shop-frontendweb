@@ -9,14 +9,12 @@ export default class CheckLoggedInController implements Controller<CheckLoggedIn
             path:"/user?method=getLoggedIn",
             onSuccess: async function (response:Response) {
                 const {success} : RestResponse<undefined> = await response.json();
-                if(success){
-                    onSuccess(success);
-                }
+                onSuccess(success);
             },
             onFailed : async function (error:any) {
                 onError(error);
             }
-        })
+        });
     }
 
 }
