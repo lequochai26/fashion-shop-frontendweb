@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Controller from "../../controllers/Controller";
 import LoadUserController, { LoadUserParam } from "../../controllers/usercentral/LoadUserController";
 import NoAccessPage from "../noaccesspage/NoAccessPage";
+import LogoutController, { LogoutParam } from "../../controllers/usercentral/LogoutController";
 export default function UserCentralPage2() {
 
     //State
@@ -12,6 +13,7 @@ export default function UserCentralPage2() {
 
     //Controller
     const loadUserController: Controller<LoadUserParam> = new LoadUserController();
+    const logoutController: Controller<LogoutParam> = new LogoutController();
 
     // Init
     function init () {
@@ -40,7 +42,15 @@ export default function UserCentralPage2() {
     }
 
     async function onLogoutClick() {
-        redirect('/')
+        logoutController.execute({
+            onSuccess: function () {
+                redirect("/");
+            },
+            onError: function (error: any) {
+                alert("Xảy ra lỗi trong quá trình xử lý");
+                console.error(error);
+            }
+        });
     }
     //Element 
     return (
