@@ -49,7 +49,12 @@ export default function GeneralHeader() {
     }
 
     async function onAvatarClick() {
-        redirect("/usercentral");
+        if (user) {
+            redirect("/usercentral");
+        }
+        else {
+            redirect("/login");
+        }
     }
 
     async function onCartButtonClick() {
