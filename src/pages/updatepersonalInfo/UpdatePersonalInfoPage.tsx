@@ -104,9 +104,9 @@ export default function UpdatePersonnalInfoPage() {
                     <div onClick={handleAvatarClick} className="cursor-pointer">
                         <img
                             src={
-                                user
-                                    ? `${API_URL}${user.avatar}`
-                                    : `${API_URL}/assets/avatar/default.png`
+                                    userInfo.avatar 
+                                    ? URL.createObjectURL(userInfo.avatar)
+                                    : (user && `${API_URL}${user?.avatar}`)
                             }
                             alt=""
                             className="w-80 h-80"
