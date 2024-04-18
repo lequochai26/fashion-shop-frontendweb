@@ -3,6 +3,9 @@ import CartItem from "../../entities/cartitem/CartItem";
 import Controller from "../../controllers/Controller";
 import LoadCartController, { LoadCartParam } from "../../controllers/cartpage/LoadCartController";
 import { makeAPIUrl } from "../../utils/APIFetcher";
+import RemoveCartItemController, { RemoveCartItemParam } from "../../controllers/cartpage/RemoveCartItemController";
+import AddCartItemController, { AddCartItemParam } from "../../controllers/cartpage/AddCartItemController";
+import DeleteCartItemController, { DeleteCartItemParam } from "../../controllers/cartpage/DeleteCartItemController";
 
 export default function CartPage() {
     // States:
@@ -10,6 +13,9 @@ export default function CartPage() {
 
     // Controllers:
     const loadCartController: Controller<LoadCartParam> = new LoadCartController();
+    const removeCartItemController: Controller<RemoveCartItemParam> = new RemoveCartItemController();
+    const addCartItemController: Controller<AddCartItemParam> = new AddCartItemController();
+    const deleteCartItemController: Controller<DeleteCartItemParam> = new DeleteCartItemController();
 
     // Init
     function init() {
@@ -22,6 +28,31 @@ export default function CartPage() {
     useEffect(
         init, []
     );
+
+    // Event handlers:
+    async function onRemoveCartItemButtonClick(cartItem: CartItem) {
+        removeCartItemController.execute({
+            cartItem,
+            onSuccess: init,
+            onError: console.error
+        });
+    }
+
+    async function onAddCartItemButtonClick(cartItem: CartItem) {
+        addCartItemController.execute({
+            cartItem,
+            onSuccess: init,
+            onError: console.error
+        });
+    }
+
+    async function onDeleteCartItemButtonClick(cartItem: CartItem) {
+        deleteCartItemController.execute({
+            cartItem,
+            onSuccess: init,
+            onError: console.error
+        });
+    }
 
     // Component return:
     return (
@@ -86,6 +117,7 @@ export default function CartPage() {
                                             alt="Remove Button"
                                             src="/remove.png"
                                             className="inline-block w-6 h-6 cursor-pointer"
+                                            onClick={ () => onRemoveCartItemButtonClick(cartItem) }
                                         />
 
                                         {/* Amount */}
@@ -98,6 +130,7 @@ export default function CartPage() {
                                             alt="Add Button"
                                             src="/add.png"
                                             className="inline-block w-6 h-6 cursor-pointer"
+                                            onClick={ () => onAddCartItemButtonClick(cartItem) }
                                         />
 
                                         {/* Delete button */}
@@ -105,6 +138,7 @@ export default function CartPage() {
                                             alt="Delete button"
                                             src="/delete.png"
                                             className="inline-block w-6 h-6 cursor-pointer ml-4"
+                                            onClick={ () => onDeleteCartItemButtonClick(cartItem) }
                                         />
                                     </div>
                                 </div>
