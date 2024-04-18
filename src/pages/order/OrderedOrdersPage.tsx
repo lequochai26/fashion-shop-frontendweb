@@ -1,14 +1,37 @@
 import { useEffect, useState } from "react"
 import OrderInfo from "../../entities/order/Order"
 import Controller from "../../controllers/Controller"
-import OrderedOrderController, { OrderedOrderControllerParam } from "../../controllers/orderedorder/OrderedOrderController"
+import LoadOrderedOrderController, { OrderedOrderControllerParam } from "../../controllers/orderedorder/LoadOrderedOrderController"
 import { getOrderStatusTitle } from "../../utils/OrderHelper"
+import CancelOrderController, { CancelOrderControllerParam } from "../../controllers/orderedorder/CancelOrderController"
+import CheckLoggedInUserController, { CheckLoggedInUserParam } from "../../controllers/orderedorder/CheckLoggedInUserController"
+import { redirect } from "../../utils/Redirector"
 
 export default function OrderedOrdersPage() {
     //State:
     const [orders, setOrders] = useState<OrderInfo[]>()
 
+    //Controller
+    const orderedOrderController: Controller<OrderedOrderControllerParam> = new LoadOrderedOrderController();
+    const cancelOrderController: Controller<CancelOrderControllerParam> = new CancelOrderController();
+    const checkLoggedInUserController: Controller<CheckLoggedInUserParam> = new CheckLoggedInUserController();
+
+
     useEffect(() => {
+        init();
+    }, [])
+
+    //Method
+    function init(){
+        checkLoggedInUserController.execute(
+            {
+                onFailed: async function (code, message) {
+                    redirect("/");
+                    alert(`Code: ${code} - Message: ${message}`);
+                },
+                onError: console.error
+            }
+        )
         orderedOrderController.execute(
             {
                 onSuccess: async function (orders: OrderInfo[]) {
@@ -17,11 +40,31 @@ export default function OrderedOrdersPage() {
                 onError: console.error
             }
         )
-    }, [])
+    }
+    function onCancelOrder(event: any,id: string) {
+        //Prevent default
+        event.preventDefault();
+
+        const confirmation = window.confirm("Bạn có chắc chắn muốn huỷ đơn hàng này không?");
+
+        if (confirmation) {
+            cancelOrderController.execute(
+                {
+                    id: id,
+                    onSuccess:async function (){
+                        alert("Huỷ đơn hàng thành công");
+                    },
+                    onFailed: function (code, message) {
+                        alert(`Code: ${code} - Message: ${message}`);
+                    },
+                    onError: console.error
+                }
+            )
+        }
+    }
 
 
-    //Controller
-    const orderedOrderController: Controller<OrderedOrderControllerParam> = new OrderedOrderController();
+
 
     return (
         <div className="border border-black rounded-lg p-4 w-[800px] h-[550px] mt-[60px] ">
@@ -41,7 +84,12 @@ export default function OrderedOrdersPage() {
                                 <td className="border border-black border-r p-5 ">
                                     <div className="text-center">
 
-                                        <button className="border border-black rounded-lg p-2 w-[60px] hover:bg-gray-300" >Hủy</button>
+                                        <button 
+                                            className="border border-black rounded-lg p-2 w-[60px] hover:bg-gray-300" 
+                                            onClick={(event) => onCancelOrder(event,order.id)}
+                                            >
+                                                Hủy
+                                        </button>
                                         <button className="border border-black rounded-lg p-2 ml-[30px] hover:bg-gray-300">Xem chi tiết</button>
                                     </div>
                                 </td>

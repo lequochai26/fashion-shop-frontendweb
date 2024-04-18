@@ -2,16 +2,18 @@ import User from "../../entities/order/User";
 import RestResponse from "../../interfaces/RestResponse";
 import { apiFetch } from "../../utils/APIFetcher";
 import Controller from "../Controller";
-import { LoadLoggedInUserParam } from "../LoadLoggedInUserController";
 
 export default class CheckLoggedInUserController implements Controller<CheckLoggedInUserParam>{
-    public async execute({onSuccess,onError}: CheckLoggedInUserParam): Promise<void> {
+    public async execute({onFailed,onError}: CheckLoggedInUserParam): Promise<void> {
         await apiFetch({
             method: "GET",
             path: "/user?method=getLoggedIn",
             onSuccess: async function (response: Response) {
-                const { success, code, message, result }: RestResponse<User> = await response.json();
+                const { success, code, message}: RestResponse<User> = await response.json();
                 
+                if(!success) {
+                    onFailed(code as string, message as string);
+                }
                
             },
             onFailed: async function (error: any) {
@@ -23,7 +25,6 @@ export default class CheckLoggedInUserController implements Controller<CheckLogg
 }
 
 export interface CheckLoggedInUserParam {
-   
-    onSuccess(loggedIn: boolean): void;
+    onFailed(code: string, message: string): void;
     onError(error: any): void;
 }
