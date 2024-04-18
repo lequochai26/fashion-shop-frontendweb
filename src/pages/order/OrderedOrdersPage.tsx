@@ -1,4 +1,4 @@
-export default function OrderPage(){
+export default function OrderedOrdersPage(){
     return(
         <div className="border border-black rounded-lg p-4 w-[800px] h-[550px] mt-[60px] ">
             <table className=" border border-black border-collapse ml-[30px] mt-[60px] p-5 w-[90%]">
