@@ -12,6 +12,7 @@ import UserCentralPage2 from './pages/usercentral/UserCentralPage2';
 import OrderPage from './pages/order/OrderPage';
 import ItemDetailPage from './pages/itemdetailpage/ItemDetailPage';
 import OrderDetailPage from './pages/orderdetailpage/OrderDetailPage';
+import UpdatePersonnalInfoPage from './pages/updatepersonalInfo/UpdatePersonalInfoPage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -54,6 +55,10 @@ root.render(
             <Route
               path="/orderdetail"
               Component={OrderDetailPage}
+            />
+            <Route
+              path="/updatepersonalinfo"
+              Component={UpdatePersonnalInfoPage}
             />
           </Routes>
         </BrowserRouter>
