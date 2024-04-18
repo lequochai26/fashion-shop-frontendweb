@@ -6,7 +6,7 @@ import Controller from "../Controller";
 export default class AddToCartController implements Controller<AddToCartParam>{
     public constructor(){}
 
-    public async execute({ item, onSuccess, onError }: AddToCartParam): Promise<void> {
+    public async execute({ item, metadata, onSuccess, onError }: AddToCartParam): Promise<void> {
         await apiFetch(
             {
                 path: "/cart",
@@ -14,7 +14,7 @@ export default class AddToCartController implements Controller<AddToCartParam>{
                 body: {
                     id:item.id,
                     amount:1,
-                    metadata: item.metadata
+                    metadata: metadata
                 },
                 onSuccess: async function(response: Response) {
                     const body: RestResponse<undefined> = await response.json();
@@ -37,6 +37,7 @@ export default class AddToCartController implements Controller<AddToCartParam>{
 
 export interface AddToCartParam {
     item: Item;
+    metadata: {};
     onSuccess(): void;
     onError(error: any): void;
 }

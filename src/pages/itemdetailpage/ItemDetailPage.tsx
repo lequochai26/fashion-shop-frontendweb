@@ -90,10 +90,13 @@ export default function ItemDetailPage() {
     };
 
     const onAddToCartButtonClick = (item: Item) => {
-        item.metadata = metadata;
         addToCartController.execute(
             {
                 item: item,
+                metadata: {
+                    size: metadata?.size,
+                    color: metadata?.color
+                },
                 onSuccess: function() {
                     (window as any).reloadGeneralHeader();
                     alert("Thêm sản phẩm vào giỏ hàng thành công!")
@@ -198,7 +201,7 @@ export default function ItemDetailPage() {
                             <br /><br /><button 
                                 id="myButton" 
                                 type="submit"
-                                className="border border-black rounded p-1 ml-40 " 
+                                className="border border-black rounded p-1 ml-40 cursor-pointer " 
                                 onClick={()=> onAddToCartButtonClick(item)}
                                 >
                                     Thêm vào giỏ hàng
