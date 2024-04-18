@@ -10,6 +10,7 @@ import CartPage from './pages/cartpage/CartPage';
 import UserCentralPage from './pages/usercentral/UserCentralPage';
 import RegisterPage from './pages/registerpage/RegisterPage';
 import LoginPage from './pages/login/LoginPage';
+import UserCentralPage2 from './pages/usercentral/UserCentralPage2';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -31,7 +32,7 @@ root.render(
             />
             <Route
               path="/usercentral"
-              Component={UserCentralPage}
+              Component={UserCentralPage2}
             />
             <Route
               path="/register"
