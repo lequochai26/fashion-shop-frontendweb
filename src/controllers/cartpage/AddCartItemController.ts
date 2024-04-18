@@ -16,7 +16,8 @@ export default class AddCartItemController implements Controller<AddCartItemPara
                 path: "/cart",
                 method: "POST",
                 body: {
-                    id: cartItem.item.id
+                    id: cartItem.item.id,
+                    metadata: cartItem.metadata
                 },
                 onSuccess: async function (response: Response) {
                     const { success, code, message }: RestResponse<undefined> = await response.json();
@@ -25,11 +26,11 @@ export default class AddCartItemController implements Controller<AddCartItemPara
                         onSuccess();
                     }
                     else {
-                        console.log(`Code: ${code}, Message: ${message}`);
+                        alert(`Code: ${code}, Message: ${message}`);
                     }
                 },
                 onFailed: async function (error: any) {
-
+                    onError(error);
                 }
             }
         );

@@ -126,15 +126,19 @@ export default function OrderDetailPage() {
             </div>
 
             {/* Actions */}
-            <div className="h-fit text-right">
-                <button
-                    className="text-lg font-bold border border-black border-solid rounded-md pt-1 pb-1 pl-4 pr-4 cursor-pointer mr-3"
-                    disabled={ order?.status !== "APPROVEMENT_AWAITING" }
-                    onClick={onCancelButtonClick}
-                >
-                    Hủy
-                </button>
-            </div>
+            {
+                (order.status !== "APPROVEMENT_AWAITING")
+                &&
+                <div className="h-fit text-right">
+                    <button
+                        className="text-lg font-bold border border-black border-solid rounded-md pt-1 pb-1 pl-4 pr-4 cursor-pointer mr-3"
+                        disabled={ order?.status !== "APPROVEMENT_AWAITING" }
+                        onClick={onCancelButtonClick}
+                    >
+                        Hủy
+                    </button>
+                </div>
+            }
         </div>
     );
 }
