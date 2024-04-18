@@ -3,6 +3,7 @@ import CartItem from "../../entities/cartitem/CartItem";
 import Controller from "../../controllers/Controller";
 import LoadCartController, { LoadCartParam } from "../../controllers/cartpage/LoadCartController";
 import { makeAPIUrl } from "../../utils/APIFetcher";
+import RemoveCartItemController, { RemoveCartItemParam } from "../../controllers/cartpage/RemoveCartItemController";
 
 export default function CartPage() {
     // States:
@@ -10,6 +11,7 @@ export default function CartPage() {
 
     // Controllers:
     const loadCartController: Controller<LoadCartParam> = new LoadCartController();
+    const removeCartItemController: Controller<RemoveCartItemParam> = new RemoveCartItemController();
 
     // Init
     function init() {
@@ -22,6 +24,17 @@ export default function CartPage() {
     useEffect(
         init, []
     );
+
+    // Event handlers:
+    async function onRemoveCartItemButtonClick(cartItem: CartItem) {
+        removeCartItemController.execute({
+            cartItem,
+            onSuccess: function () {
+                init();
+            },
+            onError: error => console.log(error)
+        });
+    }
 
     // Component return:
     return (
@@ -86,6 +99,7 @@ export default function CartPage() {
                                             alt="Remove Button"
                                             src="/remove.png"
                                             className="inline-block w-6 h-6 cursor-pointer"
+                                            onClick={() => onRemoveCartItemButtonClick(cartItem)}
                                         />
 
                                         {/* Amount */}
