@@ -63,8 +63,10 @@ export default function OrderedOrdersPage() {
         }
     }
 
-
-
+    function onOrderDetail(event: any,id: string) {
+        event.preventDefault();
+        redirect(`/orderdetail?id=${id}`);
+    }
 
     return (
         <div className="border border-black rounded-lg p-4 w-[800px] h-[550px] mt-[60px] ">
@@ -90,7 +92,10 @@ export default function OrderedOrdersPage() {
                                             >
                                                 Hủy
                                         </button>
-                                        <button className="border border-black rounded-lg p-2 ml-[30px] hover:bg-gray-300">Xem chi tiết</button>
+                                        <button className="border border-black rounded-lg p-2 ml-[30px] hover:bg-gray-300"
+                                        onClick={(event) => onOrderDetail(event,order.id)}>
+                                            Xem chi tiết
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
