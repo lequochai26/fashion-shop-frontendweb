@@ -6,6 +6,8 @@ import { makeAPIUrl } from "../../utils/APIFetcher";
 import RemoveCartItemController, { RemoveCartItemParam } from "../../controllers/cartpage/RemoveCartItemController";
 import AddCartItemController, { AddCartItemParam } from "../../controllers/cartpage/AddCartItemController";
 import DeleteCartItemController, { DeleteCartItemParam } from "../../controllers/cartpage/DeleteCartItemController";
+import BuyController, { BuyParam } from "../../controllers/cartpage/BuyController";
+import { redirect } from "../../utils/Redirector";
 
 export default function CartPage() {
     // States:
@@ -16,6 +18,7 @@ export default function CartPage() {
     const removeCartItemController: Controller<RemoveCartItemParam> = new RemoveCartItemController();
     const addCartItemController: Controller<AddCartItemParam> = new AddCartItemController();
     const deleteCartItemController: Controller<DeleteCartItemParam> = new DeleteCartItemController();
+    const buyController: Controller<BuyParam> = new BuyController();
 
     // Init
     function init() {
@@ -50,6 +53,37 @@ export default function CartPage() {
         deleteCartItemController.execute({
             cartItem,
             onSuccess: init,
+            onError: console.error
+        });
+    }
+
+    async function onBuyButtonClick() {
+        buyController.execute({
+            onSuccess: function () {
+                alert("Đặt hàng thành công, cùng kiểm tra trong danh sách những đơn hàng đã đặt nhé!");
+                redirect("/orderedorders");
+            },
+            onFailed: function(reason: string) {
+                let content: string;
+
+                switch(reason) {
+                    case 'NO_ITEM_IN_CART': {
+                        content = "Không có sản phẩm nào trong giỏ hàng!";
+                        break;
+                    }
+
+                    case 'HANDLING_DB_FAILED': {
+                        content = "Xảy ra lỗi trong quá trình thực thi!";
+                        break;
+                    }
+
+                    default: {
+                        content = "Vui lòng đăng nhập trước khi đặt hàng!";
+                    }
+                }
+
+                alert(content);
+            },
             onError: console.error
         });
     }
@@ -153,6 +187,7 @@ export default function CartPage() {
                 {/* Buy button */}
                 <button
                     className="p-2 border border-black border-solid font-bold rounded-md m-3"
+                    onClick={onBuyButtonClick}
                 >
                     Đặt hàng
                 </button>
