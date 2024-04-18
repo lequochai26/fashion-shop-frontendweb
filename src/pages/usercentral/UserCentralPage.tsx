@@ -1,11 +1,13 @@
 import User from "../../entities/User";
-import { redirect } from "react-router-dom";
+import { redirect } from "../../utils/Redirector";
 import { API_URL, makeAPIUrl } from "../../utils/APIFetcher";
 import { useState } from "react";
 
 export default function UserCentralPage() {
     //State
     const [user, setUser] = useState<User>();
+
+
     //Event Handler
     async function onUpdatePersonalInfoClick() {
         redirect("/updatepersonalinfo");
@@ -57,7 +59,9 @@ export default function UserCentralPage() {
                 </div>
 
                 {/* Đơn hàng đã đặt */}
-                <div className="flex items-center justify-center space-x-2">
+                <div 
+                onClick={onOrderOrderedClickPage}
+                className="flex items-center justify-center space-x-2">
                     <img
                         className="w-8 h-8"
                         src="https://cdn-icons-png.flaticon.com/128/5161/5161308.png"
@@ -65,7 +69,7 @@ export default function UserCentralPage() {
                     />
                     <p>Đơn hàng đã đặt</p>
                 </div>
-
+                
                 {/* Đăng xuất */}
                 <div className="flex items-center justify-center space-x-2">
                     <img
