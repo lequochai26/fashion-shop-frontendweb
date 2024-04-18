@@ -1,10 +1,16 @@
-import { useState } from "react";
+import { FormEventHandler, useState } from "react";
+import Controller from "../../controllers/Controller";
+import RegisterController, { RegisterParam } from "../../controllers/registerpage/RegisterController";
+import { redirect } from "../../utils/Redirector";
 
 export default function RegisterPage() {
     // States:
     const [ form, setForm ] = useState<any>({ gender: true });
 
     (window as any).registerForm = form;
+
+    // Controllers:
+    const registerController: Controller<RegisterParam> = new RegisterController();
 
     // Event handlers:
     async function onFieldChange(event: any) {
@@ -25,6 +31,28 @@ export default function RegisterPage() {
         setForm({...form, [target.name]: target.value});
     }
 
+    async function onCancelButtonClick() {
+        redirect("/");
+    }
+
+    const onRegisterFormSubmit: FormEventHandler = async function (event) {
+        // Prevent default
+        event.preventDefault();
+
+        // Call register controller
+        registerController.execute({
+            form,
+            onSuccess: function () {
+                alert("Chúc mừng bạn đã đăng ký tài khoản thành công!");
+                redirect("/login");
+            },
+            onFailed: function (code: string, message: string) {
+                alert(`Code ${code}, Message: ${message}`);
+            },
+            onError: console.error
+        });
+    }
+
     // Styles:
     const inputFieldsStyle: string = "p-3 pl-8 mr-36 border border-black border-solid rounded-md text-xl mt-2 mb-3"
 
@@ -34,7 +62,7 @@ export default function RegisterPage() {
     return (
         <div className="w-full h-full">
             {/* Register form */}
-            <form className="w-full h-full flex flex-row justify-between">
+            <form className="w-full h-full flex flex-row justify-between" onSubmit={onRegisterFormSubmit}>
                 {/* Avatar */}
                 <div className="w-fit h-full">
                     <label htmlFor="avatar">
@@ -98,7 +126,7 @@ export default function RegisterPage() {
 
                     {/* Action area */}
                     <div className="h-fit p-3 mr-36 text-right">
-                        <button type="button" className={buttonsStyle}>
+                        <button type="button" className={buttonsStyle} onClick={onCancelButtonClick}>
                             Hủy
                         </button>
 
