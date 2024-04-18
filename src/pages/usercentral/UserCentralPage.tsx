@@ -18,7 +18,7 @@ export default function UserCentralPage() {
     }
 
     async function onLogoutClick() {
-
+        redirect('/')
     }
     //Element 
     return (
@@ -71,7 +71,9 @@ export default function UserCentralPage() {
                 </div>
                 
                 {/* Đăng xuất */}
-                <div className="flex items-center justify-center space-x-2 cursor-pointer">
+                <div 
+                onClick={onLogoutClick}
+                className="flex items-center justify-center space-x-2 cursor-pointer">
                     <img
                         className="w-8 h-8"
                         src="https://cdn-icons-png.flaticon.com/128/13100/13100852.png"
