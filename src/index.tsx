@@ -9,10 +9,11 @@ import CartPage from './pages/cartpage/CartPage';
 import RegisterPage from './pages/registerpage/RegisterPage';
 import LoginPage from './pages/login/LoginPage';
 import UserCentralPage2 from './pages/usercentral/UserCentralPage2';
-import OrderPage from './pages/order/OrderPage';
+
 import ItemDetailPage from './pages/itemdetailpage/ItemDetailPage';
-import OrderDetailPage from './pages/orderdetailpage/OrderDetailPage';
+
 import UpdatePersonnalInfoPage from './pages/updatepersonalInfo/UpdatePersonalInfoPage';
+import OrderedOrdersPage from './pages/order/OrderedOrdersPage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -46,16 +47,16 @@ root.render(
             />
             <Route
               path="/order"
-              Component={OrderPage}
+              Component={OrderedOrdersPage}
             />
             <Route
               path="/itemdetail"
               Component={ItemDetailPage}
             />
-            <Route
+            {/* <Route
               path="/orderdetail"
               Component={OrderDetailPage}
-            />
+            /> */}
             <Route
               path="/updatepersonalinfo"
               Component={UpdatePersonnalInfoPage}
