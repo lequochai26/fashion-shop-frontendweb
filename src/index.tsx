@@ -7,6 +7,7 @@ import GeneralHeader from './pages/general/GeneralHeader';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/homepage/HomePage';
 import CartPage from './pages/cartpage/CartPage';
+import UserCentralPage from './pages/usercentral/UserCentralPage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -25,6 +26,10 @@ root.render(
             <Route
               path="/cart"
               Component={CartPage}
+            />
+            <Route
+              path="/usercentral"
+              Component={UserCentralPage}
             />
           </Routes>
         </BrowserRouter>
