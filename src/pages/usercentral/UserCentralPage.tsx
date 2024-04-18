@@ -13,7 +13,7 @@ export default function UserCentralPage() {
         redirect("/updatepersonalinfo");
     }
 
-    async function onOrderOrderedClickPage() {
+    async function onOrderOrderedPageClick() {
         redirect("/orderedorders")
     }
 
@@ -60,7 +60,7 @@ export default function UserCentralPage() {
 
                 {/* Đơn hàng đã đặt */}
                 <div 
-                onClick={onOrderOrderedClickPage}
+                onClick={onOrderOrderedPageClick}
                 className="flex items-center justify-center space-x-2">
                     <img
                         className="w-8 h-8"
