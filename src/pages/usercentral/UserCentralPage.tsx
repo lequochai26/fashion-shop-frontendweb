@@ -12,23 +12,23 @@ export default function UserCentralPage() {
     const [user, setUser] = useState<User>();
     const [ logged, setLoggeded ] = useState<boolean>(false);
     
-    //Controllers
-    const checkLoggedInController: Controller<CheckLoggedInParam> = new CheckLoggedInController();
-    const logoutController: Controller<LogoutParam> = new LogoutController();
+    // //Controllers
+    // const checkLoggedInController: Controller<CheckLoggedInParam> = new CheckLoggedInController();
+    // const logoutController: Controller<LogoutParam> = new LogoutController();
     
     // Init
-    function init() {
-        checkLoggedInController.execute({
-            onSuccess: function (logged: boolean) {
-                setLoggeded(logged);
-            },
+    // function init() {
+    //     checkLoggedInController.execute({
+    //         onSuccess: function (logged: boolean) {
+    //             setLoggeded(logged);
+    //         },
 
-            onError: function (error: any) {
-                console.error(error);
-            }
-        });
-    }
-    useEffect(init, []);
+    //         onError: function (error: any) {
+    //             console.error(error);
+    //         }
+    //     });
+    // }
+    // useEffect(init, []);
 
     //Event Handler
     async function onUpdatePersonalInfoClick() {
