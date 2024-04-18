@@ -72,10 +72,10 @@ export default function OrderedOrdersPage() {
         <div className="border border-black rounded-lg p-4 w-[800px] h-[650px] mt-[70px] ">
             <div className="overflow-auto h-[400px]">
 
-            <table className=" border border-black border-collapse ml-[30px] mt-[60px] p-5 w-[90%]">
-                <tr>
-                    <th colSpan={2} className="border border-black p-5 text center text-2xl">ĐƠN HÀNG ĐÃ ĐẶT</th>
-                </tr>
+            <table className=" border border-black border-collapse ml-[30px] mt-[60px] p-5 w-[90%] ">
+                <thead>
+                    <th colSpan={2} className="p-5 text-center text-2xl sticky top-0 bg-gray-200 border border-black m-0">ĐƠN HÀNG ĐÃ ĐẶT</th>
+                </thead>
                 {
                     orders && (
                         orders.map((order) => (
