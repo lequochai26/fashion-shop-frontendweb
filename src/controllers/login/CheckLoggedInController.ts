@@ -1,3 +1,5 @@
+import RestResponse from "../../interfaces/RestResponse";
+import { apiFetch } from "../../utils/APIFetcher";
 import Controller from "../Controller";
 import { LoadLoggedInUserParam } from "../LoadLoggedInUserController";
 
@@ -8,18 +10,18 @@ export default class CheckLoggedInController implements Controller<CheckLoggedIn
     }
 
     // Methods:
-    public async execute({ onError, onSuccess, loadLoggedInUserController }: CheckLoggedInParam): Promise<void> {
-        await loadLoggedInUserController.execute(
-            {
-                onSuccess(user) {
-                    onSuccess(true);
-                },
-                onError,
-                onFailed(code, message) {
-                    onSuccess(false);
-                },
-            }
-        );
+    public async execute({ onError, onSuccess }: CheckLoggedInParam): Promise<void> {
+        await apiFetch({
+            path: "/user?method=getLoggedIn",
+            method: "GET",
+            onSuccess: async function (response: Response) {
+                const { success }: RestResponse<undefined> = await response.json();
+                onSuccess(success);
+            },
+            onFailed: async function (error: any) {
+                onError(error);
+            },
+        });
     }
 }
 
