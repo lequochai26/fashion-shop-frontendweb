@@ -4,7 +4,7 @@ import Controller from '../../controllers/Controller';
 import LoginPageController, { LoginParam } from '../../controllers/general/LoginPageController';
 import { redirect } from '../../utils/Redirector';
 import NoAccessPage from '../noaccesspage/NoAccessPage';
-import CheckLoggedInController, { CheckLoggedInParam } from '../../controllers/CheckLoggedInController';
+import CheckLoggedInController, { CheckLoggedInParam } from '../../controllers/login/CheckLoggedInController';
 import LoadLoggedInUserController, { LoadLoggedInUserParam } from '../../controllers/LoadLoggedInUserController';
 
 

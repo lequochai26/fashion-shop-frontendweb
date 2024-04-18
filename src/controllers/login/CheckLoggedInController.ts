@@ -1,5 +1,5 @@
-import Controller from "./Controller";
-import { LoadLoggedInUserParam } from "./LoadLoggedInUserController";
+import Controller from "../Controller";
+import { LoadLoggedInUserParam } from "../LoadLoggedInUserController";
 
 export default class CheckLoggedInController implements Controller<CheckLoggedInParam> {
     // Constructors:
