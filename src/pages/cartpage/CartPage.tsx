@@ -8,6 +8,7 @@ import AddCartItemController, { AddCartItemParam } from "../../controllers/cartp
 import DeleteCartItemController, { DeleteCartItemParam } from "../../controllers/cartpage/DeleteCartItemController";
 import BuyController, { BuyParam } from "../../controllers/cartpage/BuyController";
 import { redirect } from "../../utils/Redirector";
+import { formatMetadata } from "../../utils/CartItemHelper";
 
 export default function CartPage() {
     // States:
@@ -132,15 +133,7 @@ export default function CartPage() {
                                     <p className="text-lg">
                                         Phân loại: {
                                             !cartItem.metadata ? "Không có phân loại"
-                                            : (() => {
-                                                let metadata: string = "";
-
-                                                for (const [key, value] of Object.entries(metadata)) {
-                                                    metadata += `${key}: ${value}${metadata ? ", " : ""}`
-                                                }
-
-                                                return metadata;
-                                            })()
+                                            : formatMetadata(cartItem.metadata)
                                         }
                                     </p>
 

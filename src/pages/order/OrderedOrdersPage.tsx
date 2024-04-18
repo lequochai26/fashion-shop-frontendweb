@@ -80,13 +80,13 @@ export default function OrderedOrdersPage() {
                     orders && (
                         orders.map((order) => (
                             <tr key={order.id}>
-                                <td className="w-3/5 pl-10">
-                                    <p>{`Mã đơn hàng: ${order.id} (${getOrderStatusTitle(order.status)})`}</p>
-                                    <p>Ngày đặt hàng: {order.date.toString()} </p>
-                                    <p>Tổng giá trị: {order.totalPrice}</p>
+                                <td className="border border-black w-4/7 pl-10 p-5">
+                                    <p className="p-1">{`Mã đơn hàng: ${order.id} (${getOrderStatusTitle(order.status)})`}</p>
+                                    <p className="p-1">Ngày đặt hàng: {order.date.toString()} </p>
+                                    <p className="p-1">Tổng giá trị: ${order.totalPrice}</p>
                                 </td>
-                                <td className="border border-black border-r p-5 ">
-                                    <div className="text-center">
+                                <td className="border border-black p-5 ">
+                                    <div className="text-center text-base">
 
                                         <button 
                                             className="border border-black rounded-lg p-2 w-[60px] hover:bg-gray-300" 
