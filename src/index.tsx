@@ -9,6 +9,7 @@ import HomePage from './pages/homepage/HomePage';
 import CartPage from './pages/cartpage/CartPage';
 import UserCentralPage from './pages/usercentral/UserCentralPage';
 import RegisterPage from './pages/registerpage/RegisterPage';
+import LoginPage from './pages/login/LoginPage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -35,6 +36,10 @@ root.render(
             <Route
               path="/register"
               Component={RegisterPage}
+            />
+            <Route
+              path="/login"
+              Component={LoginPage}
             />
           </Routes>
         </BrowserRouter>
