@@ -1,17 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import GeneralHeader from './pages/general/GeneralHeader';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/homepage/HomePage';
 import CartPage from './pages/cartpage/CartPage';
-import UserCentralPage from './pages/usercentral/UserCentralPage';
 import RegisterPage from './pages/registerpage/RegisterPage';
 import LoginPage from './pages/login/LoginPage';
 import UserCentralPage2 from './pages/usercentral/UserCentralPage2';
 import OrderPage from './pages/order/OrderPage';
+import ItemDetailPage from './pages/itemdetailpage/ItemDetailPage';
+import OrderDetailPage from './pages/orderdetailpage/OrderDetailPage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -46,6 +46,14 @@ root.render(
             <Route
               path="/order"
               Component={OrderPage}
+            />
+            <Route
+              path="/itemdetail"
+              Component={ItemDetailPage}
+            />
+            <Route
+              path="/orderdetail"
+              Component={OrderDetailPage}
             />
           </Routes>
         </BrowserRouter>
