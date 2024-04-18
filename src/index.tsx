@@ -11,6 +11,7 @@ import UserCentralPage from './pages/usercentral/UserCentralPage';
 import RegisterPage from './pages/registerpage/RegisterPage';
 import LoginPage from './pages/login/LoginPage';
 import UserCentralPage2 from './pages/usercentral/UserCentralPage2';
+import OrderPage from './pages/order/OrderPage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -41,6 +42,10 @@ root.render(
             <Route
               path="/login"
               Component={LoginPage}
+            />
+            <Route
+              path="/order"
+              Component={OrderPage}
             />
           </Routes>
         </BrowserRouter>
