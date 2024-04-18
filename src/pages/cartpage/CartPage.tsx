@@ -4,6 +4,7 @@ import Controller from "../../controllers/Controller";
 import LoadCartController, { LoadCartParam } from "../../controllers/cartpage/LoadCartController";
 import { makeAPIUrl } from "../../utils/APIFetcher";
 import RemoveCartItemController, { RemoveCartItemParam } from "../../controllers/cartpage/RemoveCartItemController";
+import AddCartItemController, { AddCartItemParam } from "../../controllers/cartpage/AddCartItemController";
 
 export default function CartPage() {
     // States:
@@ -12,6 +13,7 @@ export default function CartPage() {
     // Controllers:
     const loadCartController: Controller<LoadCartParam> = new LoadCartController();
     const removeCartItemController: Controller<RemoveCartItemParam> = new RemoveCartItemController();
+    const addCartItemController: Controller<AddCartItemParam> = new AddCartItemController();
 
     // Init
     function init() {
@@ -29,10 +31,16 @@ export default function CartPage() {
     async function onRemoveCartItemButtonClick(cartItem: CartItem) {
         removeCartItemController.execute({
             cartItem,
-            onSuccess: function () {
-                init();
-            },
-            onError: error => console.log(error)
+            onSuccess: init,
+            onError: console.error
+        });
+    }
+
+    async function onAddCartItemButtonClick(cartItem: CartItem) {
+        addCartItemController.execute({
+            cartItem,
+            onSuccess: init,
+            onError: console.error
         });
     }
 
@@ -99,7 +107,7 @@ export default function CartPage() {
                                             alt="Remove Button"
                                             src="/remove.png"
                                             className="inline-block w-6 h-6 cursor-pointer"
-                                            onClick={() => onRemoveCartItemButtonClick(cartItem)}
+                                            onClick={ () => onRemoveCartItemButtonClick(cartItem) }
                                         />
 
                                         {/* Amount */}
@@ -112,6 +120,7 @@ export default function CartPage() {
                                             alt="Add Button"
                                             src="/add.png"
                                             className="inline-block w-6 h-6 cursor-pointer"
+                                            onClick={ () => onAddCartItemButtonClick(cartItem) }
                                         />
 
                                         {/* Delete button */}
