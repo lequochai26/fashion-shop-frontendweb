@@ -14,6 +14,7 @@ import ItemDetailPage from './pages/itemdetailpage/ItemDetailPage';
 
 import UpdatePersonnalInfoPage from './pages/updatepersonalInfo/UpdatePersonalInfoPage';
 import OrderedOrdersPage from './pages/order/OrderedOrdersPage';
+import OrderDetailPage from './pages/orderdetailpage/OrderDetailPage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -53,10 +54,10 @@ root.render(
               path="/itemdetail"
               Component={ItemDetailPage}
             />
-            {/* <Route
+            <Route
               path="/orderdetail"
               Component={OrderDetailPage}
-            /> */}
+            />
             <Route
               path="/updatepersonalinfo"
               Component={UpdatePersonnalInfoPage}
