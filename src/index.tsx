@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/homepage/HomePage';
 import CartPage from './pages/cartpage/CartPage';
 import UserCentralPage from './pages/usercentral/UserCentralPage';
+import RegisterPage from './pages/registerpage/RegisterPage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -30,6 +31,10 @@ root.render(
             <Route
               path="/usercentral"
               Component={UserCentralPage}
+            />
+            <Route
+              path="/register"
+              Component={RegisterPage}
             />
           </Routes>
         </BrowserRouter>
