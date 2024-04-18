@@ -67,9 +67,9 @@ export default function LoginPage(){
    return(
     <div>
         {
-            loggedIn ? (
+            loggedIn ? 
                 <NoAccessPage/>
-            ): (
+            :(
 
                 <div className="w-650 h-350 text-center  mt-20 ml-64">
                     <img
@@ -98,6 +98,8 @@ export default function LoginPage(){
                 
                 </div>
             )
+
+            
         }
     </div>
    
