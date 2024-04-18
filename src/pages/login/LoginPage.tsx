@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import Controller from '../../controllers/Controller';
 import LoginPageController, { LoginParam } from '../../controllers/general/LoginPageController';
 import { redirect } from '../../utils/Redirector';
-import CheckLoggedInController, { CheckLoggedInparam } from '../../controllers/general/CheckLoggedInController';
 import NoAccessPage from '../noaccesspage/NoAccessPage';
+import CheckLoggedInController, { CheckLoggedInParam } from '../../controllers/CheckLoggedInController';
+import LoadLoggedInUserController, { LoadLoggedInUserParam } from '../../controllers/LoadLoggedInUserController';
 
 
 
@@ -16,7 +17,8 @@ export default function LoginPage(){
 
    //controller
    const loginPageController : Controller<LoginParam> = new LoginPageController();
-   const checkLoggedInController : Controller<CheckLoggedInparam> = new CheckLoggedInController();
+   const checkLoggedInController : Controller<CheckLoggedInParam> = new CheckLoggedInController();
+   const loadLoggedInUserController: Controller<LoadLoggedInUserParam> = new LoadLoggedInUserController();
 
    //event handler
    async function onField(event:any) {
@@ -51,9 +53,9 @@ export default function LoginPage(){
     //innit
     function init(){
         checkLoggedInController.execute({
-            onSuccess: function (loggedIn:boolean) {
+            loadLoggedInUserController,
+            onSuccess: function (loggedIn: boolean) {
                 setLoggedIn(loggedIn);
-                
             },
             onError : function(error:any){
                 console.error(error);

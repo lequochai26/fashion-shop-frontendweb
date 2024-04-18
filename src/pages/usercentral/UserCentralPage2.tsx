@@ -3,16 +3,16 @@ import { redirect } from "../../utils/Redirector";
 import { makeAPIUrl } from "../../utils/APIFetcher";
 import { useEffect, useState } from "react";
 import Controller from "../../controllers/Controller";
-import LoadUserController, { LoadUserParam } from "../../controllers/usercentral/LoadUserController";
 import NoAccessPage from "../noaccesspage/NoAccessPage";
 import LogoutController, { LogoutParam } from "../../controllers/usercentral/LogoutController";
+import LoadLoggedInUserController, { LoadLoggedInUserParam } from "../../controllers/LoadLoggedInUserController";
 export default function UserCentralPage2() {
 
     //State
     const [user, setUser] = useState<User>();
 
     //Controller
-    const loadUserController: Controller<LoadUserParam> = new LoadUserController();
+    const loadUserController: Controller<LoadLoggedInUserParam> = new LoadLoggedInUserController();
     const logoutController: Controller<LogoutParam> = new LogoutController();
 
     // Init
@@ -21,6 +21,9 @@ export default function UserCentralPage2() {
             {
                 onSuccess: function (user) {
                     setUser(user);
+                },
+                onFailed: function (code, message) {
+                    setUser(undefined);
                 },
                 onError: function (error) {
                     alert("Đã xảy ra lỗi trong quá trình xử lý!");

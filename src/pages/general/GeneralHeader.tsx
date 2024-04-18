@@ -2,9 +2,9 @@ import { useEffect, useState } from "react"
 import User from "../../entities/User";
 import { API_URL } from "../../utils/APIFetcher";
 import Controller from "../../controllers/Controller";
-import LoadLoggedInUserController, { LoadLoggedInUserControllerParam } from "../../controllers/general/LoadLoggedInUserController";
 import GetCartItemAmountController, { GetCartItemAmountParam } from "../../controllers/general/GetCartItemAmountController";
 import { redirect } from "../../utils/Redirector";
+import LoadLoggedInUserController, { LoadLoggedInUserParam } from "../../controllers/LoadLoggedInUserController";
 
 export default function GeneralHeader() {
     // States:
@@ -12,7 +12,7 @@ export default function GeneralHeader() {
     const [ cartItemAmount, setCartItemAmount ] = useState<number>(0);
 
     // Controllers:
-    const loadLoggedInUserController: Controller<LoadLoggedInUserControllerParam> = new LoadLoggedInUserController()
+    const loadLoggedInUserController: Controller<LoadLoggedInUserParam> = new LoadLoggedInUserController();
     const getCartItemAmountController: Controller<GetCartItemAmountParam> = new GetCartItemAmountController();
 
     // Init
@@ -20,6 +20,9 @@ export default function GeneralHeader() {
         loadLoggedInUserController.execute(
             {
                 onSuccess: setUser,
+                onFailed(code, message) {
+                    setUser(undefined);
+                },
                 onError: function (error: any) {
                     console.error(error);
                 }
