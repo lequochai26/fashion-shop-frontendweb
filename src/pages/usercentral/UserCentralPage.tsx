@@ -13,7 +13,7 @@ export default function UserCentralPage() {
         redirect("/updatepersonalinfo");
     }
 
-    async function onOrderOrderedClickPage() {
+    async function onOrderOrderedPageClick() {
         redirect("/orderedorders")
     }
 
@@ -60,8 +60,8 @@ export default function UserCentralPage() {
 
                 {/* Đơn hàng đã đặt */}
                 <div 
-                onClick={onOrderOrderedClickPage}
-                className="flex items-center justify-center space-x-2">
+                onClick={onOrderOrderedPageClick}
+                className="flex items-center justify-center space-x-2 cursor-pointer">
                     <img
                         className="w-8 h-8"
                         src="https://cdn-icons-png.flaticon.com/128/5161/5161308.png"
@@ -71,7 +71,7 @@ export default function UserCentralPage() {
                 </div>
                 
                 {/* Đăng xuất */}
-                <div className="flex items-center justify-center space-x-2">
+                <div className="flex items-center justify-center space-x-2 cursor-pointer">
                     <img
                         className="w-8 h-8"
                         src="https://cdn-icons-png.flaticon.com/128/13100/13100852.png"
