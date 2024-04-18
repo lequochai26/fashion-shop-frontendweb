@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Link, redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Controller from '../../controllers/Controller';
 import LoginPageController, { LoginParam } from '../../controllers/general/LoginPageController';
+import { redirect } from '../../utils/Redirector';
 
 
 
