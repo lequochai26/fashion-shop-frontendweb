@@ -2,33 +2,14 @@ import User from "../../entities/User";
 import { redirect } from "../../utils/Redirector";
 import { API_URL, makeAPIUrl } from "../../utils/APIFetcher";
 import { useEffect, useState } from "react";
-import CheckLoggedInController, {CheckLoggedInParam} from "../../controllers/usercentral/CheckedLogginController";
-import LogoutController, { LogoutParam } from "../../controllers/usercentral/LogoutController";
-import Controller from "../../controllers/Controller";
+
 
 export default function UserCentralPage() {
 
     //State
     const [user, setUser] = useState<User>();
-    const [ logged, setLoggeded ] = useState<boolean>(false);
     
-    // //Controllers
-    // const checkLoggedInController: Controller<CheckLoggedInParam> = new CheckLoggedInController();
-    // const logoutController: Controller<LogoutParam> = new LogoutController();
-    
-    // Init
-    // function init() {
-    //     checkLoggedInController.execute({
-    //         onSuccess: function (logged: boolean) {
-    //             setLoggeded(logged);
-    //         },
 
-    //         onError: function (error: any) {
-    //             console.error(error);
-    //         }
-    //     });
-    // }
-    // useEffect(init, []);
 
     //Event Handler
     async function onUpdatePersonalInfoClick() {
