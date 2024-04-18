@@ -11,6 +11,9 @@ export default class LogoutController implements Controller<LogoutParam> {
 
     }
 
+    //Init
+
+
     //Methods:
     public async execute({ onSuccess, onError }: LogoutParam): Promise<void> {
         apiFetch(
