@@ -1,6 +1,14 @@
 export const API_URL: string = "http://localhost:3000";
 
 export async function apiFetch({ path, method, body, onSuccess, onFailed }: MakeRequestParam) {
+    const headers: [ string, string ][] = [];
+
+    if (!(body instanceof FormData)) {
+        headers.push(
+            [ "Content-Type", "application/json" ]
+        );
+    }
+
     try {
         var response = await fetch(
             `${API_URL}${path}`,
@@ -13,13 +21,7 @@ export async function apiFetch({ path, method, body, onSuccess, onFailed }: Make
                 ),
                 mode: 'cors',
                 credentials: 'include',
-                headers: [
-                    [ "Content-Type", (
-                        body instanceof FormData
-                        ? "multipart/form-data"
-                        : "application/json"
-                    ) ]
-                ]
+                headers
             }
         );
     }
