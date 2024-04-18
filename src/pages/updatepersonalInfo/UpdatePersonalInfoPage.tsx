@@ -71,6 +71,7 @@ export default function UpdatePersonnalInfoPage() {
                 user: userInfo,
                 onSuccess: () => {
                     alert("Cập nhật thông tin thành công");
+                    redirect("/updatepersonalinfo")
                 },
                 onFailed: function (code: string, message: string) {
                     alert(`Code ${code}, Message: ${message}`);
