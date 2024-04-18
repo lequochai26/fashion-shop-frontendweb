@@ -56,7 +56,7 @@ export default function LoginPage(){
        {/* input */}
        <input
            className='shadow appearance-none border rounded w-200 h-30 py-2 px-3 text-gray-700 mb-4 mx-auto mr-52'
-           type="email" onChange={onField}
+           type="email" name='email' onChange={onField}
        /><br/>
        <input
            className="shadow appearance-none border rounded w-200 h-30 py-2 px-3 text-gray-700 mb-4 mx-auto mr-52"
