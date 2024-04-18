@@ -5,6 +5,7 @@ import LoadCartController, { LoadCartParam } from "../../controllers/cartpage/Lo
 import { makeAPIUrl } from "../../utils/APIFetcher";
 import RemoveCartItemController, { RemoveCartItemParam } from "../../controllers/cartpage/RemoveCartItemController";
 import AddCartItemController, { AddCartItemParam } from "../../controllers/cartpage/AddCartItemController";
+import DeleteCartItemController, { DeleteCartItemParam } from "../../controllers/cartpage/DeleteCartItemController";
 
 export default function CartPage() {
     // States:
@@ -14,6 +15,7 @@ export default function CartPage() {
     const loadCartController: Controller<LoadCartParam> = new LoadCartController();
     const removeCartItemController: Controller<RemoveCartItemParam> = new RemoveCartItemController();
     const addCartItemController: Controller<AddCartItemParam> = new AddCartItemController();
+    const deleteCartItemController: Controller<DeleteCartItemParam> = new DeleteCartItemController();
 
     // Init
     function init() {
@@ -38,6 +40,14 @@ export default function CartPage() {
 
     async function onAddCartItemButtonClick(cartItem: CartItem) {
         addCartItemController.execute({
+            cartItem,
+            onSuccess: init,
+            onError: console.error
+        });
+    }
+
+    async function onDeleteCartItemButtonClick(cartItem: CartItem) {
+        deleteCartItemController.execute({
             cartItem,
             onSuccess: init,
             onError: console.error
@@ -128,6 +138,7 @@ export default function CartPage() {
                                             alt="Delete button"
                                             src="/delete.png"
                                             className="inline-block w-6 h-6 cursor-pointer ml-4"
+                                            onClick={ () => onDeleteCartItemButtonClick(cartItem) }
                                         />
                                     </div>
                                 </div>
