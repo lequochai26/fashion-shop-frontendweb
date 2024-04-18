@@ -1,16 +1,35 @@
-import { FormEventHandler, useState } from "react";
+import { FormEventHandler, useEffect, useState } from "react";
 import Controller from "../../controllers/Controller";
 import RegisterController, { RegisterParam } from "../../controllers/registerpage/RegisterController";
 import { redirect } from "../../utils/Redirector";
+import LoadLoggedInUserController, { LoadLoggedInUserParam } from "../../controllers/LoadLoggedInUserController";
+import CheckLoggedInController, { CheckLoggedInParam } from "../../controllers/login/CheckLoggedInController";
+import NoAccessPage from "../noaccesspage/NoAccessPage";
 
 export default function RegisterPage() {
     // States:
     const [ form, setForm ] = useState<any>({ gender: true });
+    const [ loggedIn, setLoggedIn ] = useState<boolean>(false);
 
     (window as any).registerForm = form;
 
     // Controllers:
     const registerController: Controller<RegisterParam> = new RegisterController();
+    const loadLoggedInUserController: Controller<LoadLoggedInUserParam> = new LoadLoggedInUserController();
+    const checkLoggedInController: Controller<CheckLoggedInParam> = new CheckLoggedInController();
+
+    // Init
+    function init() {
+        checkLoggedInController.execute({
+            loadLoggedInUserController,
+            onSuccess: setLoggedIn,
+            onError(error: any) {
+                alert("Đã có lỗi xảy ra!");
+                console.error(error);
+            },
+        })
+    }
+    useEffect(init, []);
 
     // Event handlers:
     async function onFieldChange(event: any) {
@@ -60,7 +79,9 @@ export default function RegisterPage() {
 
     // Design:
     return (
-        <div className="w-full h-full">
+        loggedIn
+        ? <NoAccessPage />
+        : <div className="w-full h-full">
             {/* Register form */}
             <form className="w-full h-full flex flex-row justify-between" onSubmit={onRegisterFormSubmit}>
                 {/* Avatar */}
