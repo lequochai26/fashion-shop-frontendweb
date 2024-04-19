@@ -6,6 +6,8 @@ import { redirect } from '../../utils/Redirector';
 import NoAccessPage from '../noaccesspage/NoAccessPage';
 import CheckLoggedInController, { CheckLoggedInParam } from '../../controllers/login/CheckLoggedInController';
 import LoadLoggedInUserController, { LoadLoggedInUserParam } from '../../controllers/LoadLoggedInUserController';
+import ReactFacebookLogin, { ReactFacebookFailureResponse, ReactFacebookLoginInfo } from 'react-facebook-login';
+import LoginWithFacebookController, { LoginWithFacebookParam } from '../../controllers/login/LoginWithFacebookController';
 
 
 
@@ -19,8 +21,9 @@ export default function LoginPage(){
    const loginPageController : Controller<LoginParam> = new LoginPageController();
    const checkLoggedInController : Controller<CheckLoggedInParam> = new CheckLoggedInController();
    const loadLoggedInUserController: Controller<LoadLoggedInUserParam> = new LoadLoggedInUserController();
+   const loginWithFacebookController: Controller<LoginWithFacebookParam> = new LoginWithFacebookController();
 
-   //event handler
+   //event handlers
    async function onField(event:any) {
     //target
         const target : HTMLInputElement = event.target;
@@ -64,9 +67,32 @@ export default function LoginPage(){
             }
         });
     }
+
     //check login
     useEffect( init,[]);
   
+    async function onFacebookLogin(userInfo: ReactFacebookLoginInfo | ReactFacebookFailureResponse) {
+        loginWithFacebookController.execute({
+            userInfo,
+            onSuccess(code) {
+                if (code) {
+                    redirect("/thirdpartyaccountregistrationfinish");
+                }
+                else {
+                    redirect("/");
+                }
+            },
+
+            onFailed(code, message) {
+                alert(`Code: ${code}, Message: ${message}`);
+            },
+
+            onError(error) {
+                alert("Đã có lỗi xảy ra trong quá trình thực thi!");
+                console.error(error);
+            },
+        });
+    }
   
    return(
     <div>
@@ -75,31 +101,52 @@ export default function LoginPage(){
                 <NoAccessPage/>
             :(
 
-                <div className="w-650 h-350 text-center  mt-20 ml-64">
+                <div className="w-fit h-fit flex flex-col justify-start items-center mt-14">
                     <img
                         alt="Fashion Shop's Logo"
                         src="/logo.png"
-                        className="w-48 h-48 mb-5 ml-6 mr-auto "
+                        className="w-48 h-48"
                     />
 
-                    <form onSubmit={handlerLogin}>
+                    <form className="w-fit h-fit flex flex-col" onSubmit={handlerLogin}>
                         <div className=''>
-                                {/* input */}
-                                <input
-                                    className='shadow appearance-none border rounded w-200 h-30 py-2 px-3 text-gray-700 mb-4 mx-auto mr-52'
-                                    type="email" name='email' placeholder="Email" required={true} onChange={onField}
-                                /><br/>
-                                <input
-                                    className="shadow appearance-none border rounded w-200 h-30 py-2 px-3 text-gray-700 mb-4 mx-auto mr-52"
-                                    type="password"
-                                    placeholder="Mật khẩu"
-                                    required={true} onChange={onField}
-                                /><br/>
+                                {/* email */}
+                                <p>
+                                    <input
+                                        className='shadow appearance-none border rounded py-2 px-3 text-gray-700 w-full my-2 text-xl'
+                                        type="email" name='email' placeholder="Email" required={true} onChange={onField}
+                                    />
+                                </p>
+
+                                {/* password */}
+                                <p>
+                                    <input
+                                        className="shadow appearance-none border rounded py-2 px-3 text-gray-700 w-full my-2 text-xl"
+                                        type="password"
+                                        placeholder="Mật khẩu"
+                                        required={true} onChange={onField}
+                                    />
+                                </p>
+
                                 {/* button */}
-                                <button className="w-52 h-9 mb-4 rounded-md bg-gray-200 hover:text-blue-500 mx-auto mr-52">
-                                    Đăng nhập
-                                </button><br/>
-                                <Link to={'/register'} className="text-black-500 mx-auto mr-52">Chưa có tài khoản ? Đăng ký ngay !</Link>
+                                <p className="text-center">
+                                    <button className="w-1/2 h-9 rounded-md bg-gray-200 hover:text-blue-500 my-2 text-lg">
+                                        Đăng nhập
+                                    </button>
+                                </p>
+
+                                {/* Facebook login button */}
+                                <p className="text-center my-2">
+                                    <ReactFacebookLogin
+                                        appId='1455981415339533'
+                                        callback={onFacebookLogin}
+                                    />
+                                </p>
+                                
+                                {/* Register link */}
+                                <p>
+                                    <Link to={'/register'} className="text-black-500 my-2 text-base">Chưa có tài khoản ? Đăng ký ngay !</Link>
+                                </p>
                         </div>
                     </form>
                 
