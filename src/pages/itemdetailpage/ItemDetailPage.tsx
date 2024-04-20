@@ -5,6 +5,7 @@ import GetItemController, { GetItemControllerParam } from "../../controllers/ite
 import Controller from "../../controllers/Controller";
 import { API_URL } from "../../utils/APIFetcher";
 import AddToCartController, { AddToCartParam } from "../../controllers/itemdetail/AddToCartController";
+import LoadingPage from "../loadingpage/LoadingPage";
 
 interface Metadata {
     size?: string;
@@ -110,107 +111,112 @@ export default function ItemDetailPage() {
     }
 
     //Element:
-    return (
-        <div className="flex overflow-x-auto mt-4">
-            {/* left content */}
-            <div className="w-2/5 ml-56">
-                {/* Item display */}
-                <div className="border border-black mx-auto " style={{ width: "400px", height: "400px" }}>
-                    <img
-                        src={
-                            selectedImage ? selectedImage : (item && `${API_URL}${item.avatar}`)
+    
+        return (
+            !item
+            ? <LoadingPage/>
+            : (<div className="flex overflow-x-auto mt-4">
+                
+                {/* left content */}
+                <div className="w-2/5 ml-56">
+                    {/* Item display */}
+                    <div className="border border-black mx-auto w-[400px] h-[400px]">
+                        <img
+                            src={
+                                selectedImage ? selectedImage : (item && `${API_URL}${item.avatar}`)
+                            }
+                            alt="avatar item"
+                            className="w-96 h-96 pr-3 pl-6 pt-5"
+                        />
+                    </div>
+    
+                    {/* List ItemImage */}
+                    <div className="flex overflow-x-auto mt-3 ml-4 w-[400px] h-[100px]">
+                        <img
+                            src={
+                                item && `${API_URL}${item.avatar}`
+                            }
+                            alt="ItemImage"
+                            className="w-[85px] h-[85px] mr-1 ml-1"
+                            onClick={() => handleImageClick(item?.avatar as string)}
+                        />
+                        {
+                            item?.images && item.images.map((image) => (
+                                <img
+                                    src={`${API_URL}${image}`}
+                                    alt="ItemImage"
+                                    className="w-[85px] h-[85px] mr-1 ml-1"
+                                    onClick={() => handleImageClick(image)}
+                                />
+                            ))
                         }
-                        alt="avatar item"
-                        className="w-96 h-96 pr-3 pl-6 pt-5"
-                    />
+                    </div>
                 </div>
-
-                {/* List ItemImage */}
-                <div className="flex overflow-x-auto mt-3 ml-4 " style={{ width: "400px", height: "100px" }}>
-                    <img
-                        src={
-                            item && `${API_URL}${item.avatar}`
+    
+                {/* Right Content */}
+                <div className="w-3/5 mr-40 pl-10">
+                    <div className="w-full h-auto text-lg">
+                        {/* Name */}
+                        <p className="font-bold text-xl">
+                            <label className="bg-red-600 mr-2 text-white rounded font-normal text-base"> Mall</label>{item && item.name}
+                        </p><br />
+    
+                        {/* Price */}
+                        <p className="text-lg">Giá: ${metadata?.price ? metadata.price : (item && getPriceDefault())}</p><br />
+    
+                        {/* Amount */}
+                        <p>Số lượng: {metadata?.amount ? metadata.amount : (item && sumAmount(item.metadata.mappings))}</p><br />
+    
+                        {/* Description */}
+                        <p> Mô tả: {item && item.description} </p>
+    
+                        {/* Metadate */}
+                        <br /><p>Phân loại:</p>
+    
+                        <p>Size:
+                            {
+                                item && item.metadata.options.size.map(
+                                    (size: string) => (
+                                        <>
+                                            <input type="radio" name="size" id={size} value={size} className="mr-1 ml-3" onChange={onChangedMetadata}/>
+                                            <label htmlFor={size} className="mr-5"> {size} </label>
+                                        </>
+                                    )
+                                )
+                            }
+                        </p>
+    
+                        {/* Color */}
+                        <br /><p>Màu:
+                            {
+                                item && item.metadata.options.color.map(
+                                    (color: string) => (
+                                        <>
+                                            <input type="radio" name="color" id={color} value={color} className="mr-1 ml-2" onChange={onChangedMetadata}/>
+                                            <label htmlFor={color} className="mr-5">{color}</label>
+                                        </>
+                                    )
+                                )
+                            }
+                        </p>
+    
+                        {
+                            (item && metadata?.size && metadata.color) &&
+                            <>
+                                <br /><br /><button 
+                                    id="myButton" 
+                                    type="submit"
+                                    className="border border-black rounded p-1 ml-40 cursor-pointer " 
+                                    onClick={()=> onAddToCartButtonClick(item)}
+                                    >
+                                        Thêm vào giỏ hàng
+                                </button>
+                            </>
                         }
-                        alt="ItemImage"
-                        style={{ width: "85px", height: "85px" }} className="mr-1 ml-1"
-                        onClick={() => handleImageClick(item?.avatar as string)}
-                    />
-                    {
-                        item?.images && item.images.map((image) => (
-                            <img
-                                src={`${API_URL}${image}`}
-                                alt="ItemImage"
-                                style={{ width: "85px", height: "85px" }} className="mr-1 ml-1"
-                                onClick={() => handleImageClick(image)}
-                            />
-                        ))
-                    }
+    
+                    </div>
                 </div>
             </div>
-
-            {/* Right Content */}
-            <div className="w-3/5 mr-40 pl-10">
-                <div className="w-full h-auto text-lg">
-                    {/* Name */}
-                    <p className="font-bold text-xl">
-                        <label className="bg-red-600 mr-2 text-white rounded font-normal text-base"> Mall</label>{item && item.name}
-                    </p><br />
-
-                    {/* Price */}
-                    <p className="text-lg">Giá: ${metadata?.price ? metadata.price : (item && getPriceDefault())}</p><br />
-
-                    {/* Amount */}
-                    <p>Số lượng: {metadata?.amount ? metadata.amount : (item && sumAmount(item.metadata.mappings))}</p><br />
-
-                    {/* Description */}
-                    <p> Mô tả: {item && item.description} </p>
-
-                    {/* Metadate */}
-                    <br /><p>Phân loại:</p>
-
-                    <p>Size:
-                        {
-                            item && item.metadata.options.size.map(
-                                (size: string) => (
-                                    <>
-                                        <input type="radio" name="size" id={size} value={size} className="mr-1 ml-3" onChange={onChangedMetadata}/>
-                                        <label htmlFor={size} className="mr-5"> {size} </label>
-                                    </>
-                                )
-                            )
-                        }
-                    </p>
-
-                    {/* Color */}
-                    <br /><p>Màu:
-                        {
-                            item && item.metadata.options.color.map(
-                                (color: string) => (
-                                    <>
-                                        <input type="radio" name="color" id={color} value={color} className="mr-1 ml-2" onChange={onChangedMetadata}/>
-                                        <label htmlFor={color} className="mr-5">{color}</label>
-                                    </>
-                                )
-                            )
-                        }
-                    </p>
-
-                    {
-                        (item && metadata?.size && metadata.color) &&
-                        <>
-                            <br /><br /><button 
-                                id="myButton" 
-                                type="submit"
-                                className="border border-black rounded p-1 ml-40 cursor-pointer " 
-                                onClick={()=> onAddToCartButtonClick(item)}
-                                >
-                                    Thêm vào giỏ hàng
-                            </button>
-                        </>
-                    }
-
-                </div>
-            </div>
-        </div>
+        )
     )
 }

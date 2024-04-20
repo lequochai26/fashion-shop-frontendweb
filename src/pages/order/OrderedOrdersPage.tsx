@@ -6,6 +6,8 @@ import { getOrderStatusTitle } from "../../utils/OrderHelper"
 import CancelOrderController, { CancelOrderControllerParam } from "../../controllers/orderedorder/CancelOrderController"
 import CheckLoggedInUserController, { CheckLoggedInUserParam } from "../../controllers/orderedorder/CheckLoggedInUserController"
 import { redirect } from "../../utils/Redirector"
+import LoadingPage from "../loadingpage/LoadingPage"
+import NoAccessPage from "../noaccesspage/NoAccessPage"
 
 export default function OrderedOrdersPage() {
     //State:
@@ -25,9 +27,9 @@ export default function OrderedOrdersPage() {
     function init() {
         checkLoggedInUserController.execute(
             {
-                onFailed: async function (code, message) {
-                    redirect("/");
+                onFailed: async function (code, message) {               
                     alert(`Code: ${code} - Message: ${message}`);
+                    redirect("/");
                 },
                 onError: console.error
             }
@@ -69,47 +71,45 @@ export default function OrderedOrdersPage() {
     }
 
     return (
-        <div className="border border-black rounded-lg p-4 w-[800px]  mt-[50px] overflow-hidden">
-            <div>
-                <table className=" border border-black border-collapse ml-[40px] mt-[20px] w-[90%] ">
-                    <thead>
-                        <th colSpan={2} className="p-3 text-center text-2xl sticky top-0 bg-gray-200 border border-black m-0">ĐƠN HÀNG ĐÃ ĐẶT</th>
-                    </thead>
-                    <div className="overflow-auto h-[375px] ">
-                    {
-                        orders && (
-                            orders.map((order) => (
+        !orders
+            ? <LoadingPage />
+            : (<div className="border border-black rounded-lg p-4 w-[800px]  mt-[50px] overflow-hidden">
+                <div>
+                    <table className=" border border-black border-collapse ml-[40px] mt-[20px] w-[90%] ">
+                        <thead>
+                            <th colSpan={2} className="p-3 text-center text-2xl sticky top-0 bg-gray-200 border border-black m-0">ĐƠN HÀNG ĐÃ ĐẶT</th>
+                        </thead>
+                        <div className="overflow-auto h-[375px] ">
+                            {
+                                orders.map((order) => (
 
-                                <tr key={order.id} className="h-fit">
-                                    <td className="border border-black w-[670px]  p-5 relative ">
-                                        <p className="p-1">{`Mã đơn hàng: ${order.id} (${getOrderStatusTitle(order.status)})`}</p>
-                                        <p className="p-1">Ngày đặt hàng: {order.date.toString()} </p>
-                                        <p className="p-1">Tổng giá trị: ${order.totalPrice}</p>
+                                    <tr key={order.id} className="h-fit">
+                                        <td className="border border-black w-[670px]  p-5 relative ">
+                                            <p className="p-1 font-bold">{`Mã đơn hàng: ${order.id} (${getOrderStatusTitle(order.status)})`}</p>
+                                            <p className="p-1">Ngày đặt hàng: {order.date.toString()} </p>
+                                            <p className="p-1">Tổng giá trị: ${order.totalPrice}</p>
 
-                                        <div className="text-center text-sm absolute right-0 bottom-0 pr-3 pb-6">
+                                            <div className="text-center text-sm absolute right-0 bottom-0 pr-3 pb-6">
 
-                                            <button
-                                                className="border border-black rounded-lg p-2 w-[60px] hover:bg-gray-300"
-                                                onClick={(event) => onCancelOrder(event, order.id)}
-                                            >
-                                                Hủy
-                                            </button>
-                                            <button className="border border-black rounded-lg p-2 ml-[15px] hover:bg-gray-300"
-                                                onClick={(event) => onOrderDetail(event, order.id)}>
-                                                Xem chi tiết
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))
-                        )
-                    }
-                    </div>
-                    
-
-                </table>
+                                                <button
+                                                    className="border border-black rounded-lg p-2 w-[60px] hover:bg-gray-300"
+                                                    onClick={(event) => onCancelOrder(event, order.id)}
+                                                >
+                                                    Hủy
+                                                </button>
+                                                <button className="border border-black rounded-lg p-2 ml-[15px] hover:bg-gray-300"
+                                                    onClick={(event) => onOrderDetail(event, order.id)}>
+                                                    Xem chi tiết
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            }
+                        </div>
+                    </table>
+                </div>
             </div>
-        </div>
-
+            )
     )
 }
