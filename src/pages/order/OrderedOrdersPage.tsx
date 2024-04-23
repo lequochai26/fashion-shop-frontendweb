@@ -91,12 +91,15 @@ export default function OrderedOrdersPage() {
 
                                             <div className="text-center text-sm absolute right-0 bottom-0 pr-3 pb-6">
 
-                                                <button
-                                                    className="border border-black rounded-lg p-2 w-[60px] hover:bg-gray-300"
-                                                    onClick={(event) => onCancelOrder(event, order.id)}
-                                                >
-                                                    Hủy
-                                                </button>
+                                                {
+                                                    order.status === 'APPROVEMENT_AWAITING' &&
+                                                    <button
+                                                        className="border border-black rounded-lg p-2 w-[60px] hover:bg-gray-300"
+                                                        onClick={(event) => onCancelOrder(event, order.id)}
+                                                    >
+                                                        Hủy
+                                                    </button>
+                                                }
                                                 <button className="border border-black rounded-lg p-2 ml-[15px] hover:bg-gray-300"
                                                     onClick={(event) => onOrderDetail(event, order.id)}>
                                                     Xem chi tiết
