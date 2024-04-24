@@ -8,6 +8,7 @@ import NoAccessPage from "../noaccesspage/NoAccessPage";
 import NewItemController, { NewItemParam } from "../../controllers/itemmanagement/NewItemController";
 import NewItemPage from "./popups/newitempage/NewItemPage";
 import UpdateItemPage from "./popups/updateitempage/UpdateItemPage";
+import UpdateItemController, { UpdateItemParam } from "../../controllers/itemmanagement/UpdateItemController";
 
 export default function ItemManagementPage() {
     // States:
@@ -19,6 +20,7 @@ export default function ItemManagementPage() {
     const loadAllItemsController: Controller<LoadAllItemsParam> = new LoadAllItemsController();
     const loadLoggedInUserController: Controller<LoadLoggedInUserParam> = new LoadLoggedInUserController();
     const newItemController: Controller<NewItemParam> = new NewItemController();
+    const updateItemController: Controller<UpdateItemParam> = new UpdateItemController();
 
     // Init:
     function init() {
@@ -104,7 +106,30 @@ export default function ItemManagementPage() {
                 item={item}
                 onSubmit={
                     function (form) {
-
+                        updateItemController.execute({
+                            form,
+                            onSuccess() {
+                                setPopup(undefined);
+                                setItems(undefined);
+                                loadAllItemsController.execute({
+                                    onSuccess: setItems,
+                                    onFailed(code, message) {
+                                        alert(`Code: ${code}, Message: ${message}`);
+                                    },
+                                    onError(error) {
+                                        alert("Đã có lỗi xảy ra trong quá trình thực thi!");
+                                        console.error(error);
+                                    },
+                                })
+                            },
+                            onFailed(code, message) {
+                                alert(message);
+                            },
+                            onError(error) {
+                                alert("Đã có lỗi xảy ra trong quá trình thực thi!");
+                                console.error(error);
+                            },
+                        })
                     }
                 }
                 onCancel={() => setPopup(undefined)}

@@ -12,7 +12,7 @@ import { makeAPIUrl } from "../../../../utils/APIFetcher";
 export default function UpdateItemPage({ item, onSubmit, onCancel }: UpdateItemPageParam) {
     // States:
     const [ target, setTarget ] = useState<Item>(item);
-    const [ form, setForm ] = useState<{ [ index: string ]: any, metadata?: Metadata | undefined }>({ gender: item.gender, price: item.price, buyPrice: item.buyPrice, amount: item.amount, metadata: (item.metadata && new Metadata(item.metadata)) });
+    const [ form, setForm ] = useState<{ [ index: string ]: any, metadata?: Metadata | undefined }>({ id: item.id, gender: item.gender, price: item.price, buyPrice: item.buyPrice, amount: item.amount, metadata: (item.metadata && new Metadata(item.metadata)) });
     const [ selection, setSelection ] = useState<any | undefined>(undefined);
     const [ itemTypes, setItemTypes ] = useState<ItemType[] | undefined>(undefined);
     const [ brands, setBrands ] = useState<Brand[] | undefined>(undefined);
