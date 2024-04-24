@@ -6,22 +6,30 @@ import LoadingPage from "../loadingpage/LoadingPage";
 import DeleteItemTypeController, { DeleteItemTypeParam } from "../../controllers/itemtypemanagement/DeleteItemTypeController";
 import { redirect } from "../../utils/Redirector";
 import LoadItemTypeByKeywordController, { LoadItemTypeByKeywordParam } from "../../controllers/itemmanagement/LoadItemTypeByKeyWordController";
+
+import UpdateItemTypeController, { UpdateItemTypeParam } from "../../controllers/itemtypemanagement/UpdateItemTypeController";
+import { error } from "console";
 import AddItemTypeController, { AddItemTypeParam } from "../../controllers/itemtypemanagement/AddItemTypeController";
 
 export default function ItemTypeManagementPage(){
     //state
     const[itemType,setItemType] = useState<ItemType[]>();
+    const[itemTypeInfo,setItemTypeInfo] = useState<any>({});
+  
+
     const[keyword,setKeyword]= useState<string>("");
 
     const[insertItemType,setInsert] = useState(false);
-    const [id,setId] = useState<string>("");
-    const [name,setName] = useState<string>("");
+    const[updateItemType,setUpdate] = useState(false);
+    
+    
 
     //controller
     const loadItemTypeController : Controller<LoadItemTypeControllerParam> = new LoadItemItypeController();
     const deleteItemTypeController : Controller<DeleteItemTypeParam> = new DeleteItemTypeController();
     const loadItemTypeByKeywordController: Controller<LoadItemTypeByKeywordParam> = new LoadItemTypeByKeywordController();
     const addItemTypeController : Controller<AddItemTypeParam> = new AddItemTypeController();
+    const updateItemTypeController : Controller<UpdateItemTypeParam>= new UpdateItemTypeController();
 
     //method
     function init(){
@@ -34,20 +42,8 @@ export default function ItemTypeManagementPage(){
             }
         )
     }
-    //
-    async function onField(event:any) {
-        //target
-        const target : HTMLInputElement = event.target;
 
-        if(target.name === "id"){
-            setId(target.value);
-        }else{
-            setName(target.value);
-        }
-
-        
-    }
-    //
+    //open,close form
     async function isOpenInserItemType() {
         setInsert(true);
         
@@ -56,7 +52,72 @@ export default function ItemTypeManagementPage(){
         setInsert(false);
         
     }
-    //add itemtype
+
+    async function isOpenUpdateItemType() {
+        setUpdate(true);
+        
+    }
+    async function isCloseUpdateItemType() {
+        setUpdate(false);
+        
+    }
+    //insert
+    async function onAddUpdateItemType(event:any) {
+        event.preventDefault();
+
+        if(!itemTypeInfo.id || !itemTypeInfo.name){
+            alert("Vui lòng điền thông tin");
+            return;
+        }
+
+        addItemTypeController.execute(
+            {
+                itemTypeInfo,
+                onSuccess:function(){
+                    alert("Thêm loại sản phẩm thành công");
+
+                },
+                onFailed:function(code,message){
+                    alert(`Code:${code} - Message${message}`)
+                },
+                onError:function(error){
+                    console.error(error);
+                }
+            }
+        )
+    }
+
+    // update 
+    function onChangedFields({target}: any){
+        setItemTypeInfo({...itemTypeInfo,[target.name]: target.value});
+       
+
+    }
+
+    const onUpdate: FormEventHandler= async function (event) {
+        event.preventDefault();
+        if(!itemTypeInfo.id || !itemTypeInfo.name){
+            alert("Vui lòng cập nhập thông tin cần cập nhập");
+            return;
+        }
+
+       
+        updateItemTypeController.execute({
+            itemType : itemTypeInfo,
+            onSuccess:() =>{
+                alert("Cập nhập thông tin thành công");
+            },
+            onFailed:function(code:string,message:string){
+                alert(`Code ${code},message : ${message}`)
+            },
+            onError:(error:any) =>{
+            console.error(error);
+            }
+        })
+
+       
+        
+    }
 
     //search by keyword
     async function onKeywordChange(event:any) {
@@ -160,18 +221,18 @@ export default function ItemTypeManagementPage(){
                                             name="id"
                                             className="border border-gray-300 rounded-lg px-3 py-2 w-full mb-2"
                                             placeholder="Mã loại sản phẩm"
-                                            onChange={onField}
                                             required={true}
-                                            value={id}
+                                            onChange={onChangedFields}
+                                           
                                         />
                                         <input
                                             type="text"
                                             name="name"
                                             className="border border-gray-300 rounded-lg px-3 py-2 w-full mb-4"
                                             placeholder="Tên loại sản phẩm"
-                                            onChange={onField}
                                             required={true}
-                                            value={name}
+                                            onChange={onChangedFields}
+                                           
                                         />
                                   </div>
                                   <div className="flex justify-end">
@@ -179,7 +240,7 @@ export default function ItemTypeManagementPage(){
                                       Hủy
                                     </button>
                                     <button className="px-4 py-2 bg-blue-500 text-white rounded-lg ml-2 hover:bg-blue-600"
-                                            // onClick={onHanderAdd}
+                                            onClick={(event)=>onAddUpdateItemType(event)}
                                         >Thêm</button>
                                   </div>
                                 </div>
@@ -211,7 +272,48 @@ export default function ItemTypeManagementPage(){
                                                     <td className="border border-black ">
                                                         <div >
                                                             <button 
-                                                                className="border border-black rounded-lg p-2 w-[60px] hover:bg-gray-300 mr-2">Sửa</button>
+                                                                className="border border-black rounded-lg p-2 w-[60px] hover:bg-gray-300 mr-2" onClick={isOpenUpdateItemType}>Sửa</button>
+                                                                { updateItemType &&(
+                                                                            <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+                                                                            <div className="bg-white rounded-lg shadow-lg p-6">
+                                                                            <div className="mb-4">
+                                                                                    <input
+                                                                                        type="text"
+                                                                                        name="id"
+                                                                                        className="border border-gray-300 rounded-lg px-3 py-2 w-full mb-2"
+                                                                                        placeholder={`Mã loại sản phẩm: ${ itemType.id}`}
+                                                                                        required={true}
+                                                                                        onChange={onChangedFields}
+                                                                                       
+                                                                                    />
+                                                                                    <input
+                                                                                        type="text"
+                                                                                        name="name"
+                                                                                        className="border border-gray-300 rounded-lg px-3 py-2 w-full mb-4"
+                                                                                        placeholder={`Tên loại sản phẩm:`}
+                                                                                        required={true}
+                                                                                        onChange={onChangedFields}
+                                                                                        
+                                                                                    />
+                                                                            </div>
+                                                                            <div className="flex justify-end">
+                                                                                <button onClick={isCloseUpdateItemType} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                                                                                Hủy
+                                                                                </button>
+                                                                                <button className="px-4 py-2 bg-blue-500 text-white rounded-lg ml-2 hover:bg-blue-600"
+                                                                                        onClick={(event)=>onUpdate(event)}
+                                                                                    >Cập nhật</button>
+                                                                            </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        )
+
+                             }
+
+
+
+
+                                                            {/* delete     */}
                                                             <button 
                                                                 className="border border-black rounded-lg p-2 w-[60px] hover:bg-gray-300"
                                                                 onClick={(event) => deleteItemType(event,itemType.id)}>
