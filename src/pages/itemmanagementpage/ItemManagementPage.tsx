@@ -5,15 +5,19 @@ import LoadAllItemsController, { LoadAllItemsParam } from "../../controllers/ite
 import LoadingPage from "../loadingpage/LoadingPage";
 import LoadLoggedInUserController, { LoadLoggedInUserParam } from "../../controllers/LoadLoggedInUserController";
 import NoAccessPage from "../noaccesspage/NoAccessPage";
+import NewItemController, { NewItemParam } from "../../controllers/itemmanagement/NewItemController";
+import NewItemPage from "./popups/newitempage/NewItemPage";
 
 export default function ItemManagementPage() {
     // States:
     const [ access, setAccess ] = useState<boolean | undefined>(undefined);
     const [ items, setItems ] = useState<Item[] | undefined>(undefined);
+    const [ popup, setPopup ] = useState<any | undefined>();
 
     // Controllers:
     const loadAllItemsController: Controller<LoadAllItemsParam> = new LoadAllItemsController();
     const loadLoggedInUserController: Controller<LoadLoggedInUserParam> = new LoadLoggedInUserController();
+    const newItemController: Controller<NewItemParam> = new NewItemController();
 
     // Init:
     function init() {
@@ -55,6 +59,43 @@ export default function ItemManagementPage() {
     }
 
     useEffect(init, []);
+
+    // Event handlers:
+    async function onNewButtonClick() {
+        setPopup(
+            <NewItemPage
+                onSubmit={
+                    function (form) {
+                        newItemController.execute({
+                            form,
+                            onSuccess() {
+                                setPopup(undefined);
+                                setItems(undefined);
+                                loadAllItemsController.execute({
+                                    onSuccess: setItems,
+                                    onFailed(code, message) {
+                                        alert(`Code: ${code}, Message: ${message}`);
+                                    },
+                                    onError(error) {
+                                        alert("Đã có lỗi xảy ra trong quá trình thực thi!");
+                                        console.error(error);
+                                    },
+                                })
+                            },
+                            onFailed(code, message) {
+                                alert(message);
+                            },
+                            onError(error) {
+                                alert("Đã có lỗi xảy ra trong quá trình thực thi!");
+                                console.error(error);
+                            },
+                        });
+                    }
+                }
+                onCancel={() => setPopup(undefined)}
+            />
+        );
+    }
     
     // Design:
     return (
@@ -92,7 +133,7 @@ export default function ItemManagementPage() {
 
                 {/* New button */}
                 <div className="flex-1 text-right">
-                    <button className="p-1 border border-black border-solid rounded-md cursor-pointer bg-green-600 text-white px-3">
+                    <button className="p-1 border border-black border-solid rounded-md cursor-pointer bg-green-600 text-white px-3" onClick={onNewButtonClick}>
                         Thêm
                     </button>
                 </div>
@@ -153,61 +194,10 @@ export default function ItemManagementPage() {
                         )
                     )
                 }
-
-                {/* <table className="w-full" border={1} cellPadding={0} cellSpacing={0}>
-                    <thead>
-                        <tr>
-                            <th>
-                                Mã
-                            </th>
-
-                            <th>
-                                Tên
-                            </th>
-
-                            <th>
-                                Mô tả
-                            </th>
-
-                            <th>
-                                Hành động
-                            </th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr>
-                            <td>
-                                SHIRT001
-                            </td>
-
-                            <td>
-                                Áo gucci siêu chất lượng
-                            </td>
-
-                            <td>
-                                <div className="w-1/2 h-full overflow-ellipsis text-nowrap">
-                                    Đây là một chiếc áo Gucci mà không có điểm nào để chê luôn Đây là một chiếc áo Gucci mà không có điểm nào để chê luôn Đây là một chiếc áo Gucci mà không có điểm nào để chê luôn Đây là một chiếc áo Gucci mà không có điểm nào để chê luôn
-                                </div>
-                            </td>
-
-                            <td>
-                                <button
-                                    className="p-1 border border-black border-solid rounded-md cursor-pointer bg-cyan-500 text-white px-3 mx-1"
-                                >
-                                    Sửa
-                                </button>
-
-                                <button
-                                    className="p-1 border border-black border-solid rounded-md cursor-pointer bg-red-600 text-white px-3 mx-1"
-                                >
-                                    Xóa
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table> */}
             </div>
+
+            {/* Popup */}
+            { popup }
         </div>
     )
 }
