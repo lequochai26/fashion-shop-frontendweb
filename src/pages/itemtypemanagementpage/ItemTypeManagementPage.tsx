@@ -12,6 +12,8 @@ export default function ItemTypeManagementPage(){
     const[itemType,setItemType] = useState<ItemType[]>();
     const[keyword,setKeyword]= useState<string>("");
 
+    const[insertItemType,setInsert] = useState(false);
+
     //controller
     const loadItemTypeController : Controller<LoadItemTypeControllerParam> = new LoadItemItypeController();
     const deleteItemTypeController : Controller<DeleteItemTypeParam> = new DeleteItemTypeController();
@@ -28,6 +30,17 @@ export default function ItemTypeManagementPage(){
             }
         )
     }
+
+    //
+    async function isOpenInserItemType() {
+        setInsert(true);
+        
+    }
+    async function isCloseInserItemType() {
+        setInsert(false);
+        
+    }
+
     //search by keyword
     async function onKeywordChange(event:any) {
         setKeyword(event.target.value);
@@ -101,7 +114,7 @@ export default function ItemTypeManagementPage(){
     
                              {/* Search button */}
                              <button
-                                 className="bg-white p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3"
+                                 className="bg-white p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3 hover:bg-gray-300"
                                  onClick={onSearchButtonClick}
                              >
                                  Tìm kiếm
@@ -109,7 +122,7 @@ export default function ItemTypeManagementPage(){
     
                              {/* Reload button */}
                              <button
-                                 className="bg-white p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3"
+                                 className="bg-white p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3 hover:bg-gray-300"
                                  onClick={onLoadItemType}
                              >
                                  Tải lại
@@ -117,10 +130,36 @@ export default function ItemTypeManagementPage(){
     
                              <button
                                  className="bg-green p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3 ml-[250px] hover:bg-gray-300 "
-                                 // onClick={onReloadButtonClick}
+                                  onClick={isOpenInserItemType}
                              >
                                  Thêm
                              </button>
+                             { insertItemType &&(
+                                <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+                                <div className="bg-white rounded-lg shadow-lg p-6">
+                                  <div className="mb-4">
+                                        <input
+                                            type="text"
+                                            className="border border-gray-300 rounded-lg px-3 py-2 w-full mb-2"
+                                            placeholder="Mã loại sản phẩm"
+                                        />
+                                        <input
+                                            type="text"
+                                            className="border border-gray-300 rounded-lg px-3 py-2 w-full mb-4"
+                                            placeholder="Tên loại sản phẩm"
+                                        />
+                                  </div>
+                                  <div className="flex justify-end">
+                                    <button onClick={isCloseInserItemType} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                                      Hủy
+                                    </button>
+                                    <button className="px-4 py-2 bg-blue-500 text-white rounded-lg ml-2 hover:bg-blue-600">Thêm</button>
+                                  </div>
+                                </div>
+                              </div>
+                             )
+
+                             }
                      </div>   
 
                      <div >
