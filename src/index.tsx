@@ -13,7 +13,7 @@ import UserCentralPage2 from './pages/usercentral/UserCentralPage2';
 import ItemDetailPage from './pages/itemdetailpage/ItemDetailPage';
 
 import UpdatePersonnalInfoPage from './pages/updatepersonalInfo/UpdatePersonalInfoPage';
-import OrderedOrdersPage from './pages/order/OrderedOrdersPage';
+import OrderedOrdersPage from './pages/orderedorders/OrderedOrdersPage';
 import OrderDetailPage from './pages/orderdetailpage/OrderDetailPage';
 import ThirdPartyAccountRegistrationFinishPage from './pages/thirdpartyaccountregistrationfinishpage/ThirdPartyAccountRegistrationFinishPage';
 
