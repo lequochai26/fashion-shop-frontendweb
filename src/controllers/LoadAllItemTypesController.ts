@@ -1,7 +1,7 @@
-import ItemType from "../../entities/itemtype/ItemType";
-import RestResponse from "../../interfaces/RestResponse";
-import { apiFetch } from "../../utils/APIFetcher";
-import Controller from "../Controller";
+import ItemType from "../entities/itemtype/ItemType";
+import RestResponse from "../interfaces/RestResponse";
+import { apiFetch } from "../utils/APIFetcher";
+import Controller from "./Controller";
 
 export default class LoadAllItemTypesController implements Controller<LoadAllItemTypesParam> {
     // Constructors:

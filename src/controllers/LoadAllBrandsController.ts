@@ -1,7 +1,7 @@
-import Brand from "../../entities/brand/Brand";
-import RestResponse from "../../interfaces/RestResponse";
-import { apiFetch } from "../../utils/APIFetcher";
-import Controller from "../Controller";
+import Brand from "../entities/brand/Brand";
+import RestResponse from "../interfaces/RestResponse";
+import { apiFetch } from "../utils/APIFetcher";
+import Controller from "./Controller";
 
 export default class LoadAllBrandsController implements Controller<LoadAllBrandsParam> {
     // Constructors:

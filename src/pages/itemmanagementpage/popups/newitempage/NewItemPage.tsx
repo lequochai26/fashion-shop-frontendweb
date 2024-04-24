@@ -4,9 +4,9 @@ import NewItemPagePopup from "./NewItemPagePopup";
 import ItemType from "../../../../entities/itemtype/ItemType";
 import Brand from "../../../../entities/brand/Brand";
 import Controller from "../../../../controllers/Controller";
-import LoadAllItemTypesController, { LoadAllItemTypesParam } from "../../../../controllers/itemmanagement/LoadAllItemTypesController";
+import LoadAllItemTypesController, { LoadAllItemTypesParam } from "../../../../controllers/LoadAllItemTypesController";
 import LoadingPage from "../../../loadingpage/LoadingPage";
-import LoadAllBrandsController, { LoadAllBrandsParam } from "../../../../controllers/itemmanagement/LoadAllBrandsController";
+import LoadAllBrandsController, { LoadAllBrandsParam } from "../../../../controllers/LoadAllBrandsController";
 
 export default function NewItemPage({ onSubmit, onCancel }: NewItemPageParam) {
     // States:
