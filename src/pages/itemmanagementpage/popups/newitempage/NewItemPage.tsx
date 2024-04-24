@@ -38,6 +38,12 @@ export default function NewItemPage({ onSubmit, onCancel }: NewItemPageParam) {
             return;
         }
 
+        // Images case
+        if (target.name === "images") {
+            setForm({ ...form, [ target.name ]: (target.files && Array.from(target.files)) });
+            return;
+        }
+
         // Gender case
         if (target.name === 'gender') {
             setForm({ ...form, [ target.name ]: (target.value === 'Nam') });
@@ -225,9 +231,9 @@ export default function NewItemPage({ onSubmit, onCancel }: NewItemPageParam) {
     return (
         <div className="fixed left-0 top-0 w-screen h-screen bg-black bg-opacity-50 flex flex-col justify-center items-center">
             {/* New Item page */}
-            <div className="w-1/2 h-5/6 bg-white border border-black border-solid overflow-y-scroll flex flex-row justify-between flex-wrap">
+            <div className="w-3/4 h-5/6 bg-white border border-black border-solid overflow-y-scroll flex flex-row justify-between flex-wrap">
                 {/* Left panel */}
-                <div className="w-fit flex flex-col justify-start p-3 bg-red-600">
+                <div className="w-fit flex flex-col justify-start p-3">
                     {/* Avatar */}
                     <div>
                         <label htmlFor="avatar" className="cursor-pointer">
@@ -254,7 +260,7 @@ export default function NewItemPage({ onSubmit, onCancel }: NewItemPageParam) {
 
                 {/* Right panel */}
                 <div
-                    className="flex-1 flex flex-col justify-start p-3 text-lg bg-blue-600"
+                    className="flex-1 flex flex-col justify-start p-3 text-lg"
                 >
                     {/* Id */}
                     <div className="mb-7">
@@ -382,10 +388,10 @@ export default function NewItemPage({ onSubmit, onCancel }: NewItemPageParam) {
 
                     {/* Metadata */}
                     <div
-                        className="flex flex-col justify-start mb-3 bg-green-600"
+                        className="flex flex-col justify-start mb-3"
                     >
                         {/* Title */}
-                        <div className="flex flex-row justify-start items-center bg-purple-600">
+                        <div className="flex flex-row justify-start items-center">
                             <label className="font-bold text-xl mr-5">
                                 Phân loại:
                             </label>
@@ -403,7 +409,7 @@ export default function NewItemPage({ onSubmit, onCancel }: NewItemPageParam) {
                                     <>
                                         {/* Option */}
                                         <div
-                                            className="flex flex-row justify-start items-center bg-yellow-600"
+                                            className="flex flex-row justify-start items-center"
                                         >
                                             <label
                                                 className="mr-3 cursor-pointer"
@@ -423,7 +429,7 @@ export default function NewItemPage({ onSubmit, onCancel }: NewItemPageParam) {
 
                                         {/* Selections */}
                                         <div
-                                            className="flex flex-row justify-start items-center flex-wrap bg-cyan-500"
+                                            className="flex flex-row justify-start items-center flex-wrap"
                                         >
                                             {
                                                 selections.map(
@@ -471,6 +477,46 @@ export default function NewItemPage({ onSubmit, onCancel }: NewItemPageParam) {
                         }
                     </div>
 
+                    {/* Images */}
+                    <div className="text-nowrap overflow-x-scroll">
+                        {/* Images */}
+                        {
+                            form.images
+                            &&
+                            form.images.map(
+                                (image: any) => (
+                                    <div className="inline-block border border-black border-solid">
+                                        <img
+                                            alt="Select images"
+                                            src={URL.createObjectURL(image)}
+                                            className="w-28 h-28"
+                                        />
+                                    </div>
+                                )
+                            )
+                        }
+
+                        {/* Select images */}
+                        <div className="inline-block border border-black border-solid">
+                            <label htmlFor="images">
+                                <img
+                                    alt="Select images"
+                                    src="/select_image.png"
+                                    className="cursor-pointer w-28 h-28"
+                                />
+                            </label>
+
+                            <input
+                                type="file"
+                                id="images"
+                                name="images"
+                                className="hidden"
+                                onChange={onFieldChange}
+                                multiple={true}
+                            />
+                        </div>
+                    </div>
+
                     {/* Actions */}
                     <div className="text-right">
                         {/* Cancel button */}
@@ -483,7 +529,7 @@ export default function NewItemPage({ onSubmit, onCancel }: NewItemPageParam) {
 
                         {/* Submit button */}
                         <button
-                            className="p-1 px-4 rounded-md bg-green-600 text-white cursor-pointer"
+                            className="p-1 px-4 rounded-md bg-green-600 text-white cursor-pointer ml-5"
                             onClick={() => {onSubmit(form)}}
                         >
                             Thêm

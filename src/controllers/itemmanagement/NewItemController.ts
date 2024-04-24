@@ -79,6 +79,13 @@ export default class NewItemController implements Controller<NewItemParam> {
         }
         formData.set("avatar", form.avatar);
 
+        // Images
+        if (form.images) {
+            for (const image of form.images) {
+                formData.append("images", image);
+            }
+        }
+
         // API fetching
         await apiFetch({
             method: "POST",
