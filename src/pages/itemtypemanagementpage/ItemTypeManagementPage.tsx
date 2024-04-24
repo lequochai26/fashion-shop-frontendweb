@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import ItemType from "../../entities/Item/ItemType";
 import Controller from "../../controllers/Controller";
-import LoadItemItypeController, { LoadItemTypeControllerParam } from "../../controllers/itemtypemanger/LoadItemTypeController";
+import LoadItemItypeController, { LoadItemTypeControllerParam } from "../../controllers/itemtypemanagement/LoadItemTypeController";
 import LoadingPage from "../loadingpage/LoadingPage";
-import DeleteItemTypeController, { DeleteItemTypeParam } from "../../controllers/itemtypemanger/DeleteItemTypeController";
+import DeleteItemTypeController, { DeleteItemTypeParam } from "../../controllers/itemtypemanagement/DeleteItemTypeController";
 import { redirect } from "../../utils/Redirector";
 import LoadItemTypeByKeywordController, { LoadItemTypeByKeywordParam } from "../../controllers/itemmanagement/LoadItemTypeByKeyWordController";
 
