@@ -11,7 +11,7 @@ export default function UpdatePersonnalInfoPage() {
 
     //State
     const [user, setUser] = useState<User>();
-    const [userInfo, setUserInfo] = useState<any>();
+    const [userInfo, setUserInfo] = useState<any>({});
     useState<boolean | undefined>(undefined);
     const avatarInputRef = useRef<HTMLInputElement>(null);
 
@@ -56,17 +56,17 @@ export default function UpdatePersonnalInfoPage() {
         setUserInfo({ ...userInfo, [name]: value });
     }
 
-    console.log(userInfo.gender);
-
     const onUpdate: FormEventHandler = async function (event) {
         //Prevent default
         event.preventDefault();
 
-        if (!(userInfo.address || userInfo.avatar || userInfo.fullName ||`${userInfo.gender}` || userInfo.phoneNumber)) {
-            alert("Vui lòng nhập thông tin cần cập nhật!!")
+        if (!(userInfo.address || userInfo.avatar || userInfo.fullName ||userInfo.gender !== undefined || userInfo.phoneNumber)) {
+            alert("Vui lòng nhập thông tin cần cập nhật!!");
+            return;
         }
 
-        console.log(userInfo);
+        console.log(userInfo.gender);
+        console.log(userInfo)
         updatePersonalInfoController.execute(
             {
                 user: userInfo,
@@ -83,6 +83,7 @@ export default function UpdatePersonnalInfoPage() {
             }
         )
     }
+    
 
     function handleAvatarClick() {
         if (avatarInputRef.current) {

@@ -117,7 +117,7 @@ export default function UserManagement() {
         event.preventDefault();
         
 
-        if(!(`${userInfo.gender}`|| userInfo.fullName || userInfo.permission || userInfo.phoneNumber || userInfo.address || userInfo.avatar)) {
+        if(!(userInfo.gender !== undefined|| userInfo.fullName || userInfo.permission || userInfo.phoneNumber || userInfo.address || userInfo.avatar)) {
             alert("Vui lòng nhập thông tin cần cập nhật!");
             return;
         }
