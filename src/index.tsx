@@ -17,7 +17,7 @@ import OrderedOrdersPage from './pages/orderedorders/OrderedOrdersPage';
 import OrderDetailPage from './pages/orderdetailpage/OrderDetailPage';
 import ThirdPartyAccountRegistrationFinishPage from './pages/thirdpartyaccountregistrationfinishpage/ThirdPartyAccountRegistrationFinishPage';
 import ItemTypeManagementPage from './pages/itemtypemanagement/ItemTypeManagementPage';
-import ItemManagementPage from './pages/itemmanagement/ItemManagementPage';
+import ItemManagementPage from './pages/itemmanagementpage/ItemManagementPage';
 import UserManagement from './pages/usermanagement/UserManagementPage';
 
 const root = ReactDOM.createRoot(
