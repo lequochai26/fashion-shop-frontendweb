@@ -18,6 +18,7 @@ import OrderDetailPage from './pages/orderdetailpage/OrderDetailPage';
 import ThirdPartyAccountRegistrationFinishPage from './pages/thirdpartyaccountregistrationfinishpage/ThirdPartyAccountRegistrationFinishPage';
 import ItemTypeManagementPage from './pages/itemtypemanagementpage/ItemTypeManagementPage';
 import ItemManagementPage from './pages/itemmanagementpage/ItemManagementPage';
+import UserManagement from './pages/usermanagement/UserManagementPage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -76,6 +77,10 @@ root.render(
             <Route
               path="/itemmanagement"
               Component={ItemManagementPage}
+            />
+            <Route
+              path="/usermanagement"
+              Component={UserManagement}
             />
           </Routes>
         </BrowserRouter>
