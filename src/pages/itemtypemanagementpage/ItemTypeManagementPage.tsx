@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FormEventHandler, useEffect, useState } from "react";
 import ItemType from "../../entities/Item/ItemType";
 import Controller from "../../controllers/Controller";
 import LoadItemItypeController, { LoadItemTypeControllerParam } from "../../controllers/itemtypemanagement/LoadItemTypeController";
@@ -6,6 +6,7 @@ import LoadingPage from "../loadingpage/LoadingPage";
 import DeleteItemTypeController, { DeleteItemTypeParam } from "../../controllers/itemtypemanagement/DeleteItemTypeController";
 import { redirect } from "../../utils/Redirector";
 import LoadItemTypeByKeywordController, { LoadItemTypeByKeywordParam } from "../../controllers/itemmanagement/LoadItemTypeByKeyWordController";
+import AddItemTypeController, { AddItemTypeParam } from "../../controllers/itemtypemanagement/AddItemTypeController";
 
 export default function ItemTypeManagementPage(){
     //state
@@ -13,11 +14,14 @@ export default function ItemTypeManagementPage(){
     const[keyword,setKeyword]= useState<string>("");
 
     const[insertItemType,setInsert] = useState(false);
+    const [id,setId] = useState<string>("");
+    const [name,setName] = useState<string>("");
 
     //controller
     const loadItemTypeController : Controller<LoadItemTypeControllerParam> = new LoadItemItypeController();
     const deleteItemTypeController : Controller<DeleteItemTypeParam> = new DeleteItemTypeController();
     const loadItemTypeByKeywordController: Controller<LoadItemTypeByKeywordParam> = new LoadItemTypeByKeywordController();
+    const addItemTypeController : Controller<AddItemTypeParam> = new AddItemTypeController();
 
     //method
     function init(){
@@ -30,7 +34,19 @@ export default function ItemTypeManagementPage(){
             }
         )
     }
+    //
+    async function onField(event:any) {
+        //target
+        const target : HTMLInputElement = event.target;
 
+        if(target.name === "id"){
+            setId(target.value);
+        }else{
+            setName(target.value);
+        }
+
+        
+    }
     //
     async function isOpenInserItemType() {
         setInsert(true);
@@ -40,6 +56,7 @@ export default function ItemTypeManagementPage(){
         setInsert(false);
         
     }
+    //add itemtype
 
     //search by keyword
     async function onKeywordChange(event:any) {
@@ -140,20 +157,30 @@ export default function ItemTypeManagementPage(){
                                   <div className="mb-4">
                                         <input
                                             type="text"
+                                            name="id"
                                             className="border border-gray-300 rounded-lg px-3 py-2 w-full mb-2"
                                             placeholder="Mã loại sản phẩm"
+                                            onChange={onField}
+                                            required={true}
+                                            value={id}
                                         />
                                         <input
                                             type="text"
+                                            name="name"
                                             className="border border-gray-300 rounded-lg px-3 py-2 w-full mb-4"
                                             placeholder="Tên loại sản phẩm"
+                                            onChange={onField}
+                                            required={true}
+                                            value={name}
                                         />
                                   </div>
                                   <div className="flex justify-end">
                                     <button onClick={isCloseInserItemType} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
                                       Hủy
                                     </button>
-                                    <button className="px-4 py-2 bg-blue-500 text-white rounded-lg ml-2 hover:bg-blue-600">Thêm</button>
+                                    <button className="px-4 py-2 bg-blue-500 text-white rounded-lg ml-2 hover:bg-blue-600"
+                                            // onClick={onHanderAdd}
+                                        >Thêm</button>
                                   </div>
                                 </div>
                               </div>
