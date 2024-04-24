@@ -16,9 +16,8 @@ export default function UserManagement() {
     const [createFormVisible, setCreateFormVisible] = useState<boolean>(false);
     const [updateFormVisible, setUpdateFormVisible] = useState<boolean>(false);
     const [keyword, setKeyword] = useState<string>("");
-    const [userInfo, setUserInfo] = useState<any>({ gender: true });
+    const [userInfo, setUserInfo] = useState<any>({});
     const [selectedUser, setSelectedUser] = useState<User>();
-
     //Controller
     const loadUsersController: Controller<LoadUsersControllerParam> = new LoadUsersController();
     const loadUsersByKeywordController: Controller<LoadUsersByKeywordParam> = new LoadUsersByKeywordController();
@@ -89,6 +88,7 @@ export default function UserManagement() {
         )
     }
 
+    console.log(userInfo.gender);
     async function onDeleteButtonClick(event: any, email: string) {
         event.preventDefault();
 
@@ -115,8 +115,9 @@ export default function UserManagement() {
 
     async function onUpdateUserButtonClick(event: any) {
         event.preventDefault();
+        
 
-        if(!(userInfo.fullName || userInfo.permission || userInfo.phoneNumber || userInfo.address || userInfo.avatar)) {
+        if(!(`${userInfo.gender}`|| userInfo.fullName || userInfo.permission || userInfo.phoneNumber || userInfo.address || userInfo.avatar)) {
             alert("Vui lòng nhập thông tin cần cập nhật!");
             return;
         }
@@ -141,7 +142,7 @@ export default function UserManagement() {
 
     async function onUpdateButtonClick(user: User) {
         setSelectedUser(user);
-        setUserInfo({ gender: user.gender,email: user.email })
+        setUserInfo({email: user.email })
         setUpdateFormVisible(true);
     }
 
@@ -170,6 +171,11 @@ export default function UserManagement() {
 
         setUserInfo({});
     }
+
+    function addButton() {
+        setCreateFormVisible(true);
+        setUserInfo({gender: true});
+    } 
     // Styles:
     const inputFieldsStyle: string = "p-3 pl-8 mr-10 border border-black border-solid rounded-md text-xl mt-2 mb-3"
 
@@ -206,7 +212,7 @@ export default function UserManagement() {
                     </button>
 
                     {/* Add button */}
-                    <button className="p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3 bg-green-500 text-white" onClick={() => setCreateFormVisible(true)}>
+                    <button className="p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3 bg-green-500 text-white" onClick={addButton}>
                         Thêm
                     </button>
                 </div>
@@ -382,7 +388,7 @@ export default function UserManagement() {
                                         <input type="radio" name="gender" id="male"
                                             value={"male"}
                                             onChange={onFieldChange}
-                                            checked={userInfo.gender}
+                                            checked={userInfo.gender !== undefined? userInfo.gender : selectedUser.gender}
                                         />
                                         <label htmlFor="male" className="m-2">Nam</label>
                                     </div>
@@ -392,7 +398,7 @@ export default function UserManagement() {
                                         <input type="radio" name="gender" id="female"
                                             value={"female"}
                                             onChange={onFieldChange}
-                                            checked={!userInfo.gender}
+                                            checked={userInfo.gender !== undefined? !userInfo.gender : !selectedUser.gender}
                                         />
                                         <label htmlFor="female" className="m-3">Nữ</label>
                                     </div>
