@@ -5,7 +5,7 @@ import LoadItemItypeController, { LoadItemTypeControllerParam } from "../../cont
 import LoadingPage from "../loadingpage/LoadingPage";
 import DeleteItemTypeController, { DeleteItemTypeParam } from "../../controllers/itemtypemanger/DeleteItemTypeController";
 import { redirect } from "../../utils/Redirector";
-import LoadItemTypeByKeywordController, { LoadItemTypeByKeywordParam } from "../../controllers/itemmanagementpage/LoadItemTypeByKeyWordController";
+import LoadItemTypeByKeywordController, { LoadItemTypeByKeywordParam } from "../../controllers/itemmanagement/LoadItemTypeByKeyWordController";
 
 export default function ItemTypeManagementPage(){
     //state
