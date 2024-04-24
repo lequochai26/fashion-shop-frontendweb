@@ -6,10 +6,11 @@ import Controller from "../../controllers/Controller";
 import NoAccessPage from "../noaccesspage/NoAccessPage";
 import LogoutController, { LogoutParam } from "../../controllers/usercentral/LogoutController";
 import LoadLoggedInUserController, { LoadLoggedInUserParam } from "../../controllers/LoadLoggedInUserController";
+import LoadingPage from "../loadingpage/LoadingPage";
 export default function UserCentralPage2() {
 
     //State
-    const [user, setUser] = useState<User>();
+    const [user, setUser] = useState<User | undefined | null>(undefined);
 
     //Controller
     const loadUserController: Controller<LoadLoggedInUserParam> = new LoadLoggedInUserController();
@@ -23,7 +24,11 @@ export default function UserCentralPage2() {
                     setUser(user);
                 },
                 onFailed: function (code, message) {
-                    setUser(undefined);
+                    setUser(null);
+
+                    if (code !== "NOT_LOGGED_IN" && code !== "USER_NOT_EXIST") {
+                        alert(`Code: ${code}, Message: ${message}`);
+                    }
                 },
                 onError: function (error) {
                     alert("Đã xảy ra lỗi trong quá trình xử lý!");
@@ -57,6 +62,9 @@ export default function UserCentralPage2() {
     }
     //Element 
     return (
+        user === undefined
+        ? <LoadingPage />
+        :
         !user
         ? <NoAccessPage />
         : (
