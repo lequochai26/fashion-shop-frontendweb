@@ -5,14 +5,17 @@ import LoadItemItypeController, { LoadItemTypeControllerParam } from "../../cont
 import LoadingPage from "../loadingpage/LoadingPage";
 import DeleteItemTypeController, { DeleteItemTypeParam } from "../../controllers/itemtypemanger/DeleteItemTypeController";
 import { redirect } from "../../utils/Redirector";
+import LoadItemTypeByKeywordController, { LoadItemTypeByKeywordParam } from "../../controllers/itemmanagementpage/LoadItemTypeByKeyWordController";
 
 export default function ItemTypeManagementPage(){
     //state
     const[itemType,setItemType] = useState<ItemType[]>();
+    const[keyword,setKeyword]= useState<string>("");
 
     //controller
     const loadItemTypeController : Controller<LoadItemTypeControllerParam> = new LoadItemItypeController();
     const deleteItemTypeController : Controller<DeleteItemTypeParam> = new DeleteItemTypeController();
+    const loadItemTypeByKeywordController: Controller<LoadItemTypeByKeywordParam> = new LoadItemTypeByKeywordController();
 
     //method
     function init(){
@@ -25,7 +28,24 @@ export default function ItemTypeManagementPage(){
             }
         )
     }
-
+    //search by keyword
+    async function onKeywordChange(event:any) {
+        setKeyword(event.target.value);
+    }
+    async function onSearchButtonClick() {
+        loadItemTypeByKeywordController.execute(
+            {
+                keyword,
+                onSuccess:function(itemType){
+                    setItemType(itemType);
+                },
+                onError:function(error:any){
+                    console.error(error);
+                }
+            }
+        )
+        
+    }
     //delete itemtype
     function deleteItemType(event:any,id : string){
         //prevent default
@@ -63,13 +83,13 @@ export default function ItemTypeManagementPage(){
                      <div className="w-full h-16 flex items-center justify-start border border-black border-solid">
                          {/* Keyword input field */}
                              <input type="text" placeholder="Từ khóa tìm kiếm" className="border border-black border-solid rounded-md p-2 pl-4 w-1/2 ml-3"
-                             //  value={keyword} onChange={onKeywordChange} 
+                              value={keyword} onChange={onKeywordChange} 
                              />
     
                              {/* Search button */}
                              <button
                                  className="bg-white p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3"
-                                 // onClick={onSearchButtonClick}
+                                 onClick={onSearchButtonClick}
                              >
                                  Tìm kiếm
                              </button>
