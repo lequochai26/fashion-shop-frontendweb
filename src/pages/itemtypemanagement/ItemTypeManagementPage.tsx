@@ -281,7 +281,7 @@ export default function ItemTypeManagementPage(){
                                                                                         type="text"
                                                                                         name="id"
                                                                                         className="border border-gray-300 rounded-lg px-3 py-2 w-full mb-2"
-                                                                                        placeholder={`Mã loại sản phẩm:`}
+                                                                                        placeholder={`Mã loại sản phẩm: ${ itemType.id}`}
                                                                                         required={true}
                                                                                         onChange={onChangedFields}
                                                                                        
