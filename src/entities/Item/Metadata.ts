@@ -16,6 +16,13 @@ export default class Metadata {
     }
 
     // Methods:
+    public toJSON() {
+        return {
+            options: this.options,
+            mappings: this.mappings
+        };
+    }
+
     public newOption(name: string): void {
         if (!name) {
             throw new Error(`Tên phân loại không được rỗng!`);
