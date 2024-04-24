@@ -37,7 +37,7 @@ export default class AddToCartController implements Controller<AddToCartParam>{
 
 export interface AddToCartParam {
     item: Item;
-    metadata: {};
+    metadata: {} | undefined;
     onSuccess(): void;
     onError(error: any): void;
 }
