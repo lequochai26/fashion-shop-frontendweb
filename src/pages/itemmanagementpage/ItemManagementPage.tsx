@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import Item from "../../entities/Item/Item";
 import Controller from "../../controllers/Controller";
-import LoadAllItemsController, { LoadAllItemsParam } from "../../controllers/itemmanagementpage/LoadAllItemsController";
+import LoadAllItemsController, { LoadAllItemsParam } from "../../controllers/itemmanagement/LoadAllItemsController";
 import LoadingPage from "../loadingpage/LoadingPage";
 
 export default function ItemManagementPage() {

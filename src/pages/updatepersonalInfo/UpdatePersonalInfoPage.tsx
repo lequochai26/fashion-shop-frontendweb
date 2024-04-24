@@ -11,7 +11,7 @@ export default function UpdatePersonnalInfoPage() {
 
     //State
     const [user, setUser] = useState<User>();
-    const [userInfo, setUserInfo] = useState<any>({ gender: true });
+    const [userInfo, setUserInfo] = useState<any>();
     useState<boolean | undefined>(undefined);
     const avatarInputRef = useRef<HTMLInputElement>(null);
 
@@ -25,7 +25,6 @@ export default function UpdatePersonnalInfoPage() {
                 {
                     onSuccess: (user: User) => {
                         setUser(user);
-                        setUserInfo({ ...userInfo, gender: user.gender });
                     },
                     onFailed(code, message) {
                         redirect("/");
@@ -57,13 +56,13 @@ export default function UpdatePersonnalInfoPage() {
         setUserInfo({ ...userInfo, [name]: value });
     }
 
-
+    console.log(userInfo.gender);
 
     const onUpdate: FormEventHandler = async function (event) {
         //Prevent default
         event.preventDefault();
 
-        if (!(userInfo.address || userInfo.avatar || userInfo.fullName || userInfo.gender || userInfo.phoneNumber)) {
+        if (!(userInfo.address || userInfo.avatar || userInfo.fullName ||`${userInfo.gender}` || userInfo.phoneNumber)) {
             alert("Vui lòng nhập thông tin cần cập nhật!!")
         }
 
@@ -147,7 +146,7 @@ export default function UpdatePersonnalInfoPage() {
                                 <div className="border border-dashed w-fit border-black p-1 mr-2">
                                     <input type="radio" name="gender" id="male" value={"male"}
                                         onChange={onChangedFields}
-                                        checked={userInfo.gender} />
+                                        checked={userInfo.gender !== undefined ? userInfo.gender : user.gender} />
                                     <label htmlFor="male" className="m-2">Nam</label>
                                 </div>
 
@@ -155,7 +154,7 @@ export default function UpdatePersonnalInfoPage() {
                                 <div className="border border-dashed w-fit border-black p-1">
                                     <input type="radio" name="gender" id="female" value={"female"}
                                         onChange={onChangedFields}
-                                        checked={!userInfo.gender} />
+                                        checked={userInfo.gender !== undefined ? !userInfo.gender : !user.gender}  />
                                     <label htmlFor="female" className="m-3">Nữ</label>
                                 </div>
 

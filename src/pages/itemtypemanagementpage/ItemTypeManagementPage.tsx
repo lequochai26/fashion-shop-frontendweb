@@ -1,18 +1,27 @@
-import { useEffect, useState } from "react";
+import { FormEventHandler, useEffect, useState } from "react";
 import ItemType from "../../entities/Item/ItemType";
 import Controller from "../../controllers/Controller";
-import LoadItemItypeController, { LoadItemTypeControllerParam } from "../../controllers/itemtypemanger/LoadItemTypeController";
+import LoadItemItypeController, { LoadItemTypeControllerParam } from "../../controllers/itemtypemanagement/LoadItemTypeController";
 import LoadingPage from "../loadingpage/LoadingPage";
-import DeleteItemTypeController, { DeleteItemTypeParam } from "../../controllers/itemtypemanger/DeleteItemTypeController";
+import DeleteItemTypeController, { DeleteItemTypeParam } from "../../controllers/itemtypemanagement/DeleteItemTypeController";
 import { redirect } from "../../utils/Redirector";
+import LoadItemTypeByKeywordController, { LoadItemTypeByKeywordParam } from "../../controllers/itemmanagement/LoadItemTypeByKeyWordController";
+import AddItemTypeController, { AddItemTypeParam } from "../../controllers/itemtypemanagement/AddItemTypeController";
 
 export default function ItemTypeManagementPage(){
     //state
     const[itemType,setItemType] = useState<ItemType[]>();
+    const[keyword,setKeyword]= useState<string>("");
+
+    const[insertItemType,setInsert] = useState(false);
+    const [id,setId] = useState<string>("");
+    const [name,setName] = useState<string>("");
 
     //controller
     const loadItemTypeController : Controller<LoadItemTypeControllerParam> = new LoadItemItypeController();
     const deleteItemTypeController : Controller<DeleteItemTypeParam> = new DeleteItemTypeController();
+    const loadItemTypeByKeywordController: Controller<LoadItemTypeByKeywordParam> = new LoadItemTypeByKeywordController();
+    const addItemTypeController : Controller<AddItemTypeParam> = new AddItemTypeController();
 
     //method
     function init(){
@@ -25,9 +34,63 @@ export default function ItemTypeManagementPage(){
             }
         )
     }
+    //
+    async function onField(event:any) {
+        //target
+        const target : HTMLInputElement = event.target;
 
+        if(target.name === "id"){
+            setId(target.value);
+        }else{
+            setName(target.value);
+        }
+
+        
+    }
+    //
+    async function isOpenInserItemType() {
+        setInsert(true);
+        
+    }
+    async function isCloseInserItemType() {
+        setInsert(false);
+        
+    }
+    //add itemtype
+
+    //search by keyword
+    async function onKeywordChange(event:any) {
+        setKeyword(event.target.value);
+    }
+    async function onSearchButtonClick() {
+        loadItemTypeByKeywordController.execute(
+            {
+                keyword,
+                onSuccess:function(itemType){
+                    setItemType(itemType);
+                },
+                onError:function(error:any){
+                    console.error(error);
+                }
+            }
+        )
+        
+    }
+
+    //load itemtype
+    async function onLoadItemType() {
+        loadItemTypeController.execute(
+            {
+                onSuccess:setItemType,
+                onError:function(error:any){
+                    console.error(error)
+                }
+            }
+        )
+        
+    }
     //delete itemtype
-    function deleteItemType(event:any,id : string){
+    async function deleteItemType(event:any,id : string){
         //prevent default
         event.preventDefault();
 
@@ -63,31 +126,67 @@ export default function ItemTypeManagementPage(){
                      <div className="w-full h-16 flex items-center justify-start border border-black border-solid">
                          {/* Keyword input field */}
                              <input type="text" placeholder="Từ khóa tìm kiếm" className="border border-black border-solid rounded-md p-2 pl-4 w-1/2 ml-3"
-                             //  value={keyword} onChange={onKeywordChange} 
+                              value={keyword} onChange={onKeywordChange} 
                              />
     
                              {/* Search button */}
                              <button
-                                 className="bg-white p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3"
-                                 // onClick={onSearchButtonClick}
+                                 className="bg-white p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3 hover:bg-gray-300"
+                                 onClick={onSearchButtonClick}
                              >
                                  Tìm kiếm
                              </button>
     
                              {/* Reload button */}
                              <button
-                                 className="bg-white p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3"
-                                 // onClick={onReloadButtonClick}
+                                 className="bg-white p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3 hover:bg-gray-300"
+                                 onClick={onLoadItemType}
                              >
                                  Tải lại
                              </button>
     
                              <button
                                  className="bg-green p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3 ml-[250px] hover:bg-gray-300 "
-                                 // onClick={onReloadButtonClick}
+                                  onClick={isOpenInserItemType}
                              >
                                  Thêm
                              </button>
+                             { insertItemType &&(
+                                <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+                                <div className="bg-white rounded-lg shadow-lg p-6">
+                                  <div className="mb-4">
+                                        <input
+                                            type="text"
+                                            name="id"
+                                            className="border border-gray-300 rounded-lg px-3 py-2 w-full mb-2"
+                                            placeholder="Mã loại sản phẩm"
+                                            onChange={onField}
+                                            required={true}
+                                            value={id}
+                                        />
+                                        <input
+                                            type="text"
+                                            name="name"
+                                            className="border border-gray-300 rounded-lg px-3 py-2 w-full mb-4"
+                                            placeholder="Tên loại sản phẩm"
+                                            onChange={onField}
+                                            required={true}
+                                            value={name}
+                                        />
+                                  </div>
+                                  <div className="flex justify-end">
+                                    <button onClick={isCloseInserItemType} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                                      Hủy
+                                    </button>
+                                    <button className="px-4 py-2 bg-blue-500 text-white rounded-lg ml-2 hover:bg-blue-600"
+                                            // onClick={onHanderAdd}
+                                        >Thêm</button>
+                                  </div>
+                                </div>
+                              </div>
+                             )
+
+                             }
                      </div>   
 
                      <div >
