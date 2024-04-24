@@ -3,6 +3,8 @@ import ItemType from "../../entities/Item/ItemType";
 import Controller from "../../controllers/Controller";
 import LoadItemItypeController, { LoadItemTypeControllerParam } from "../../controllers/itemtypemanger/LoadItemTypeController";
 import LoadingPage from "../loadingpage/LoadingPage";
+import DeleteItemTypeController, { DeleteItemTypeParam } from "../../controllers/itemtypemanger/DeleteItemTypeController";
+import { redirect } from "../../utils/Redirector";
 
 export default function ItemTypeManagementPage(){
     //state
@@ -10,6 +12,7 @@ export default function ItemTypeManagementPage(){
 
     //controller
     const loadItemTypeController : Controller<LoadItemTypeControllerParam> = new LoadItemItypeController();
+    const deleteItemTypeController : Controller<DeleteItemTypeParam> = new DeleteItemTypeController();
 
     //method
     function init(){
@@ -21,6 +24,29 @@ export default function ItemTypeManagementPage(){
                 onError:console.error
             }
         )
+    }
+
+    //delete itemtype
+    function deleteItemType(event:any,id : string){
+        //prevent default
+        event.preventDefault();
+
+        const confirmation = window.confirm("Bạn có chắc chắn muốn xóa loại sản phẩm này không?");
+
+        if (confirmation) {
+            deleteItemTypeController.execute(
+                {
+                    id:id,
+                    onSuccess:async function () {
+                        alert("Xóa thành công");
+                        redirect("/itemtypemanagementpage");
+                    },
+                    onError: console.error
+                }
+            )
+        }
+
+
     }
 
     useEffect(()=>{
@@ -85,8 +111,12 @@ export default function ItemTypeManagementPage(){
                                                     <td className="border border-black ">{itemType.name}</td>
                                                     <td className="border border-black ">
                                                         <div >
-                                                            <button className="border border-black rounded-lg p-2 w-[60px] hover:bg-gray-300 mr-2">Sửa</button>
-                                                            <button className="border border-black rounded-lg p-2 w-[60px] hover:bg-gray-300">Xóa</button>
+                                                            <button 
+                                                                className="border border-black rounded-lg p-2 w-[60px] hover:bg-gray-300 mr-2">Sửa</button>
+                                                            <button 
+                                                                className="border border-black rounded-lg p-2 w-[60px] hover:bg-gray-300"
+                                                                onClick={(event) => deleteItemType(event,itemType.id)}>
+                                                                Xóa</button>
                                                         </div>
                                                     </td>
                                                 </tr>
