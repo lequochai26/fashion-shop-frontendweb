@@ -9,6 +9,10 @@ export default class UpdateItemTypeController implements Controller<UpdateItemTy
 
        const fromData : FormData = new FormData();
 
+       if(itemType.id !== undefined){
+        fromData.set("id",itemType.id);
+   }
+
        if(itemType.name !== undefined){
             fromData.set("name",itemType.name);
        }
