@@ -2,8 +2,12 @@ import ItemType from "../../entities/Item/ItemType";
 import { apiFetch } from "../../utils/APIFetcher";
 import Controller from "../Controller";
 
-export default class LoadItemItypeController implements Controller<ItemTypeControllerParam>{
-    public async execute({onSuccess,onError}: ItemTypeControllerParam): Promise<void> {
+export default class LoadItemItypeController implements Controller<LoadItemTypeControllerParam>{
+
+    //constructor
+    public constructor(){}
+
+    public async execute({onSuccess,onError}: LoadItemTypeControllerParam): Promise<void> {
         await apiFetch(
             {
                 path:"/itemType?method=getAll",
@@ -26,7 +30,7 @@ export default class LoadItemItypeController implements Controller<ItemTypeContr
 
 }
 
-export interface ItemTypeControllerParam{
+export interface LoadItemTypeControllerParam{
     onSuccess(itemType: ItemType[]) : void;
     onError(error:any): void;
     
