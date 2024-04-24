@@ -17,6 +17,7 @@ import OrderedOrdersPage from './pages/orderedorders/OrderedOrdersPage';
 import OrderDetailPage from './pages/orderdetailpage/OrderDetailPage';
 import ThirdPartyAccountRegistrationFinishPage from './pages/thirdpartyaccountregistrationfinishpage/ThirdPartyAccountRegistrationFinishPage';
 import ItemTypeManagementPage from './pages/itemtypemanagementpage/ItemTypeManagementPage';
+import ItemManagementPage from './pages/itemmanagementpage/ItemManagementPage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -68,9 +69,13 @@ root.render(
               path="/thirdpartyaccountregistrationfinish"
               Component={ThirdPartyAccountRegistrationFinishPage}
             />
-             <Route
+            <Route
               path="/itemtypemanagementpage"
               Component={ItemTypeManagementPage}
+            />
+            <Route
+              path="/itemmanagement"
+              Component={ItemManagementPage}
             />
           </Routes>
         </BrowserRouter>
