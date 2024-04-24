@@ -9,11 +9,12 @@ import LoadItemTypeByKeywordController, { LoadItemTypeByKeywordParam } from "../
 
 import UpdateItemTypeController, { UpdateItemTypeParam } from "../../controllers/itemtypemanagement/UpdateItemTypeController";
 import { error } from "console";
+import AddItemTypeController, { AddItemTypeParam } from "../../controllers/itemtypemanagement/AddItemTypeController";
 
 export default function ItemTypeManagementPage(){
     //state
     const[itemType,setItemType] = useState<ItemType[]>();
-    const[itemTypeinfo,setItemTypeInfo] = useState<any>({});
+    const[itemTypeInfo,setItemTypeInfo] = useState<any>({});
   
 
     const[keyword,setKeyword]= useState<string>("");
@@ -27,7 +28,7 @@ export default function ItemTypeManagementPage(){
     const loadItemTypeController : Controller<LoadItemTypeControllerParam> = new LoadItemItypeController();
     const deleteItemTypeController : Controller<DeleteItemTypeParam> = new DeleteItemTypeController();
     const loadItemTypeByKeywordController: Controller<LoadItemTypeByKeywordParam> = new LoadItemTypeByKeywordController();
-   
+    const addItemTypeController : Controller<AddItemTypeParam> = new AddItemTypeController();
     const updateItemTypeController : Controller<UpdateItemTypeParam>= new UpdateItemTypeController();
 
     //method
@@ -60,24 +61,49 @@ export default function ItemTypeManagementPage(){
         setUpdate(false);
         
     }
-   
+    //insert
+    async function onAddUpdateItemType(event:any) {
+        event.preventDefault();
+
+        if(!itemTypeInfo.id || !itemTypeInfo.name){
+            alert("Vui lòng điền thông tin");
+            return;
+        }
+
+        addItemTypeController.execute(
+            {
+                itemTypeInfo,
+                onSuccess:function(){
+                    alert("Thêm loại sản phẩm thành công");
+
+                },
+                onFailed:function(code,message){
+                    alert(`Code:${code} - Message${message}`)
+                },
+                onError:function(error){
+                    console.error(error);
+                }
+            }
+        )
+    }
+
     // update 
     function onChangedFields({target}: any){
-        setItemTypeInfo({...itemTypeinfo,[target.name]: target.value});
+        setItemTypeInfo({...itemTypeInfo,[target.name]: target.value});
        
 
     }
 
     const onUpdate: FormEventHandler= async function (event) {
         event.preventDefault();
-        if(!itemTypeinfo.id || !itemTypeinfo.name){
+        if(!itemTypeInfo.id || !itemTypeInfo.name){
             alert("Vui lòng cập nhập thông tin cần cập nhập");
             return;
         }
 
        
         updateItemTypeController.execute({
-            itemType : itemTypeinfo,
+            itemType : itemTypeInfo,
             onSuccess:() =>{
                 alert("Cập nhập thông tin thành công");
             },
@@ -195,6 +221,8 @@ export default function ItemTypeManagementPage(){
                                             name="id"
                                             className="border border-gray-300 rounded-lg px-3 py-2 w-full mb-2"
                                             placeholder="Mã loại sản phẩm"
+                                            required={true}
+                                            onChange={onChangedFields}
                                            
                                         />
                                         <input
@@ -202,6 +230,8 @@ export default function ItemTypeManagementPage(){
                                             name="name"
                                             className="border border-gray-300 rounded-lg px-3 py-2 w-full mb-4"
                                             placeholder="Tên loại sản phẩm"
+                                            required={true}
+                                            onChange={onChangedFields}
                                            
                                         />
                                   </div>
@@ -210,7 +240,7 @@ export default function ItemTypeManagementPage(){
                                       Hủy
                                     </button>
                                     <button className="px-4 py-2 bg-blue-500 text-white rounded-lg ml-2 hover:bg-blue-600"
-                                            // onClick={onHanderAdd}
+                                            onClick={(event)=>onAddUpdateItemType(event)}
                                         >Thêm</button>
                                   </div>
                                 </div>

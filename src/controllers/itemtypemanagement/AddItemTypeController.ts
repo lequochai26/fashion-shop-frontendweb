@@ -11,23 +11,19 @@ export default class AddItemTypeController implements Controller<AddItemTypePara
     }
 
     //method
-    public async execute({itemType,onSuccess,onError,onFailed}: AddItemTypeParam): Promise<void> {
-        // if(!id){
-        //     alert("Vui lòng nhập mã loại sản phẩm");
-        // }
+    public async execute({itemTypeInfo,onSuccess,onError,onFailed}: AddItemTypeParam): Promise<void> {
+        //create from data
+        const formData : FormData = new FormData();
 
-        // if(!name){
-        //     alert("Vui lòng nhập tên loại sản phẩm!");
-        // }
+        formData.set("id",itemTypeInfo.id);
+        formData.set("name",itemTypeInfo.name);
         
 
         //api
         await apiFetch({
             method:"POST",
             path:"/itemType",
-            body:{id: itemType.id,
-                 name: itemType.name
-            },
+            body:formData,
             onSuccess:async function (response:Response) {
                 const {success,code,message}: RestResponse<undefined> = await response.json();
 
@@ -49,7 +45,7 @@ export default class AddItemTypeController implements Controller<AddItemTypePara
 
 export interface AddItemTypeParam{
     
-    itemType: ItemType,
+    itemTypeInfo: any,
     onSuccess(): void,
     onError(error: any): void,
     onFailed(code:string,message:string): void;
