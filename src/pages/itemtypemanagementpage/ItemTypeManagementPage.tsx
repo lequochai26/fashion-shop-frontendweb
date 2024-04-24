@@ -46,8 +46,21 @@ export default function ItemTypeManagementPage(){
         )
         
     }
+
+    //load itemtype
+    async function onLoadItemType() {
+        loadItemTypeController.execute(
+            {
+                onSuccess:setItemType,
+                onError:function(error:any){
+                    console.error(error)
+                }
+            }
+        )
+        
+    }
     //delete itemtype
-    function deleteItemType(event:any,id : string){
+    async function deleteItemType(event:any,id : string){
         //prevent default
         event.preventDefault();
 
@@ -97,7 +110,7 @@ export default function ItemTypeManagementPage(){
                              {/* Reload button */}
                              <button
                                  className="bg-white p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3"
-                                 // onClick={onReloadButtonClick}
+                                 onClick={onLoadItemType}
                              >
                                  Tải lại
                              </button>
