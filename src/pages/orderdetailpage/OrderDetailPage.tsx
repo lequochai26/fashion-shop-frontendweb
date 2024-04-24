@@ -16,6 +16,7 @@ export default function OrderDetailPage() {
 
     // States:
     const [ order, setOrder ] = useState<OrderInfo | null>(null);
+    console.log(order);
 
     // Controllers:
     const loadOrderController: Controller<LoadOrderParam> = new LoadOrderController();
@@ -36,6 +37,12 @@ export default function OrderDetailPage() {
 
     // Event handlers:
     async function onCancelButtonClick() {
+        if(
+            !window.confirm("Bạn có chắc muốn hủy đơn hàng này ?")
+        ) {
+            return;
+        }
+
         cancelOrderController.execute({
             id: id as string,
             onSuccess() {
@@ -127,12 +134,11 @@ export default function OrderDetailPage() {
 
             {/* Actions */}
             {
-                (order.status !== "APPROVEMENT_AWAITING")
+                (order.status === "APPROVEMENT_AWAITING")
                 &&
                 <div className="h-fit text-right">
                     <button
                         className="text-lg font-bold border border-black border-solid rounded-md pt-1 pb-1 pl-4 pr-4 cursor-pointer mr-3"
-                        disabled={ order?.status !== "APPROVEMENT_AWAITING" }
                         onClick={onCancelButtonClick}
                     >
                         Hủy

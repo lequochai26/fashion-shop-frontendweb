@@ -13,9 +13,11 @@ import UserCentralPage2 from './pages/usercentral/UserCentralPage2';
 import ItemDetailPage from './pages/itemdetailpage/ItemDetailPage';
 
 import UpdatePersonnalInfoPage from './pages/updatepersonalInfo/UpdatePersonalInfoPage';
-import OrderedOrdersPage from './pages/order/OrderedOrdersPage';
+import OrderedOrdersPage from './pages/orderedorders/OrderedOrdersPage';
 import OrderDetailPage from './pages/orderdetailpage/OrderDetailPage';
 import ThirdPartyAccountRegistrationFinishPage from './pages/thirdpartyaccountregistrationfinishpage/ThirdPartyAccountRegistrationFinishPage';
+import ItemTypeManagementPage from './pages/itemtypemanagementpage/ItemTypeManagementPage';
+import ItemManagementPage from './pages/itemmanagementpage/ItemManagementPage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -66,6 +68,14 @@ root.render(
             <Route
               path="/thirdpartyaccountregistrationfinish"
               Component={ThirdPartyAccountRegistrationFinishPage}
+            />
+            <Route
+              path="/itemtypemanagementpage"
+              Component={ItemTypeManagementPage}
+            />
+            <Route
+              path="/itemmanagement"
+              Component={ItemManagementPage}
             />
           </Routes>
         </BrowserRouter>
