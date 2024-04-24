@@ -79,6 +79,16 @@ export default class NewItemController implements Controller<NewItemParam> {
         }
         formData.set("avatar", form.avatar);
 
+        // Type
+        if (form.type) {
+            formData.set("type", form.type);
+        }
+
+        // Brand
+        if (form.brand) {
+            formData.set("brand", form.brand);
+        }
+
         // Images
         if (form.images) {
             for (const image of form.images) {
