@@ -7,6 +7,7 @@ import LoadLoggedInUserController, { LoadLoggedInUserParam } from "../../control
 import NoAccessPage from "../noaccesspage/NoAccessPage";
 import NewItemController, { NewItemParam } from "../../controllers/itemmanagement/NewItemController";
 import NewItemPage from "./popups/newitempage/NewItemPage";
+import UpdateItemPage from "./popups/updateitempage/UpdateItemPage";
 
 export default function ItemManagementPage() {
     // States:
@@ -90,6 +91,20 @@ export default function ItemManagementPage() {
                                 console.error(error);
                             },
                         });
+                    }
+                }
+                onCancel={() => setPopup(undefined)}
+            />
+        );
+    }
+
+    async function onEditButtonClick(item: Item) {
+        setPopup(
+            <UpdateItemPage
+                item={item}
+                onSubmit={
+                    function (form) {
+
                     }
                 }
                 onCancel={() => setPopup(undefined)}
@@ -180,6 +195,7 @@ export default function ItemManagementPage() {
                                 <div className="flex-1 border border-black border-solid p-1 pl-3">
                                     <button
                                         className="p-1 border border-black border-solid rounded-md cursor-pointer bg-sky-500 text-white px-3 mr-3"
+                                        onClick={() => onEditButtonClick(item)}
                                     >
                                         Sửa
                                     </button>
