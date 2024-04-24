@@ -3,34 +3,69 @@ import Item from "../../entities/Item/Item";
 import Controller from "../../controllers/Controller";
 import LoadAllItemsController, { LoadAllItemsParam } from "../../controllers/itemmanagement/LoadAllItemsController";
 import LoadingPage from "../loadingpage/LoadingPage";
+import LoadLoggedInUserController, { LoadLoggedInUserParam } from "../../controllers/LoadLoggedInUserController";
+import NoAccessPage from "../noaccesspage/NoAccessPage";
 
 export default function ItemManagementPage() {
     // States:
+    const [ access, setAccess ] = useState<boolean | undefined>(undefined);
     const [ items, setItems ] = useState<Item[] | undefined>(undefined);
 
     // Controllers:
     const loadAllItemsController: Controller<LoadAllItemsParam> = new LoadAllItemsController();
+    const loadLoggedInUserController: Controller<LoadLoggedInUserParam> = new LoadLoggedInUserController();
 
     // Init:
     function init() {
-        loadAllItemsController.execute(
-            {
-                onSuccess: setItems,
-                onFailed(code, message) {
+        loadLoggedInUserController.execute({
+            onSuccess(user) {
+                if (user.permission !== "MANAGER") {
+                    setAccess(false);
+                    return;
+                }
+
+                setAccess(true);
+
+                loadAllItemsController.execute(
+                    {
+                        onSuccess: setItems,
+                        onFailed(code, message) {
+                            alert(`Code: ${code}, Message: ${message}`);
+                        },
+                        onError(error) {
+                            alert(`Đã xảy ra lỗi trong quá trình thực thi!`);
+                            console.error(error);
+                        },
+                    }
+                );
+            },
+            onFailed(code, message) {
+                setAccess(false);
+
+                if (code !== "NOT_LOGGED_IN" && code !== "USER_NOT_EXIST") {
                     alert(`Code: ${code}, Message: ${message}`);
-                },
-                onError(error) {
-                    alert(`Đã xảy ra lỗi trong quá trình thực thi!`);
-                    console.error(error);
-                },
-            }
-        )
+                }
+            },
+            onError(error) {
+                setAccess(false);
+                alert(`Đã có lỗi xảy ra trong quá trình thực thi!`);
+                console.error(error);
+            },
+        });
     }
 
     useEffect(init, []);
     
     // Design:
     return (
+        access === undefined
+        ?
+        <LoadingPage />
+        :
+        !access
+        ?
+        <NoAccessPage />
+        :
         !items
         ?
         <LoadingPage />
