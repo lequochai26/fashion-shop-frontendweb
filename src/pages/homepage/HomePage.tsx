@@ -24,6 +24,8 @@ export default function HomePage() {
     }
 
     async function onSearchButtonClick() {
+        setItems(undefined);
+
         loadItemsByKeywordController.execute(
             {
                 keyword,
@@ -38,6 +40,8 @@ export default function HomePage() {
     }
 
     async function onReloadButtonClick() {
+        setItems(undefined);
+
         loadAllItemsController.execute({
             onSuccess: setItems,
             onError: function (error: any) {
