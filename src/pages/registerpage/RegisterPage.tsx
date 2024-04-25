@@ -5,13 +5,12 @@ import { redirect } from "../../utils/Redirector";
 import LoadLoggedInUserController, { LoadLoggedInUserParam } from "../../controllers/LoadLoggedInUserController";
 import CheckLoggedInController, { CheckLoggedInParam } from "../../controllers/login/CheckLoggedInController";
 import NoAccessPage from "../noaccesspage/NoAccessPage";
+import LoadingPage from "../loadingpage/LoadingPage";
 
 export default function RegisterPage() {
     // States:
     const [ form, setForm ] = useState<any>({ gender: true });
-    const [ loggedIn, setLoggedIn ] = useState<boolean>(false);
-
-    (window as any).registerForm = form;
+    const [ loggedIn, setLoggedIn ] = useState<boolean | undefined>(undefined);
 
     // Controllers:
     const registerController: Controller<RegisterParam> = new RegisterController();
@@ -79,9 +78,15 @@ export default function RegisterPage() {
 
     // Design:
     return (
+        loggedIn === undefined
+        ?
+        <LoadingPage />
+        :
         loggedIn
-        ? <NoAccessPage />
-        : <div className="w-full h-full">
+        ?
+        <NoAccessPage />
+        :
+        <div className="w-full h-full">
             {/* Register form */}
             <form className="w-full h-full flex flex-row justify-between" onSubmit={onRegisterFormSubmit}>
                 {/* Avatar */}
