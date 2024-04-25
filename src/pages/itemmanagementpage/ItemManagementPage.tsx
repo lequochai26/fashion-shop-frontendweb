@@ -9,6 +9,7 @@ import NewItemController, { NewItemParam } from "../../controllers/itemmanagemen
 import NewItemPage from "./popups/newitempage/NewItemPage";
 import UpdateItemPage from "./popups/updateitempage/UpdateItemPage";
 import UpdateItemController, { UpdateItemParam } from "../../controllers/itemmanagement/UpdateItemController";
+import RemoveItemController, { RemoveItemParam } from "../../controllers/itemmanagement/RemoveItemController";
 
 export default function ItemManagementPage() {
     // States:
@@ -21,6 +22,7 @@ export default function ItemManagementPage() {
     const loadLoggedInUserController: Controller<LoadLoggedInUserParam> = new LoadLoggedInUserController();
     const newItemController: Controller<NewItemParam> = new NewItemController();
     const updateItemController: Controller<UpdateItemParam> = new UpdateItemController();
+    const removeItemController: Controller<RemoveItemParam> = new RemoveItemController();
 
     // Init:
     function init() {
@@ -63,6 +65,21 @@ export default function ItemManagementPage() {
 
     useEffect(init, []);
 
+    // Operations:
+    async function reload() {
+        setItems(undefined);
+        loadAllItemsController.execute({
+            onSuccess: setItems,
+            onFailed(code, message) {
+                alert(`Code: ${code}, Message: ${message}`);
+            },
+            onError(error) {
+                alert("Đã có lỗi xảy ra trong quá trình thực thi!");
+                console.error(error);
+            },
+        });
+    }
+
     // Event handlers:
     async function onNewButtonClick() {
         setPopup(
@@ -73,17 +90,7 @@ export default function ItemManagementPage() {
                             form,
                             onSuccess() {
                                 setPopup(undefined);
-                                setItems(undefined);
-                                loadAllItemsController.execute({
-                                    onSuccess: setItems,
-                                    onFailed(code, message) {
-                                        alert(`Code: ${code}, Message: ${message}`);
-                                    },
-                                    onError(error) {
-                                        alert("Đã có lỗi xảy ra trong quá trình thực thi!");
-                                        console.error(error);
-                                    },
-                                })
+                                reload();
                             },
                             onFailed(code, message) {
                                 alert(message);
@@ -110,17 +117,7 @@ export default function ItemManagementPage() {
                             form,
                             onSuccess() {
                                 setPopup(undefined);
-                                setItems(undefined);
-                                loadAllItemsController.execute({
-                                    onSuccess: setItems,
-                                    onFailed(code, message) {
-                                        alert(`Code: ${code}, Message: ${message}`);
-                                    },
-                                    onError(error) {
-                                        alert("Đã có lỗi xảy ra trong quá trình thực thi!");
-                                        console.error(error);
-                                    },
-                                })
+                                reload();
                             },
                             onFailed(code, message) {
                                 alert(message);
@@ -135,6 +132,52 @@ export default function ItemManagementPage() {
                 onCancel={() => setPopup(undefined)}
             />
         );
+    }
+
+    async function onDeleteButtonClick(item: Item) {
+        // Validate
+        if (
+            !window.confirm(`Bạn đang thực hiện xóa sản phẩm "${item.id}", bạn có muốn tiếp tục ?`)
+        ) {
+            return;
+        }
+
+        // Delete item
+        removeItemController.execute({
+            target: item,
+            onSuccess() {
+                reload();
+            },
+            onFailed(code, message) {
+                switch (code) {
+                    case 'HANDLING_DB_FAILED': {
+                        alert("Xảy ra lỗi trong quá trình thực thi ở cơ sở dữ liệu!");
+                        return;
+                    }
+
+                    case 'ITEM_NOT_EXIST': {
+                        alert("Sản phẩm không tồn tại!");
+                        return;
+                    }
+
+                    case 'ORDER_LINKED': {
+                        alert("Vui lòng đảm bảo không có đơn hàng nào được liên kết với sản phẩm này trước khi thực thi hành động này!");
+                        return;
+                    }
+
+                    case 'USER_LINKED': {
+                        alert("Vui lòng đảm bảo không có người dùng nào được liên kết với sản phẩm này trước khi thực thi hành động này!");
+                        return;
+                    }
+                }
+
+                alert(`Code: ${code}, Message: ${message}`);
+            },
+            onError(error) {
+                alert(`Đã có lỗi xảy ra trong quá trình thực thi!`);
+                console.error(error);
+            },
+        });
     }
     
     // Design:
@@ -227,6 +270,7 @@ export default function ItemManagementPage() {
 
                                     <button
                                         className="p-1 border border-black border-solid rounded-md cursor-pointer bg-red-600 text-white px-3"
+                                        onClick={() => onDeleteButtonClick(item)}
                                     >
                                         Xóa
                                     </button>
