@@ -8,7 +8,7 @@ export default class LoadOrderedOrderController implements Controller<OrderedOrd
     public constructor() {}
 
     //Methods:
-    public async execute({ onSuccess, onError }: OrderedOrderControllerParam): Promise<void> {
+    public async execute({ onSuccess, onFailed, onError }: OrderedOrderControllerParam): Promise<void> {
         await apiFetch(
             {
                 path : "/order?method=getOrdered",
@@ -19,7 +19,7 @@ export default class LoadOrderedOrderController implements Controller<OrderedOrd
                     if(success) {
                         onSuccess(result as OrderInfo[]);
                     } else {
-                        alert(`Code: ${code} - message: ${message}`);
+                        onFailed(code as string, message as string);
                     }
                 },
                 onFailed: async function (error:any) {
@@ -33,5 +33,6 @@ export default class LoadOrderedOrderController implements Controller<OrderedOrd
 
 export interface OrderedOrderControllerParam{
     onSuccess(order: OrderInfo[]): void;
+    onFailed(code: string, message: string): void;
     onError(error: any): void;
 }
