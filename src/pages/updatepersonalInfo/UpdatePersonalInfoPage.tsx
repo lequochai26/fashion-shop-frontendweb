@@ -6,11 +6,12 @@ import { API_URL } from "../../utils/APIFetcher";
 import UpdatePersonalInfoController, { UpdatePersonalInfoControllerParam } from "../../controllers/updatepersonalinfo/UpdatePersonalInfoController";
 import { redirect } from "../../utils/Redirector";
 import NoAccessPage from "../noaccesspage/NoAccessPage";
+import LoadingPage from "../loadingpage/LoadingPage";
 
 export default function UpdatePersonnalInfoPage() {
 
     //State
-    const [user, setUser] = useState<User>();
+    const [user, setUser] = useState<User | undefined | null>(undefined);
     const [userInfo, setUserInfo] = useState<any>({});
     useState<boolean | undefined>(undefined);
     const avatarInputRef = useRef<HTMLInputElement>(null);
@@ -27,8 +28,11 @@ export default function UpdatePersonnalInfoPage() {
                         setUser(user);
                     },
                     onFailed(code, message) {
-                        redirect("/");
-                        alert(`Code ${code}, Message: ${message}`);
+                        setUser(null);
+
+                        if (code !== "NOT_LOGGED_IN" && code !== "FAILED") {
+                            alert(`Code ${code}, Message: ${message}`);
+                        }
                     },
 
                     onError: function (error: any) {
@@ -98,101 +102,107 @@ export default function UpdatePersonnalInfoPage() {
 
     //View
     return (
+        user === undefined
+        ?
+        <LoadingPage />
+        :
         !user
-            ? <NoAccessPage />
-            : (
-                <div className="mt-10">
-                    {/* Form */}
-                    <form action="" className="flex" style={{ width: "810px", height: "auto" }}>
-                        {/* Avatar */}
-                        <div className="w-2/5 mr-10 flex flex-col items-center justify-center">
-                            <div onClick={handleAvatarClick} className="cursor-pointer">
-                                <img
-                                    src={
-                                        userInfo.avatar
-                                            ? URL.createObjectURL(userInfo.avatar)
-                                            : (user && `${API_URL}${user?.avatar}`)
-                                    }
-                                    alt=""
-                                    className="w-80 h-80"
-                                />
-                            </div>
-                            <input
-                                type="file"
-                                name="avatar"
-                                style={{ display: "none" }}
-                                ref={avatarInputRef}
-                                onChange={onChangedFields}
+        ?
+        <NoAccessPage />
+        :
+        (
+            <div className="mt-10">
+                {/* Form */}
+                <form action="" className="flex" style={{ width: "810px", height: "auto" }}>
+                    {/* Avatar */}
+                    <div className="w-2/5 mr-10 flex flex-col items-center justify-center">
+                        <div onClick={handleAvatarClick} className="cursor-pointer">
+                            <img
+                                src={
+                                    userInfo.avatar
+                                        ? URL.createObjectURL(userInfo.avatar)
+                                        : (user && `${API_URL}${user?.avatar}`)
+                                }
+                                alt=""
+                                className="w-80 h-80"
                             />
                         </div>
+                        <input
+                            type="file"
+                            name="avatar"
+                            style={{ display: "none" }}
+                            ref={avatarInputRef}
+                            onChange={onChangedFields}
+                        />
+                    </div>
 
-                        {/* User info */}
-                        <div className="w-3/5">
-                            {/* FullName */}
-                            <input
-                                type="text"
-                                name="fullName"
-                                placeholder={`Họ và tên: ${user && user.fullName}`}
-                                onChange={onChangedFields}
-                                className="w-96 h-6 border border-black rounded p-5"
-                            /> <br /><br />
+                    {/* User info */}
+                    <div className="w-3/5">
+                        {/* FullName */}
+                        <input
+                            type="text"
+                            name="fullName"
+                            placeholder={`Họ và tên: ${user && user.fullName}`}
+                            onChange={onChangedFields}
+                            className="w-96 h-6 border border-black rounded p-5"
+                        /> <br /><br />
 
-                            {/* Gender */}
-                            <div className="border border-dashed w-44 border-black p-2 flex flex-wrap">
-                                <div className="w-full ">
-                                    <p>Giới tính:</p>
-                                </div>
-
-                                {/* Male */}
-                                <div className="border border-dashed w-fit border-black p-1 mr-2">
-                                    <input type="radio" name="gender" id="male" value={"male"}
-                                        onChange={onChangedFields}
-                                        checked={userInfo.gender !== undefined ? userInfo.gender : user.gender} />
-                                    <label htmlFor="male" className="m-2">Nam</label>
-                                </div>
-
-                                {/* Female */}
-                                <div className="border border-dashed w-fit border-black p-1">
-                                    <input type="radio" name="gender" id="female" value={"female"}
-                                        onChange={onChangedFields}
-                                        checked={userInfo.gender !== undefined ? !userInfo.gender : !user.gender}  />
-                                    <label htmlFor="female" className="m-3">Nữ</label>
-                                </div>
-
+                        {/* Gender */}
+                        <div className="border border-dashed w-44 border-black p-2 flex flex-wrap">
+                            <div className="w-full ">
+                                <p>Giới tính:</p>
                             </div>
 
-                            {/* phoneNumber */}
-                            <input
-                                type="text"
-                                name="phoneNumber"
-                                placeholder={`Số điện thoại: ${user ? user.phoneNumber : ""}`}
-                                className="w-96 h-6 border border-black rounded p-5 mt-5"
-                                onChange={onChangedFields}
-                            /> <br /><br />
-
-                            {/* Address */}
-                            <input
-                                type="text"
-                                name="address"
-                                placeholder={`Địa chỉ: ${user && user.address}`}
-                                onChange={onChangedFields}
-                                className="w-96 h-6 border border-black rounded p-5 mt-3"
-                            /> <br /><br />
-
-                            {/* button */}
-                            <div className="flex">
-                                <button className="border border-black rounded w-20 p-1 mr-3"
-                                    onClick={cancle}>
-                                    Huỷ
-                                </button>
-                                <button className="border border-black rounded w-36 p-1" onClick={(event) => onUpdate(event)}>
-                                    Cập nhật
-                                </button>
+                            {/* Male */}
+                            <div className="border border-dashed w-fit border-black p-1 mr-2">
+                                <input type="radio" name="gender" id="male" value={"male"}
+                                    onChange={onChangedFields}
+                                    checked={userInfo.gender !== undefined ? userInfo.gender : user.gender} />
+                                <label htmlFor="male" className="m-2">Nam</label>
                             </div>
+
+                            {/* Female */}
+                            <div className="border border-dashed w-fit border-black p-1">
+                                <input type="radio" name="gender" id="female" value={"female"}
+                                    onChange={onChangedFields}
+                                    checked={userInfo.gender !== undefined ? !userInfo.gender : !user.gender}  />
+                                <label htmlFor="female" className="m-3">Nữ</label>
+                            </div>
+
                         </div>
-                    </form >
 
-                </div >
-            )
-    )
+                        {/* phoneNumber */}
+                        <input
+                            type="text"
+                            name="phoneNumber"
+                            placeholder={`Số điện thoại: ${user ? user.phoneNumber : ""}`}
+                            className="w-96 h-6 border border-black rounded p-5 mt-5"
+                            onChange={onChangedFields}
+                        /> <br /><br />
+
+                        {/* Address */}
+                        <input
+                            type="text"
+                            name="address"
+                            placeholder={`Địa chỉ: ${user && user.address}`}
+                            onChange={onChangedFields}
+                            className="w-96 h-6 border border-black rounded p-5 mt-3"
+                        /> <br /><br />
+
+                        {/* button */}
+                        <div className="flex">
+                            <button className="border border-black rounded w-20 p-1 mr-3"
+                                onClick={cancle}>
+                                Huỷ
+                            </button>
+                            <button className="border border-black rounded w-36 p-1" onClick={(event) => onUpdate(event)}>
+                                Cập nhật
+                            </button>
+                        </div>
+                    </div>
+                </form >
+
+            </div >
+        )
+    );
 }
