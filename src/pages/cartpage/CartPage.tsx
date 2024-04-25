@@ -126,7 +126,27 @@ export default function CartPage() {
 
                                     {/* Price */}
                                     <p className="text-lg">
-                                        Giá: { cartItem.item.price }
+                                        Đơn giá: ${
+                                            (cartItem.metadata && cartItem.item.metadata)
+                                            ?
+                                            (cartItem.item.metadata)
+                                                .getMapping(cartItem.metadata)
+                                                ?.price
+                                            :
+                                            cartItem.item.price
+                                        }
+                                    </p>
+
+                                    {/* Total price */}
+                                    <p className="text-lg">
+                                        Giá: ${
+                                            (cartItem.metadata && cartItem.item.metadata)
+                                            ?
+                                            (cartItem.item.metadata.getMapping(cartItem.metadata)
+                                                ?.price as number) * cartItem.amount
+                                            :
+                                            cartItem.amount * cartItem.item.price
+                                        }
                                     </p>
 
                                     {/* Metadata */}
