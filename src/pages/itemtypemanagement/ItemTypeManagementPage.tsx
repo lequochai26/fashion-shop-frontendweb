@@ -203,7 +203,7 @@ export default function ItemTypeManagementPage(){
                                 Tải lại
                     </button>
     
-                    <button className="bg-green p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3 ml-[250px] hover:bg-gray-300 "
+                    <button className="bg-green-600 text-white p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3 ml-[250px] hover:bg-green-700 "
                             onClick={isOpenInserItemType}>
                                 Thêm
                     </button>
@@ -266,7 +266,7 @@ export default function ItemTypeManagementPage(){
                                                     <td className="border border-black ">
                                                         <div >
                                                             <button 
-                                                                className="border border-black rounded-lg p-2 w-[60px] hover:bg-gray-300 mr-2" onClick={isOpenUpdateItemType}>Sửa</button>
+                                                                className="border border-black rounded-lg p-2 w-[60px] bg-sky-500 text-white hover:bg-sky-600 mr-2" onClick={isOpenUpdateItemType}>Sửa</button>
                                                                 { updateItemType &&(
                                                                             <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
                                                                             <div className="bg-white rounded-lg shadow-lg p-6">
@@ -305,7 +305,7 @@ export default function ItemTypeManagementPage(){
                                                                     }
                                                             {/* delete     */}
                                                             <button 
-                                                                className="border border-black rounded-lg p-2 w-[60px] hover:bg-gray-300"
+                                                                className="border border-black rounded-lg p-2 w-[60px] bg-red-600 text-white hover:bg-red-700"
                                                                 onClick={(event) => deleteItemType(event,itemType.id)}>
                                                                 Xóa</button>
                                                         </div>
