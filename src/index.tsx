@@ -72,15 +72,15 @@ root.render(
               Component={ThirdPartyAccountRegistrationFinishPage}
             />
             <Route
-              path="/itemtypemanagement"
+              path="/management/itemtype"
               Component={ItemTypeManagementPage}
             />
             <Route
-              path="/itemmanagement"
+              path="/management/item"
               Component={ItemManagementPage}
             />
             <Route
-              path="/usermanagement"
+              path="/management/user"
               Component={UserManagement}
             />
           </Routes>
