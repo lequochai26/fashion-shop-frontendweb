@@ -11,8 +11,6 @@ export default class UpdateItemController implements Controller<UpdateItemParam>
 
     // Methods:
     public async execute({ form, onSuccess, onFailed, onError }: UpdateItemParam): Promise<void> {
-        console.log(form);
-
         // Create form data
         const formData: FormData = new FormData();
 
