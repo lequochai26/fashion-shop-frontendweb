@@ -8,6 +8,7 @@ import CheckLoggedInController, { CheckLoggedInParam } from '../../controllers/l
 import LoadLoggedInUserController, { LoadLoggedInUserParam } from '../../controllers/LoadLoggedInUserController';
 import ReactFacebookLogin, { ReactFacebookFailureResponse, ReactFacebookLoginInfo } from 'react-facebook-login';
 import LoginWithFacebookController, { LoginWithFacebookParam } from '../../controllers/login/LoginWithFacebookController';
+import LoadingPage from '../loadingpage/LoadingPage';
 
 
 
@@ -15,7 +16,7 @@ export default function LoginPage(){
    //state
    const [email,setEmail] = useState<string>("");
    const [password,setPassword] = useState<string>("");
-   const [loggedIn,setLoggedIn] = useState<boolean>(false);
+   const [loggedIn,setLoggedIn] = useState<boolean | undefined>(undefined);
 
    //controller
    const loginPageController : Controller<LoginParam> = new LoginPageController();
@@ -97,8 +98,13 @@ export default function LoginPage(){
    return(
     <div>
         {
-            loggedIn ? 
-                <NoAccessPage/>
+            loggedIn === undefined
+            ?
+            <LoadingPage />
+            :
+            loggedIn
+            ? 
+            <NoAccessPage/>
             :(
 
                 <div className="w-fit h-fit flex flex-col justify-start items-center mt-14">
