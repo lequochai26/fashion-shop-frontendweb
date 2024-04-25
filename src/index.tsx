@@ -19,6 +19,7 @@ import ThirdPartyAccountRegistrationFinishPage from './pages/thirdpartyaccountre
 import ItemTypeManagementPage from './pages/itemtypemanagement/ItemTypeManagementPage';
 import ItemManagementPage from './pages/itemmanagementpage/ItemManagementPage';
 import UserManagement from './pages/usermanagement/UserManagementPage';
+import UpgradeItemDetailPage from './pages/itemdetailpage/UpgradeItemDetailPage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -56,7 +57,7 @@ root.render(
             />
             <Route
               path="/itemdetail"
-              Component={ItemDetailPage}
+              Component={UpgradeItemDetailPage}
             />
             <Route
               path="/orderdetail"
