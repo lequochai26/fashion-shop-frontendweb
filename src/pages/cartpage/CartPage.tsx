@@ -9,10 +9,11 @@ import DeleteCartItemController, { DeleteCartItemParam } from "../../controllers
 import BuyController, { BuyParam } from "../../controllers/cartpage/BuyController";
 import { redirect } from "../../utils/Redirector";
 import { formatMetadata } from "../../utils/CartItemHelper";
+import LoadingPage from "../loadingpage/LoadingPage";
 
 export default function CartPage() {
     // States:
-    const [ cart, setCart ] = useState<CartItem[]>([]);
+    const [ cart, setCart ] = useState<CartItem[] | undefined>(undefined);
 
     // Controllers:
     const loadCartController: Controller<LoadCartParam> = new LoadCartController();
@@ -97,6 +98,10 @@ export default function CartPage() {
 
     // Component return:
     return (
+        !cart
+        ?
+        <LoadingPage />
+        :
         <div className="h-full w-1/2 flex flex-col justify-between">
             {/* Title bar */}
             <div className="w-full h-fit p-2 border border-black border-solid">
