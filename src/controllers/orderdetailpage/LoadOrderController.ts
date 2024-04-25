@@ -11,7 +11,7 @@ export default class LoadOrderController implements Controller<LoadOrderParam> {
     }
 
     // Methods:
-    public async execute({ id, onError, onSuccess }: LoadOrderParam): Promise<void> {
+    public async execute({ id, onError, onSuccess, onFailed }: LoadOrderParam): Promise<void> {
         if (!id) {
             onSuccess(null);
             return;
@@ -21,17 +21,17 @@ export default class LoadOrderController implements Controller<LoadOrderParam> {
             method: "GET",
             path: `/order?method=get&id=${id}`,
             onSuccess: async function (response: Response) {
-                const { success, result }: RestResponse<any> = await response.json();
+                const { success, result, code, message }: RestResponse<any> = await response.json();
 
                 if (success) {
                     onSuccess(result ? { ...result, date: new Date(result.date) } : null);
                 }
                 else {
-                    onSuccess(null);
+                    onFailed(code as string, message as string);
                 }
             },
             onFailed: async function (error: any) {
-                
+                onError(error);
             },
         });
     }
@@ -40,5 +40,6 @@ export default class LoadOrderController implements Controller<LoadOrderParam> {
 export interface LoadOrderParam {
     id: string | null;
     onSuccess(order: OrderInfo | null): void;
+    onFailed(code: string, message: string): void;
     onError(error: any): void;
 }

@@ -8,6 +8,7 @@ import { formatVNDate } from "../../utils/DateHelper";
 import { makeAPIUrl } from "../../utils/APIFetcher";
 import CancelOrderController, { CancelOrderParam } from "../../controllers/orderdetailpage/CancelOrderController";
 import NoAccessPage from "../noaccesspage/NoAccessPage";
+import LoadingPage from "../loadingpage/LoadingPage";
 
 export default function OrderDetailPage() {
     // Queries
@@ -15,8 +16,7 @@ export default function OrderDetailPage() {
     const id: string | null = searchParams.get("id");
 
     // States:
-    const [ order, setOrder ] = useState<OrderInfo | null>(null);
-    console.log(order);
+    const [ order, setOrder ] = useState<OrderInfo | undefined | null>(undefined);
 
     // Controllers:
     const loadOrderController: Controller<LoadOrderParam> = new LoadOrderController();
@@ -24,13 +24,21 @@ export default function OrderDetailPage() {
 
     // Init
     function init() {
+        if (!id) {
+            setOrder(null);
+            return;
+        }
+
         loadOrderController.execute({
             id,
             onSuccess: setOrder,
             onError: function (error: any) {
-                alert("Đã có lỗi xảy ra!");
+                alert("Đã có lỗi xảy ra trong quá trình thực thi!");
                 console.error(error);
-            }
+            },
+            onFailed(code, message) {
+                setOrder(null);
+            },
         });
     }
     useEffect(init, []);
@@ -64,9 +72,15 @@ export default function OrderDetailPage() {
 
     // Design:
     return (
+        order === undefined
+        ?
+        <LoadingPage />
+        :
         !order
-        ? <NoAccessPage />
-        : <div
+        ?
+        <NoAccessPage />
+        :
+        <div
             className="flex flex-col justify-start w-1/2 mt-8 border border-black border-solid p-2"
         >
             {/* ID */}
