@@ -8,7 +8,7 @@ import { redirect } from "../../utils/Redirector";
 import LoadItemTypeByKeywordController, { LoadItemTypeByKeywordParam } from "../../controllers/itemmanagement/LoadItemTypeByKeyWordController";
 
 import UpdateItemTypeController, { UpdateItemTypeParam } from "../../controllers/itemtypemanagement/UpdateItemTypeController";
-import { error } from "console";
+
 import AddItemTypeController, { AddItemTypeParam } from "../../controllers/itemtypemanagement/AddItemTypeController";
 
 export default function ItemTypeManagementPage(){
@@ -61,6 +61,7 @@ export default function ItemTypeManagementPage(){
         setUpdate(false);
         
     }
+
     //insert
     async function onAddUpdateItemType(event:any) {
         event.preventDefault();
@@ -95,25 +96,25 @@ export default function ItemTypeManagementPage(){
     }
 
     const onUpdate: FormEventHandler= async function (event) {
-        event.preventDefault();
-        if(!itemTypeInfo.id || !itemTypeInfo.name){
-            alert("Vui lòng cập nhập thông tin cần cập nhập");
-            return;
-        }
-
-       
-        updateItemTypeController.execute({
-            itemType : itemTypeInfo,
-            onSuccess:() =>{
-                alert("Cập nhập thông tin thành công");
-            },
-            onFailed:function(code:string,message:string){
-                alert(`Code ${code},message : ${message}`)
-            },
-            onError:(error:any) =>{
-            console.error(error);
+            event.preventDefault();
+            if(!itemTypeInfo.id || !itemTypeInfo.name){
+                alert("Vui lòng cập nhập thông tin cần cập nhập");
+                return;
             }
-        })
+
+        
+            updateItemTypeController.execute({
+                itemType : itemTypeInfo,
+                onSuccess:() =>{
+                    alert("Cập nhập thông tin thành công");
+                },
+                onFailed:function(code:string,message:string){
+                    alert(`Code ${code},message : ${message}`)
+                },
+                onError:(error:any) =>{
+                console.error(error);
+                }
+            })
 
        
         
@@ -150,6 +151,7 @@ export default function ItemTypeManagementPage(){
         )
         
     }
+    
     //delete itemtype
     async function deleteItemType(event:any,id : string){
         //prevent default
@@ -180,78 +182,70 @@ export default function ItemTypeManagementPage(){
     return(
         !itemType
             ? <LoadingPage/>       
-            :(
+          :(
             <div className="w-full h-fit">
                  
                      {/* Search-bar */}
-                     <div className="w-full h-16 flex items-center justify-start border border-black border-solid">
+                <div className="w-full h-16 flex items-center justify-start border border-black border-solid">
                          {/* Keyword input field */}
-                             <input type="text" placeholder="Từ khóa tìm kiếm" className="border border-black border-solid rounded-md p-2 pl-4 w-1/2 ml-3"
-                              value={keyword} onChange={onKeywordChange} 
-                             />
+                    <input type="text" placeholder="Từ khóa tìm kiếm" className="border border-black border-solid rounded-md p-2 pl-4 w-1/2 ml-3"
+                            value={keyword} onChange={onKeywordChange}/>
     
                              {/* Search button */}
-                             <button
-                                 className="bg-white p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3 hover:bg-gray-300"
-                                 onClick={onSearchButtonClick}
-                             >
-                                 Tìm kiếm
-                             </button>
+                    <button className="bg-white p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3 hover:bg-gray-300"
+                            onClick={onSearchButtonClick}>
+                                Tìm kiếm
+                    </button>
     
                              {/* Reload button */}
-                             <button
-                                 className="bg-white p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3 hover:bg-gray-300"
-                                 onClick={onLoadItemType}
-                             >
-                                 Tải lại
-                             </button>
+                    <button className="bg-white p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3 hover:bg-gray-300"
+                            onClick={onLoadItemType}>
+                                Tải lại
+                    </button>
     
-                             <button
-                                 className="bg-green p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3 ml-[250px] hover:bg-gray-300 "
-                                  onClick={isOpenInserItemType}
-                             >
-                                 Thêm
-                             </button>
-                             { insertItemType &&(
-                                <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-                                <div className="bg-white rounded-lg shadow-lg p-6">
-                                  <div className="mb-4">
-                                        <input
-                                            type="text"
-                                            name="id"
-                                            className="border border-gray-300 rounded-lg px-3 py-2 w-full mb-2"
-                                            placeholder="Mã loại sản phẩm"
-                                            required={true}
-                                            onChange={onChangedFields}
-                                           
-                                        />
-                                        <input
-                                            type="text"
-                                            name="name"
-                                            className="border border-gray-300 rounded-lg px-3 py-2 w-full mb-4"
-                                            placeholder="Tên loại sản phẩm"
-                                            required={true}
-                                            onChange={onChangedFields}
-                                           
-                                        />
-                                  </div>
-                                  <div className="flex justify-end">
-                                    <button onClick={isCloseInserItemType} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
-                                      Hủy
-                                    </button>
-                                    <button className="px-4 py-2 bg-blue-500 text-white rounded-lg ml-2 hover:bg-blue-600"
-                                            onClick={(event)=>onAddUpdateItemType(event)}
-                                        >Thêm</button>
-                                  </div>
-                                </div>
-                              </div>
-                             )
+                    <button className="bg-green p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3 ml-[250px] hover:bg-gray-300 "
+                            onClick={isOpenInserItemType}>
+                                Thêm
+                    </button>
+                            { insertItemType &&
+                                (
+                                    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+                                        <div className="bg-white rounded-lg shadow-lg p-6">
+                                            <div className="mb-4">
+                                                    <input
+                                                        type="text"
+                                                        name="id"
+                                                        className="border border-gray-300 rounded-lg px-3 py-2 w-full mb-2"
+                                                        placeholder="Mã loại sản phẩm"
+                                                        required={true}
+                                                        onChange={onChangedFields}
+                                                    />
+                                                    <input
+                                                        type="text"
+                                                        name="name"
+                                                        className="border border-gray-300 rounded-lg px-3 py-2 w-full mb-4"
+                                                        placeholder="Tên loại sản phẩm"
+                                                        required={true}
+                                                        onChange={onChangedFields}
+                                                    />
+                                            </div>
+                                            
+                                            <div className="flex justify-end">
+                                                <button onClick={isCloseInserItemType} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                                                    Hủy
+                                                </button>
+                                                
+                                                <button className="px-4 py-2 bg-blue-500 text-white rounded-lg ml-2 hover:bg-blue-600"
+                                                    onClick={(event)=>onAddUpdateItemType(event)}
+                                                >Thêm</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                </div>   
 
-                             }
-                     </div>   
-
-                     <div >
-                         <table  className=" w-full border border-black overflow-hidden border-collapse">
+                    <div >
+                        <table  className=" w-full border border-black overflow-hidden border-collapse">
                              <thead>
                                  <th className="sticky top-0 border border-black ">Mã</th>
                                  <th className="sticky top-0 border border-black ">Tên</th>
@@ -308,11 +302,7 @@ export default function ItemTypeManagementPage(){
                                                                         </div>
                                                                         )
 
-                             }
-
-
-
-
+                                                                    }
                                                             {/* delete     */}
                                                             <button 
                                                                 className="border border-black rounded-lg p-2 w-[60px] hover:bg-gray-300"
@@ -326,14 +316,11 @@ export default function ItemTypeManagementPage(){
                                     }
                                 )
                             }
-                         </table>
-                     </div>
+                        </table>
+                    </div>
     
                      
              </div>
             ) 
-                
-
-       
     )
 }
