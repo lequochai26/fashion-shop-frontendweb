@@ -37,7 +37,10 @@ export default function CartPage() {
     async function onRemoveCartItemButtonClick(cartItem: CartItem) {
         removeCartItemController.execute({
             cartItem,
-            onSuccess: init,
+            onSuccess: function () {
+                init();
+                (window as any).reloadGeneralHeader();
+            },
             onError: console.error
         });
     }
@@ -53,7 +56,10 @@ export default function CartPage() {
     async function onDeleteCartItemButtonClick(cartItem: CartItem) {
         deleteCartItemController.execute({
             cartItem,
-            onSuccess: init,
+            onSuccess: function () {
+                init();
+                (window as any).reloadGeneralHeader();
+            },
             onError: console.error
         });
     }
