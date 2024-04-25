@@ -5,10 +5,11 @@ import CheckThirdPartyAccountController, { CheckThirdPartyAccountParam } from ".
 import CancelThirdPartyAccountRegistrationController, { CancelThirdPartyAccountRegistrationParam } from "../../controllers/thirdpartyaccountregistrationfinishpage/CancelThirdPartyAccountRegistrationController";
 import ThirdPartyAccountRegistrationFinishController, { ThirdPartyAccountRegistrationFinishParam } from "../../controllers/thirdpartyaccountregistrationfinishpage/ThirdPartyAccountRegistrationFinishController";
 import { redirect } from "../../utils/Redirector";
+import LoadingPage from "../loadingpage/LoadingPage";
 
 export default function ThirdPartyAccountRegistrationFinishPage() {
     // States:
-    const [ access, setAccess ] = useState<boolean>(false);
+    const [ access, setAccess ] = useState<boolean | undefined>(undefined);
     const [ form, setForm ] = useState<any>({ gender: true });
 
     // Controllers:
@@ -78,9 +79,15 @@ export default function ThirdPartyAccountRegistrationFinishPage() {
 
     // Design:
     return (
+        access === undefined
+        ?
+        <LoadingPage />
+        :
         !access
-        ? <NoAccessPage />
-        : (
+        ?
+        <NoAccessPage />
+        :
+        (
             <div className="w-2/3 h-full flex flex-col border border-black border-solid overflow-scroll p-4">
                 <form className="w-full flex-1 flex flex-col justify-between
                 items-stretch" onSubmit={onSubmit}>

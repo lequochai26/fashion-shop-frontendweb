@@ -1,3 +1,4 @@
+import User from "../../entities/User";
 import RestResponse from "../../interfaces/RestResponse";
 import { apiFetch } from "../../utils/APIFetcher";
 import Controller from "../Controller";
@@ -14,11 +15,8 @@ export default class CheckThirdPartyAccountController implements Controller<Chec
             path: "/user?method=getThirdPartyAccount",
             method: "GET",
             onSuccess: async function (response: Response) {
-                const { result }: RestResponse<undefined> = await response.json();
-
-                if (result) {
-                    onSuccess(result !== null);
-                }
+                const { result }: RestResponse<User> = await response.json();
+                onSuccess(result !== undefined);
             },
             onFailed: async function (error) {
                 onError(error);
