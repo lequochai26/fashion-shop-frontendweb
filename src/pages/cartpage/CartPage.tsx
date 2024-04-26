@@ -10,6 +10,7 @@ import BuyController, { BuyParam } from "../../controllers/cartpage/BuyControlle
 import { redirect } from "../../utils/Redirector";
 import { formatMetadata } from "../../utils/CartItemHelper";
 import LoadingPage from "../loadingpage/LoadingPage";
+import { Mapping } from "../../entities/Item/Metadata";
 
 export default function CartPage() {
     // States:
@@ -94,6 +95,34 @@ export default function CartPage() {
             },
             onError: console.error
         });
+    }
+
+    // Operations:
+    function calcTotalPrice(): number {
+        if (!cart) {
+            return 0;
+        }
+
+        let result: number = 0;
+
+        for (const item of cart) {
+            if (!item.metadata) {
+                result += item.amount * item.item.price;
+            }
+            else {
+                const mapping: Mapping | undefined = item.item.metadata?.getMapping(
+                    item.metadata
+                );
+
+                if (!mapping) {
+                    continue;
+                }
+
+                result += mapping.price * item.amount;
+            }
+        }
+
+        return result;
     }
 
     // Component return:
@@ -207,7 +236,14 @@ export default function CartPage() {
             </div>
 
             {/* Action area */}
-            <div className="w-full h-fit flex flex-row-reverse border border-black border-solid">
+            <div
+                className="w-full h-fit flex flex-row justify-between items-center border border-black border-solid"
+            >
+                {/* Total price */}
+                <div className="flex-1 ml-3 text-lg">
+                    <b>Tổng giá trị:</b> ${ calcTotalPrice() }
+                </div>
+
                 {/* Buy button */}
                 <button
                     className="p-2 border border-black border-solid font-bold rounded-md m-3"
