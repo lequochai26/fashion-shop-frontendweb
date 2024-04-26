@@ -235,7 +235,7 @@ export default function ItemTypeManagementPage(){
                             Tải lại
                 </button>
 
-                <button className="bg-green-600 text-white p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3 ml-[250px] hover:bg-green-700 "
+                <button className="bg-green-600 text-white p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-[250px] hover:bg-green-700 "
                         onClick={isOpenInserItemType}>
                             Thêm
                 </button>
