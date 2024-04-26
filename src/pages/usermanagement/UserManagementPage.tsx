@@ -8,11 +8,12 @@ import CreateUserControlelr, { CreateUserControlelrParam } from "../../controlle
 import { API_URL } from "../../utils/APIFetcher";
 import UpdateUserController, { UpdateUserControllerParam } from "../../controllers/usermanagement/UpdateUserController";
 import DeleteUserController, { DeleteUserControllerParam } from "../../controllers/usermanagement/DeleteUserController";
+import NoAccessPage from "../noaccesspage/NoAccessPage";
 
 
 export default function UserManagement() {
     //Use state
-    const [users, setUsers] = useState<User[]>();
+    const [users, setUsers] = useState<User[] | undefined | null>();
     const [createFormVisible, setCreateFormVisible] = useState<boolean>(false);
     const [updateFormVisible, setUpdateFormVisible] = useState<boolean>(false);
     const [keyword, setKeyword] = useState<string>("");
@@ -30,7 +31,11 @@ export default function UserManagement() {
         loadUsersController.execute(
             {
                 onSuccess: setUsers,
+                onFailed(code, message) {
+                    setUsers(null);
+                },
                 onError(error) {
+                    setUsers(null);
                     alert("Đã có lỗi xảy ra trong quá trình thực thi!");
                     console.error(error);
                 },
@@ -60,7 +65,12 @@ export default function UserManagement() {
     async function onReloadButtonClick() {
         loadUsersController.execute({
             onSuccess: setUsers,
+            onFailed(code, message) {
+                setUsers(null);
+            },
             onError: function (error: any) {
+                setUsers(null);
+                alert(`Đã xảy ra lỗi trong quá trình thực thi!`);
                 console.error(error)
             }
         });
@@ -185,274 +195,280 @@ export default function UserManagement() {
 
 
     return (
+        users === undefined
+        ?
+        <LoadingPage />
+        :
         !users
-            ? <LoadingPage />
-            : <div className="w-full h-full">
-                {/* Search-bar */}
-                <div className="w-full h-16 flex items-center justify-start border border-black border-solid">
-                    {/* Keyword input field */}
-                    <input type="text" placeholder="Từ khóa tìm kiếm" className="border border-black border-solid rounded-md p-2 pl-4 w-1/2 ml-3"
-                        value={keyword} onChange={onKeywordChange}
-                    />
+        ?
+        <NoAccessPage />
+        :
+        <div className="w-full h-full">
+            {/* Search-bar */}
+            <div className="w-full h-16 flex items-center justify-start border border-black border-solid">
+                {/* Keyword input field */}
+                <input type="text" placeholder="Từ khóa tìm kiếm" className="border border-black border-solid rounded-md p-2 pl-4 w-1/2 ml-3"
+                    value={keyword} onChange={onKeywordChange}
+                />
 
-                    {/* Search button */}
-                    <button
-                        className="bg-white p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3"
-                        onClick={onSearchButtonClick}
-                    >
-                        Tìm kiếm
-                    </button>
+                {/* Search button */}
+                <button
+                    className="bg-white p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3"
+                    onClick={onSearchButtonClick}
+                >
+                    Tìm kiếm
+                </button>
 
-                    {/* Reload button */}
-                    <button
-                        className="bg-white p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3"
-                        onClick={onReloadButtonClick}
-                    >
-                        Tải lại
-                    </button>
+                {/* Reload button */}
+                <button
+                    className="bg-white p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3"
+                    onClick={onReloadButtonClick}
+                >
+                    Tải lại
+                </button>
 
-                    {/* Add button */}
-                    <button className="p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3 bg-green-500 text-white" onClick={addButton}>
-                        Thêm
-                    </button>
-                </div>
+                {/* Add button */}
+                <button className="p-2 pl-3 pr-3 border border-black border-solid rounded-md ml-3 bg-green-500 text-white" onClick={addButton}>
+                    Thêm
+                </button>
+            </div>
 
-                {/* User list */}
-                <div>
-                    <table className=" border border-black border-collapse  w-full ">
-                        <body>
-                            <tr className="text-base grid grid-cols-4 text-left">
-                                <th className={tableColumtStyle}>Email</th>
-                                <th className={tableColumtStyle}>Họ và tên</th>
-                                <th className={tableColumtStyle}>Giới tính</th>
-                                <th className={tableColumtStyle}>Hành động</th>
-                            </tr>
-                            {
-                                users && users.map((user) => (
-                                    <tr className="text-base grid grid-cols-4 text-left">
-                                        <td className={tableColumtStyle}>{user.email}</td>
-                                        <td className={tableColumtStyle}>{user.fullName}</td>
-                                        <td className={tableColumtStyle}>{user.gender ? "Nam" : "Nữ"}</td>
-                                        <td className={tableColumtStyle}>
-                                            <button className={`${buttonsStyle} bg-blue-500 text-white mr-3`} onClick={() => onUpdateButtonClick(user)}>Sửa</button>
-                                            <button className={`${buttonsStyle} bg-red-500 text-white mr-3`} 
-                                            onClick={(event) =>onDeleteButtonClick(event,user.email) }>Xoá</button>
-                                        </td>
-                                    </tr>
-                                ))
-                            }
+            {/* User list */}
+            <div>
+                <table className=" border border-black border-collapse  w-full ">
+                    <body>
+                        <tr className="text-base grid grid-cols-4 text-left">
+                            <th className={tableColumtStyle}>Email</th>
+                            <th className={tableColumtStyle}>Họ và tên</th>
+                            <th className={tableColumtStyle}>Giới tính</th>
+                            <th className={tableColumtStyle}>Hành động</th>
+                        </tr>
+                        {
+                            users && users.map((user) => (
+                                <tr className="text-base grid grid-cols-4 text-left">
+                                    <td className={tableColumtStyle}>{user.email}</td>
+                                    <td className={tableColumtStyle}>{user.fullName}</td>
+                                    <td className={tableColumtStyle}>{user.gender ? "Nam" : "Nữ"}</td>
+                                    <td className={tableColumtStyle}>
+                                        <button className={`${buttonsStyle} bg-blue-500 text-white mr-3`} onClick={() => onUpdateButtonClick(user)}>Sửa</button>
+                                        <button className={`${buttonsStyle} bg-red-500 text-white mr-3`} 
+                                        onClick={(event) =>onDeleteButtonClick(event,user.email) }>Xoá</button>
+                                    </td>
+                                </tr>
+                            ))
+                        }
 
-                        </body>
-                    </table>
-                </div>
+                    </body>
+                </table>
+            </div>
 
-                {/* Create form */}
-                {
-                    createFormVisible &&
-                    <div className="fixed top-0 left-0  w-screen h-screen bg-black bg-opacity-50">
-                        <form className="w-[80%] mt-10 h-full flex flex-row justify-between p-6 rounded  bg-white border border-black ml-32" onSubmit={onAddUserButtonClick}>
-                            {/* Left Content */}
-                            <div className="w-fit h-full">
-                                <label htmlFor="avatar">
-                                    <img
-                                        alt="Avatar"
-                                        src={
-                                            userInfo.avatar
-                                                ? URL.createObjectURL(userInfo.avatar)
-                                                : `/select_image.png`
-                                        }
-                                        className="inline-block w-72 h-72 m-3 border border-black border-solid cursor-pointer"
+            {/* Create form */}
+            {
+                createFormVisible &&
+                <div className="fixed top-0 left-0  w-screen h-screen bg-black bg-opacity-50">
+                    <form className="w-[80%] mt-10 h-full flex flex-row justify-between p-6 rounded  bg-white border border-black ml-32" onSubmit={onAddUserButtonClick}>
+                        {/* Left Content */}
+                        <div className="w-fit h-full">
+                            <label htmlFor="avatar">
+                                <img
+                                    alt="Avatar"
+                                    src={
+                                        userInfo.avatar
+                                            ? URL.createObjectURL(userInfo.avatar)
+                                            : `/select_image.png`
+                                    }
+                                    className="inline-block w-72 h-72 m-3 border border-black border-solid cursor-pointer"
+                                />
+                            </label>
+                            <input type="file" id="avatar" name="avatar" className="hidden"
+                                onChange={onFieldChange}
+                            />
+
+
+                            {/* Gender */}
+                            <div className="border border-dashed w-44 border-black p-2 flex flex-wrap m-3">
+                                <div className="w-full ">
+                                    <p>Giới tính:</p>
+                                </div>
+
+                                {/* Male */}
+                                <div className="border border-dashed w-fit border-black p-1 mr-2">
+                                    <input type="radio" name="gender" id="male" value={"male"} checked={userInfo.gender}
+                                        onChange={onFieldChange}
                                     />
-                                </label>
-                                <input type="file" id="avatar" name="avatar" className="hidden"
-                                    onChange={onFieldChange}
-                                />
-
-
-                                {/* Gender */}
-                                <div className="border border-dashed w-44 border-black p-2 flex flex-wrap m-3">
-                                    <div className="w-full ">
-                                        <p>Giới tính:</p>
-                                    </div>
-
-                                    {/* Male */}
-                                    <div className="border border-dashed w-fit border-black p-1 mr-2">
-                                        <input type="radio" name="gender" id="male" value={"male"} checked={userInfo.gender}
-                                            onChange={onFieldChange}
-                                        />
-                                        <label htmlFor="male" className="m-2">Nam</label>
-                                    </div>
-
-                                    {/* Female */}
-                                    <div className="border border-dashed w-fit border-black p-1">
-                                        <input type="radio" name="gender" id="female" value={"female"}
-                                            checked={!userInfo.gender}
-                                            onChange={onFieldChange}
-                                        />
-                                        <label htmlFor="female" className="m-3">Nữ</label>
-                                    </div>
+                                    <label htmlFor="male" className="m-2">Nam</label>
                                 </div>
 
-                                {/* Permission */}
-                                <select name="permission" id="" className="border border-gray-300 rounded-md ml-3 px-4 py-2" onChange={onFieldChange}>
-                                    <option value="CUSTOMER">CUSTOMER</option>
-                                    <option value="EMPLOYEE">EMPLOYEE</option>
-                                    <option value="MANAGER">MANAGER</option>
-                                </select>
-                            </div>
-
-                            {/* Info form */}
-                            <div className="h-full flex-1 flex flex-col justify-start p-3">
-                                {/* Full name input */}
-                                <input type="email" name="email" placeholder="Email"
-                                    className={inputFieldsStyle}
-                                    onChange={onFieldChange}
-                                    required={true}
-                                />
-
-                                {/* Password input */}
-                                <input type="password" name="password" placeholder="Mật khẩu"
-                                    className={inputFieldsStyle}
-                                    onChange={onFieldChange}
-                                    required={true} />
-
-                                {/* Full name input */}
-                                <input type="text" name="fullName" placeholder="Họ và tên"
-                                    className={inputFieldsStyle}
-                                    onChange={onFieldChange}
-                                    required={true} />
-
-
-                                {/* Phone number input */}
-                                <input type="tel" name="phoneNumber" placeholder="Số điện thoại"
-                                    className={inputFieldsStyle}
-                                    onChange={onFieldChange}
-                                    required={true} />
-
-                                {/* Address input */}
-                                <textarea name="address" placeholder="Địa chỉ"
-                                    className={`${inputFieldsStyle} flex-1`}
-                                    onChange={onFieldChange} required={true}
-                                >
-                                </textarea>
-
-                                {/* Action area */}
-                                <div className="h-fit p-3 mr-36 text-right">
-                                    <button type="button"
-                                        className={buttonsStyle}
-                                        onClick={cancel}
-                                    >
-                                        Hủy
-                                    </button>
-
-                                    <button className={`${buttonsStyle} ml-5 bg-green-600 text-white`}>
-                                        Thêm
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div >
-                }
-
-                {/* Update form */}
-                {
-                    (updateFormVisible && selectedUser) &&
-                    <div className="fixed top-0 left-0  w-screen h-screen bg-black bg-opacity-50">
-                        <form className="w-[80%] mt-10 h-full flex flex-row justify-between p-6 rounded  bg-white border border-black ml-32" onSubmit={onUpdateUserButtonClick}>
-                            {/* Left Content */}
-                            <div className="w-fit h-full">
-                                <label htmlFor="avatar">
-                                    <img
-                                        alt="Avatar"
-                                        src={
-                                            userInfo.avatar
-                                                ? URL.createObjectURL(userInfo.avatar)
-                                                : `${API_URL}${selectedUser.avatar}`
-                                        }
-                                        className="inline-block w-72 h-72 m-3 border border-black border-solid cursor-pointer"
+                                {/* Female */}
+                                <div className="border border-dashed w-fit border-black p-1">
+                                    <input type="radio" name="gender" id="female" value={"female"}
+                                        checked={!userInfo.gender}
+                                        onChange={onFieldChange}
                                     />
-                                </label>
-                                <input type="file" id="avatar" name="avatar" className="hidden"
-                                    onChange={onFieldChange}
-                                />
-
-
-                                {/* Gender */}
-                                <div className="border border-dashed w-44 border-black p-2 flex flex-wrap m-3">
-                                    <div className="w-full ">
-                                        <p>Giới tính:</p>
-                                    </div>
-
-                                    {/* Male */}
-                                    <div className="border border-dashed w-fit border-black p-1 mr-2">
-                                        <input type="radio" name="gender" id="male"
-                                            value={"male"}
-                                            onChange={onFieldChange}
-                                            checked={userInfo.gender !== undefined? userInfo.gender : selectedUser.gender}
-                                        />
-                                        <label htmlFor="male" className="m-2">Nam</label>
-                                    </div>
-
-                                    {/* Female */}
-                                    <div className="border border-dashed w-fit border-black p-1">
-                                        <input type="radio" name="gender" id="female"
-                                            value={"female"}
-                                            onChange={onFieldChange}
-                                            checked={userInfo.gender !== undefined? !userInfo.gender : !selectedUser.gender}
-                                        />
-                                        <label htmlFor="female" className="m-3">Nữ</label>
-                                    </div>
+                                    <label htmlFor="female" className="m-3">Nữ</label>
                                 </div>
-
-                                {/* Permission */}
-                                <select name="permission" id="" className="border border-gray-300 rounded-md ml-3 px-4 py-2" onChange={onFieldChange} value={selectedUser.permission}>
-                                    <option value="CUSTOMER">CUSTOMER</option>
-                                    <option value="EMPLOYEE">EMPLOYEE</option>
-                                    <option value="MANAGER">MANAGER</option>
-                                </select>
                             </div>
 
-                            {/* Info form */}
-                            <div className="h-full flex-1 flex flex-col justify-start p-3">
-                                {/*Email*/}
-                                <p className="p-3">{selectedUser.email}</p>
+                            {/* Permission */}
+                            <select name="permission" id="" className="border border-gray-300 rounded-md ml-3 px-4 py-2" onChange={onFieldChange}>
+                                <option value="CUSTOMER">CUSTOMER</option>
+                                <option value="EMPLOYEE">EMPLOYEE</option>
+                                <option value="MANAGER">MANAGER</option>
+                            </select>
+                        </div>
 
-                                {/* Full name input */}
-                                <input type="text" name="fullName" placeholder={selectedUser.fullName}
-                                    className={inputFieldsStyle}
-                                    onChange={onFieldChange}/>
+                        {/* Info form */}
+                        <div className="h-full flex-1 flex flex-col justify-start p-3">
+                            {/* Full name input */}
+                            <input type="email" name="email" placeholder="Email"
+                                className={inputFieldsStyle}
+                                onChange={onFieldChange}
+                                required={true}
+                            />
+
+                            {/* Password input */}
+                            <input type="password" name="password" placeholder="Mật khẩu"
+                                className={inputFieldsStyle}
+                                onChange={onFieldChange}
+                                required={true} />
+
+                            {/* Full name input */}
+                            <input type="text" name="fullName" placeholder="Họ và tên"
+                                className={inputFieldsStyle}
+                                onChange={onFieldChange}
+                                required={true} />
 
 
-                                {/* Phone number input */}
-                                <input type="tel" name="phoneNumber" placeholder={selectedUser.phoneNumber}
-                                    className={inputFieldsStyle}
-                                    onChange={onFieldChange}/>
+                            {/* Phone number input */}
+                            <input type="tel" name="phoneNumber" placeholder="Số điện thoại"
+                                className={inputFieldsStyle}
+                                onChange={onFieldChange}
+                                required={true} />
 
-                                {/* Address input */}
-                                <textarea name="address" placeholder={selectedUser.address}
-                                    className={`${inputFieldsStyle} flex-1`}
-                                    onChange={onFieldChange}
+                            {/* Address input */}
+                            <textarea name="address" placeholder="Địa chỉ"
+                                className={`${inputFieldsStyle} flex-1`}
+                                onChange={onFieldChange} required={true}
+                            >
+                            </textarea>
+
+                            {/* Action area */}
+                            <div className="h-fit p-3 mr-36 text-right">
+                                <button type="button"
+                                    className={buttonsStyle}
+                                    onClick={cancel}
                                 >
-                                </textarea>
+                                    Hủy
+                                </button>
 
-                                {/* Action area */}
-                                <div className="h-fit p-3 mr-36 text-right">
-                                    <button type="button"
-                                        className={buttonsStyle}
-                                        onClick={cancel}
-                                    >
-                                        Hủy
-                                    </button>
+                                <button className={`${buttonsStyle} ml-5 bg-green-600 text-white`}>
+                                    Thêm
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div >
+            }
 
-                                    <button className={`${buttonsStyle} ml-5 bg-blue-500 text-white`}
-                                    >
-                                        Sửa
-                                    </button>
+            {/* Update form */}
+            {
+                (updateFormVisible && selectedUser) &&
+                <div className="fixed top-0 left-0  w-screen h-screen bg-black bg-opacity-50">
+                    <form className="w-[80%] mt-10 h-full flex flex-row justify-between p-6 rounded  bg-white border border-black ml-32" onSubmit={onUpdateUserButtonClick}>
+                        {/* Left Content */}
+                        <div className="w-fit h-full">
+                            <label htmlFor="avatar">
+                                <img
+                                    alt="Avatar"
+                                    src={
+                                        userInfo.avatar
+                                            ? URL.createObjectURL(userInfo.avatar)
+                                            : `${API_URL}${selectedUser.avatar}`
+                                    }
+                                    className="inline-block w-72 h-72 m-3 border border-black border-solid cursor-pointer"
+                                />
+                            </label>
+                            <input type="file" id="avatar" name="avatar" className="hidden"
+                                onChange={onFieldChange}
+                            />
+
+
+                            {/* Gender */}
+                            <div className="border border-dashed w-44 border-black p-2 flex flex-wrap m-3">
+                                <div className="w-full ">
+                                    <p>Giới tính:</p>
+                                </div>
+
+                                {/* Male */}
+                                <div className="border border-dashed w-fit border-black p-1 mr-2">
+                                    <input type="radio" name="gender" id="male"
+                                        value={"male"}
+                                        onChange={onFieldChange}
+                                        checked={userInfo.gender !== undefined? userInfo.gender : selectedUser.gender}
+                                    />
+                                    <label htmlFor="male" className="m-2">Nam</label>
+                                </div>
+
+                                {/* Female */}
+                                <div className="border border-dashed w-fit border-black p-1">
+                                    <input type="radio" name="gender" id="female"
+                                        value={"female"}
+                                        onChange={onFieldChange}
+                                        checked={userInfo.gender !== undefined? !userInfo.gender : !selectedUser.gender}
+                                    />
+                                    <label htmlFor="female" className="m-3">Nữ</label>
                                 </div>
                             </div>
-                        </form>
-                    </div >
-                }
-            </div >
+
+                            {/* Permission */}
+                            <select name="permission" id="" className="border border-gray-300 rounded-md ml-3 px-4 py-2" onChange={onFieldChange} value={selectedUser.permission}>
+                                <option value="CUSTOMER">CUSTOMER</option>
+                                <option value="EMPLOYEE">EMPLOYEE</option>
+                                <option value="MANAGER">MANAGER</option>
+                            </select>
+                        </div>
+
+                        {/* Info form */}
+                        <div className="h-full flex-1 flex flex-col justify-start p-3">
+                            {/*Email*/}
+                            <p className="p-3">{selectedUser.email}</p>
+
+                            {/* Full name input */}
+                            <input type="text" name="fullName" placeholder={selectedUser.fullName}
+                                className={inputFieldsStyle}
+                                onChange={onFieldChange}/>
+
+
+                            {/* Phone number input */}
+                            <input type="tel" name="phoneNumber" placeholder={selectedUser.phoneNumber}
+                                className={inputFieldsStyle}
+                                onChange={onFieldChange}/>
+
+                            {/* Address input */}
+                            <textarea name="address" placeholder={selectedUser.address}
+                                className={`${inputFieldsStyle} flex-1`}
+                                onChange={onFieldChange}
+                            >
+                            </textarea>
+
+                            {/* Action area */}
+                            <div className="h-fit p-3 mr-36 text-right">
+                                <button type="button"
+                                    className={buttonsStyle}
+                                    onClick={cancel}
+                                >
+                                    Hủy
+                                </button>
+
+                                <button className={`${buttonsStyle} ml-5 bg-blue-500 text-white`}
+                                >
+                                    Sửa
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div >
+            }
+        </div >
     )
 }

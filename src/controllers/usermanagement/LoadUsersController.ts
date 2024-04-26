@@ -10,7 +10,7 @@ export default class LoadUsersController implements Controller<LoadUsersControll
     }
 
     // Methods:
-    public async execute({ onSuccess, onError }: LoadUsersControllerParam): Promise<void> {
+    public async execute({ onSuccess, onFailed, onError }: LoadUsersControllerParam): Promise<void> {
         await apiFetch(
             {
                 method: "GET",
@@ -22,7 +22,7 @@ export default class LoadUsersController implements Controller<LoadUsersControll
                         onSuccess(body.result as User[]);
                     }
                     else {
-                        alert(`Code: ${body.code}, Message: ${body.message}`);
+                        onFailed(body.code as string, body.message as string);
                     }
                 },
                 onFailed: async function (error) {
@@ -35,5 +35,6 @@ export default class LoadUsersController implements Controller<LoadUsersControll
 
 export interface LoadUsersControllerParam {
     onSuccess(users: User[]): void;
+    onFailed(code: string, message: string): void;
     onError(error: any): void;
 }
