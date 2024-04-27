@@ -95,9 +95,8 @@ export default function UpdatePersonnalInfoPage() {
         }
     }
 
-    function cancle(event: any) {
-        event.preventDefault();
-        redirect("/");
+    async function onCancelButtonClick() {
+        redirect("/usercentral");
     }
 
     //View
@@ -192,7 +191,8 @@ export default function UpdatePersonnalInfoPage() {
                         {/* button */}
                         <div className="flex">
                             <button className="border border-black rounded w-20 p-1 mr-3"
-                                onClick={cancle}>
+                                type="button"
+                                onClick={onCancelButtonClick}>
                                 Huỷ
                             </button>
                             <button className="border border-black rounded w-36 p-1" onClick={(event) => onUpdate(event)}>
