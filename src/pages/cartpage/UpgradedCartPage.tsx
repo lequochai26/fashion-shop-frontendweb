@@ -11,11 +11,14 @@ import { formatMetadata } from "../../utils/CartItemHelper";
 import LoadingPage from "../loadingpage/LoadingPage";
 import { Mapping } from "../../entities/Item/Metadata";
 import UpgradedLoadCartController, { LoadCartParam } from "../../controllers/UpgradedLoadCartController";
+import AttachCartPage from "./popups/AttachCartPage";
+import AttachCartController, { AttachCartParam } from "../../controllers/cartpage/AttachCartController";
 
 export default function UpgradedCartPage() {
     // States:
     const [ cart, setCart ] = useState<CartItem[] | undefined>(undefined);
     const [ sessionCart, setSessionCart ] = useState<CartItem[] | undefined>(undefined);
+    const [ popup, setPopup ] = useState<any | undefined>(undefined);
 
     // Controllers:
     const loadCartController: Controller<LoadCartParam> = new UpgradedLoadCartController();
@@ -23,6 +26,7 @@ export default function UpgradedCartPage() {
     const addCartItemController: Controller<AddCartItemParam> = new AddCartItemController();
     const deleteCartItemController: Controller<DeleteCartItemParam> = new DeleteCartItemController();
     const buyController: Controller<BuyParam> = new BuyController();
+    const attachCartController: Controller<AttachCartParam> = new AttachCartController()
 
     // Init
     function init() {
@@ -115,6 +119,38 @@ export default function UpgradedCartPage() {
                 alert(content);
             },
             onError: console.error
+        });
+    }
+
+    async function onAttachCartButtonClick() {
+        setPopup(
+            <AttachCartPage
+                cart={sessionCart as CartItem[]}
+                onCancel={() => setPopup(undefined)}
+                onSubmit={onAttachCart}
+            />
+        );
+    }
+
+    async function onAttachCart(cart: CartItem[]) {
+        attachCartController.execute({
+            items: cart.map(
+                cartItem => ({
+                    id: cartItem.item.id,
+                    metadata: cartItem.metadata
+                })
+            ),
+            onSuccess() {
+                setPopup(undefined);
+                init();
+            },
+            onFailed(code, message) {
+                alert(`Code: ${code}, Message: ${message}`);
+            },
+            onError(error) {
+                alert(`Đã có lỗi xảy ra trong quá trình thực thi!`);
+                console.error(error);
+            },
         });
     }
 
@@ -274,12 +310,13 @@ export default function UpgradedCartPage() {
                 </button>
             </div>
 
-            {/* Link cart button */}
+            {/* Attach cart button */}
             {
                 sessionCart
                 &&
                 <div
                     className="fixed right-5 bottom-5 border border-orange-600 border-solid rounded-md px-3 py-1 text-xl font-bold text-orange-600 flex flex-row justify-between items-center cursor-pointer"
+                    onClick={onAttachCartButtonClick}
                 >
                     <p
                         className="mr-2"
@@ -294,6 +331,9 @@ export default function UpgradedCartPage() {
                     />
                 </div>
             }
+
+            {/* Popup */}
+            { popup }
         </div>
     );
 }
