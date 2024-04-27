@@ -2,9 +2,10 @@ import { useEffect, useState } from "react"
 import User from "../../entities/User";
 import { API_URL } from "../../utils/APIFetcher";
 import Controller from "../../controllers/Controller";
-import GetCartItemAmountController, { GetCartItemAmountParam } from "../../controllers/general/GetCartItemAmountController";
 import { redirect } from "../../utils/Redirector";
 import LoadLoggedInUserController, { LoadLoggedInUserParam } from "../../controllers/LoadLoggedInUserController";
+import UpgradedGetCartItemAmountController, { GetCartItemAmountParam } from "../../controllers/UpgradedGetCartItemAmountController";
+import UpgradedLoadCartController, { LoadCartParam } from "../../controllers/UpgradedLoadCartController";
 
 export default function GeneralHeader() {
     // States:
@@ -13,7 +14,8 @@ export default function GeneralHeader() {
 
     // Controllers:
     const loadLoggedInUserController: Controller<LoadLoggedInUserParam> = new LoadLoggedInUserController();
-    const getCartItemAmountController: Controller<GetCartItemAmountParam> = new GetCartItemAmountController();
+    const getCartItemAmountController: Controller<GetCartItemAmountParam> = new UpgradedGetCartItemAmountController();
+    const loadCartController: Controller<LoadCartParam> = new UpgradedLoadCartController();
 
     // Init
     function init() {
@@ -24,6 +26,7 @@ export default function GeneralHeader() {
                     setUser(undefined);
                 },
                 onError: function (error: any) {
+                    alert(`Đã có lỗi xảy ra trong quá trình thực thi!`);
                     console.error(error);
                 }
             }
@@ -31,10 +34,15 @@ export default function GeneralHeader() {
     
         getCartItemAmountController.execute(
             {
+                loadCartController,
                 onSuccess: setCartItemAmount,
-                onError: function (error: any) {
+                onFailed(code, message) {
+                    alert(`Code: ${code}, Message: ${message}`);
+                },
+                onError(error) {
+                    alert(`Đã có lỗi xảy ra trong quá trình thực thi!`);
                     console.error(error);
-                }
+                },
             }
         );
     }
