@@ -30,7 +30,13 @@ export default function UpgradedCartPage() {
             onSuccess(sessionCart, userCart) {
                 if (userCart) {
                     setCart(userCart);
-                    setSessionCart(sessionCart);
+                    
+                    if (sessionCart.length > 0){
+                        setSessionCart(sessionCart);
+                    }
+                    else {
+                        setSessionCart(undefined);
+                    }
                 }
                 else {
                     setCart(sessionCart);
@@ -267,6 +273,27 @@ export default function UpgradedCartPage() {
                     Đặt hàng
                 </button>
             </div>
+
+            {/* Link cart button */}
+            {
+                sessionCart
+                &&
+                <div
+                    className="fixed right-5 bottom-5 border border-orange-600 border-solid rounded-md px-3 py-1 text-xl font-bold text-orange-600 flex flex-row justify-between items-center cursor-pointer"
+                >
+                    <p
+                        className="mr-2"
+                    >
+                        Liên kết giỏ hàng ({ sessionCart.length })
+                    </p>
+
+                    <img
+                        alt="Cart logo"
+                        src="/shopping-cart.png"
+                        className="w-12 h-12"
+                    />
+                </div>
+            }
         </div>
     );
 }
