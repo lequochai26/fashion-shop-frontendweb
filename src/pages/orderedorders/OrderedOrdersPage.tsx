@@ -77,6 +77,10 @@ export default function OrderedOrdersPage() {
         redirect(`/orderdetail?id=${id}`);
     }
 
+    async function onBackButtonClick() {
+        redirect("/usercentral");
+    }
+
     return (
         orders === undefined
         ?
@@ -86,8 +90,8 @@ export default function OrderedOrdersPage() {
         ?
         <NoAccessPage />
         :
-        (<div className="border border-black rounded-lg p-4 w-[800px]  mt-[50px] overflow-hidden">
-            <div>
+        (<div className="flex flex-col justify-stretch border border-black rounded-lg p-4 w-[800px]  mt-[50px] overflow-hidden">
+            <div className="flex-1">
                 <table className=" border border-black border-collapse ml-[40px] mt-[20px] w-[90%] ">
                     <thead>
                         <th colSpan={2} className="p-3 text-center text-2xl sticky top-0 bg-gray-200 border border-black m-0">ĐƠN HÀNG ĐÃ ĐẶT</th>
@@ -124,6 +128,15 @@ export default function OrderedOrdersPage() {
                         }
                     </div>
                 </table>
+            </div>
+
+            <div>
+                <button
+                    className="border border-black border-solid rounded-lg px-5 py-2 cursor-pointer"
+                    onClick={onBackButtonClick}
+                >
+                    Quay lại
+                </button>
             </div>
         </div>
         )
