@@ -1,6 +1,7 @@
 import { useState } from "react";
 import CartItem from "../../../entities/cartitem/CartItem";
 import { makeAPIUrl } from "../../../utils/APIFetcher";
+import { formatMetadata } from "../../../utils/CartItemHelper";
 
 export default function AttachCartPage({ cart, onCancel, onSubmit }: AttachCartPageParam) {
     // States:
@@ -104,6 +105,15 @@ export default function AttachCartPage({ cart, onCancel, onSubmit }: AttachCartP
                                                 slot.cartItem.item.price * slot.cartItem.amount
                                             }
                                         </div>
+
+                                        {/* Metadata */}
+                                        {
+                                            slot.cartItem.metadata
+                                            &&
+                                            <div>
+                                                <b>Phân loại: </b> { formatMetadata(slot.cartItem.metadata) }
+                                            </div>
+                                        }
 
                                         {/* Amount */}
                                         <div>
