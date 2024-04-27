@@ -182,6 +182,10 @@ export default function UpgradedCartPage() {
         return result;
     }
 
+    async function onBackButtonClick() {
+        redirect("/");
+    }
+
     // Component return:
     return (
         !cart
@@ -301,9 +305,17 @@ export default function UpgradedCartPage() {
                     <b>Tổng giá trị:</b> ${ calcTotalPrice() }
                 </div>
 
-                {/* Buy button */}
+                {/* Cancel button */}
                 <button
                     className="p-2 border border-black border-solid font-bold rounded-md m-3"
+                    onClick={onBackButtonClick}
+                >
+                    Quay lại
+                </button>
+
+                {/* Buy button */}
+                <button
+                    className="p-2 font-bold rounded-md m-3 bg-orange-600 text-white"
                     onClick={onBuyButtonClick}
                 >
                     Đặt hàng
