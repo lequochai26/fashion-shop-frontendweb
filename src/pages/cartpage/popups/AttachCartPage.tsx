@@ -44,7 +44,7 @@ export default function AttachCartPage({ cart, onCancel, onSubmit }: AttachCartP
             {/* Attach cart page */}
             <div className="bg-white p-5 rounded-md w-1/2 h-4/5 flex flex-col justify-between">
                 {/* Title */}
-                <div className="text-center text-xl font-bold">
+                <div className="text-center text-xl font-bold mb-3">
                     Liên kết giỏ hàng tạm thời
                 </div>
 
