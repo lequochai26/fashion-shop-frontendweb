@@ -16,7 +16,7 @@ export default class AddToCartController implements Controller<AddToCartParam> {
         if (!item.metadata) {
             await apiFetch(
                 {
-                    path: "/cart",
+                    path: "/cart?method=add",
                     method: "POST",
                     body: {
                         id: item.id,
