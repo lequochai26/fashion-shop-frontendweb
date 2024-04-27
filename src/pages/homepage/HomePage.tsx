@@ -138,7 +138,13 @@ export default function HomePage() {
 
                                         {/* Price */}
                                         <p className="w-11/12 h-fit mb-3">
-                                            Giá: {item.price}
+                                            Giá: {
+                                                !item.metadata
+                                                ?
+                                                `$${item.price}`
+                                                :
+                                                `$${item.metadata.mappings.sort((a: any, b: any) => a.price-b.price)[0].price} - $${item.metadata.mappings.sort((a: any, b: any) => b.price-a.price)[0].price}`
+                                            }
                                         </p>
 
                                         {/* Add to cart button */}
