@@ -13,7 +13,7 @@ export default class AddCartItemController implements Controller<AddCartItemPara
     public async execute({ cartItem, onSuccess, onError }: AddCartItemParam): Promise<void> {
         await apiFetch(
             {
-                path: "/cart",
+                path: "/cart?method=add",
                 method: "POST",
                 body: {
                     id: cartItem.item.id,
