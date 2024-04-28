@@ -184,7 +184,7 @@ export default function UpgradeItemDetailPage() {
                         </p><br />
 
                         {/* Price */}
-                        <p className="text-lg">Giá: ${item.metadata ? (metadata?.price ? metadata.price : getPriceDefault()) : item.price}</p><br />
+                        <p className="text-lg">Giá: ${item.metadata ? (metadata?.price !== undefined ? metadata.price : getPriceDefault()) : item.price}</p><br />
 
                         {/* Amount */}
                         <p>Số lượng: {item.metadata ? (metadata?.amount !== undefined ? metadata.amount: sumAmount(item.metadata.mappings)) : item.amount}</p><br />
