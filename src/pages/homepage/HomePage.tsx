@@ -89,7 +89,7 @@ export default function HomePage() {
         !items
         ? <LoadingPage />
         : (
-            <div className="w-full h-fit">
+            <div className="w-full h-fit ">
                 {/* Search-bar */}
                 <div className="w-full h-16 flex items-center justify-start border border-black border-solid">
                     {/* Keyword input field */}
