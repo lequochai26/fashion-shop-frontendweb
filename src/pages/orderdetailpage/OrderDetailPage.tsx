@@ -9,6 +9,7 @@ import LoadingPage from "../loadingpage/LoadingPage";
 import LoadOrderController, { LoadOrderParam } from "../../controllers/orderdetailpage/LoadOrderController";
 import Order from "../../entities/order/model/Order";
 import { redirect } from "../../utils/Redirector";
+import Item from "../../entities/order/model/Item";
 
 export default function OrderDetailPage() {
     // Queries
@@ -72,6 +73,10 @@ export default function OrderDetailPage() {
         redirect("/orderedorders")
     }
 
+    async function onItemNameClick(item: Item) {
+        redirect(`/itemdetail?id=${item.id}`);
+    }
+
     // Styles:
     const labelsStyle: string = "text-lg pt-1 pb-1"
 
@@ -130,7 +135,10 @@ export default function OrderDetailPage() {
                                 {/* Info */}
                                 <div className="flex-1 flex flex-col justify-between p-3">
                                     {/* Name */}
-                                    <p className="text-xl font-bold">
+                                    <p
+                                        className="text-xl font-bold cursor-pointer"
+                                        onClick={() => orderItem.item && onItemNameClick(orderItem.item)}
+                                    >
                                         { orderItem.item?.name }
                                     </p>
 
