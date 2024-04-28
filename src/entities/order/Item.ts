@@ -3,4 +3,5 @@ export default interface Item {
     name: string;
     metadata?: any;
     avatar: string;
+    price: number;
 }
