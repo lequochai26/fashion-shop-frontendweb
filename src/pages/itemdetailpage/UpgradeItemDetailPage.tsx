@@ -100,24 +100,29 @@ export default function UpgradeItemDetailPage() {
     };
 
     const onAddToCartButtonClick = async (item: Item) => {
-        const optionsKey = Object.keys(item?.metadata.options);
         if (item.metadata) {
+            const optionsKey = Object.keys(item?.metadata.options);
+            if (!metadata) {
+                alert("Vui lòng lựa chọn phân loại trước khi thêm vào giỏ hàng!");
+                return;
+            }
+
             if (
-                //Kiểm tra các thuộc tính của metadata có undefined hay không, dựa vào các key đã được định nghĩa trong metadata của item
-                optionsKey.every((key) => metadata[key] === undefined)
+                //Kiểm tra các thuộc tính của metadata có khác undefined hay không, dựa vào các key đã được định nghĩa trong metadata của item
+                optionsKey.every((key) => metadata[key] !== undefined)
             ) {
+                //Create metadata without "price, amount, buyPrice"
+                var filteredMetadata = Object.keys(metadata)
+                    .filter(key => key !== "price" && key !== "amount" && key !== "buyPrice")
+                    .reduce((obj: any, key) => {
+                        obj[key] = metadata[key];
+                        return obj;
+                    }, {});
+            } else {
                 alert("Vui lòng lựa chọn phân loại trước khi thêm vào giỏ hàng!");
                 return;
             }
         }
-
-        const filteredMetadata = Object.keys(metadata)
-        .filter(key => key !== "price" && key !== "amount" && key !== "buyPrice")
-        .reduce((obj: any, key) => {
-            obj[key] = metadata[key];
-            return obj;
-        }, {});
-
 
         addToCartController.execute(
             {
@@ -235,10 +240,10 @@ export default function UpgradeItemDetailPage() {
                 {
                     item?.metadata.options[optionKey].map(
                         (option: string) => (
-                            <>
+                            <div className="inline-block">
                                 <input type="radio" name={optionKey} id={optionKey} value={option} className="mr-1 ml-3" onChange={onChangedMetadata} />
                                 <label htmlFor={option} className="mr-5"> {option} </label>
-                            </>
+                            </div>
                         )
                     )
                 }
