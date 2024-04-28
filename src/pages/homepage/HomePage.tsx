@@ -89,9 +89,9 @@ export default function HomePage() {
         !items
         ? <LoadingPage />
         : (
-            <div className="w-full h-fit">
+            <div className="w-full h-fit ">
                 {/* Search-bar */}
-                <div className="w-full h-16 flex items-center justify-start border border-black border-solid">
+                <div id="top" className="w-full h-16 flex items-center justify-start border border-black border-solid">
                     {/* Keyword input field */}
                     <input type="text" placeholder="Từ khóa tìm kiếm" className="border border-black border-solid rounded-md p-2 pl-4 w-1/2 ml-3" value={keyword} onChange={onKeywordChange} />
 
@@ -159,6 +159,10 @@ export default function HomePage() {
                             }
                         )
                     }
+                </div>
+
+                <div>
+                    <a href="#top" className="scroll-behavior-scroll"><button>TOP</button></a>
                 </div>
             </div>
         )

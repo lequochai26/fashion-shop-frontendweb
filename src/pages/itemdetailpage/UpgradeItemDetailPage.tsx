@@ -24,7 +24,7 @@ export default function UpgradeItemDetailPage() {
     const [item, setItem] = useState<Item>();
     const [selectedImage, setSelectedImage] = useState<string | undefined>(undefined);
     const [metadata, setMetadata] = useState<any | undefined>(undefined);
-
+    const [isButtonEnabled, setIsButtonEnabled] = useState<Boolean> (false);
 
 
     useEffect(() => {
@@ -45,13 +45,16 @@ export default function UpgradeItemDetailPage() {
 
                 if (result) {
                     setMetadata(result);
+                    if(result.amount !== 0) {
+                        setIsButtonEnabled(true);
+                    } else {
+                        setIsButtonEnabled(false);
+                    }
                 }
             }
         }
     }
 
-
-    console.log(metadata);
     useEffect(
         function () {
             if (id) {
@@ -60,7 +63,9 @@ export default function UpgradeItemDetailPage() {
                         id: id,
                         onSuccess: (item: Item) => {
                             setItem(item);
-
+                            if(!item.metadata && item.amount !== 0) {
+                                setIsButtonEnabled(true);
+                            }
                         },
                         onError: function (error: any) {
                             console.error(error);
@@ -85,6 +90,7 @@ export default function UpgradeItemDetailPage() {
         //Set state metadata
         setMetadata({ ...metadata, [name]: value });
     }
+    console.log(metadata);
 
     const dongVietNam = "\u20AB";
     const getPriceDefault = () => {
@@ -111,17 +117,21 @@ export default function UpgradeItemDetailPage() {
                 //Kiểm tra các thuộc tính của metadata có khác undefined hay không, dựa vào các key đã được định nghĩa trong metadata của item
                 optionsKey.every((key) => metadata[key] !== undefined)
             ) {
-                //Create metadata without "price, amount, buyPrice"
-                var filteredMetadata = Object.keys(metadata)
-                    .filter(key => key !== "price" && key !== "amount" && key !== "buyPrice")
-                    .reduce((obj: any, key) => {
-                        obj[key] = metadata[key];
-                        return obj;
-                    }, {});
+                
             } else {
                 alert("Vui lòng lựa chọn phân loại trước khi thêm vào giỏ hàng!");
                 return;
             }
+        }
+
+        if (metadata) {
+            //Create metadata without "price, amount, buyPrice"
+            var filteredMetadata = Object.keys(metadata)
+            .filter(key => key !== "price" && key !== "amount" && key !== "buyPrice")
+            .reduce((obj: any, key) => {
+                obj[key] = metadata[key];
+                return obj;
+            }, {});
         }
 
         addToCartController.execute(
@@ -192,10 +202,10 @@ export default function UpgradeItemDetailPage() {
                         </p><br />
 
                         {/* Price */}
-                        <p className="text-lg">Giá: ${item.metadata ? (metadata?.price ? metadata.price : (item && getPriceDefault())) : item.price}</p><br />
+                        <p className="text-lg">Giá: ${item.metadata ? (metadata?.price ? metadata.price : getPriceDefault()) : item.price}</p><br />
 
                         {/* Amount */}
-                        <p>Số lượng: {item.metadata ? (metadata?.amount ? metadata.amount : (item && sumAmount(item.metadata.mappings))) : item.amount}</p><br />
+                        <p>Số lượng: {item.metadata ? (metadata?.amount !== undefined ? metadata.amount: sumAmount(item.metadata.mappings)) : item.amount}</p><br />
 
                         {/* Description */}
                         <p> Mô tả: {item && item.description} </p>
@@ -204,7 +214,7 @@ export default function UpgradeItemDetailPage() {
                         <br /><p>Phân loại: {!item.metadata && "Không có phân loại"}</p>
 
                         {
-                            (item && item.metadata) && (
+                            item.metadata && (
                                 <>
                                     {
                                         Object.keys(item.metadata.options).map(
@@ -217,12 +227,14 @@ export default function UpgradeItemDetailPage() {
                             )
                         }
 
+
                         <>
                             <br /><br /><button
                                 id="myButton"
                                 type="submit"
-                                className="border border-black rounded p-1 ml-40 cursor-pointer "
+                                className= {`border border-black rounded p-1 ml-40 cursor-pointer ${isButtonEnabled ? '' : 'opacity-50'}`}
                                 onClick={() => onAddToCartButtonClick(item)}
+                                disabled={!isButtonEnabled}
                             >
                                 Thêm vào giỏ hàng
                             </button>
