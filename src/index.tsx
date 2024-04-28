@@ -12,7 +12,6 @@ import UserCentralPage2 from './pages/usercentral/UserCentralPage2';
 
 import UpdatePersonnalInfoPage from './pages/updatepersonalInfo/UpdatePersonalInfoPage';
 import OrderedOrdersPage from './pages/orderedorders/OrderedOrdersPage';
-import OrderDetailPage from './pages/orderdetailpage/OrderDetailPage';
 import ThirdPartyAccountRegistrationFinishPage from './pages/thirdpartyaccountregistrationfinishpage/ThirdPartyAccountRegistrationFinishPage';
 import ItemTypeManagementPage from './pages/itemtypemanagement/ItemTypeManagementPage';
 import ItemManagementPage from './pages/itemmanagementpage/ItemManagementPage';
