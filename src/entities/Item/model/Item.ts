@@ -66,6 +66,30 @@ export default class Item {
         return false;
     }
 
+    public getLowestPrice(): number | undefined {
+        if (!this._metadata) {
+            return this._price;
+        }
+        else {
+            let lowestPrice: number = this._metadata.Mappings.sort(
+                (a, b) => a.price - b.price
+            )[0].price;
+            return lowestPrice;
+        }
+    }
+
+    public getHighestPrice(): number | undefined {
+        if (!this._metadata) {
+            return this._price;
+        }
+        else {
+            let highestPrice: number = this._metadata.Mappings.sort(
+                (a, b) => b.price - a.price
+            )[0].price;
+            return highestPrice;
+        }
+    }
+
     // Getters / setters:
     public get orders(): string[] {
         return this._orders;
