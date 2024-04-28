@@ -49,6 +49,23 @@ export default class Item {
         this._orders = orders || [];
     }
 
+    // Methods:
+    public isAvailable(): boolean {
+        if (!this._metadata) {
+            if (this._amount) {
+                return this._amount > 0;
+            }
+        }
+        else {
+            for (const mapping of this._metadata.Mappings) {
+                if (mapping.amount > 0) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     // Getters / setters:
     public get orders(): string[] {
         return this._orders;
