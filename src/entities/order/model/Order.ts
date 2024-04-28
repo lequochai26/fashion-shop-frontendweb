@@ -48,6 +48,17 @@ export default class Order {
         this._paymentMethod = paymentMethod;
     }
 
+    // Methods:
+    public toStringDate(): string | undefined {
+        const date = this._date;
+
+        if (!date) {
+            return undefined;
+        }
+        
+        return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+    }
+
     // Getters / setters:
     public get paymentMethod(): string | undefined {
         return this._paymentMethod;
