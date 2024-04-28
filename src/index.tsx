@@ -4,7 +4,6 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import GeneralHeader from './pages/general/GeneralHeader';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import HomePage from './pages/homepage/HomePage';
 import RegisterPage from './pages/registerpage/RegisterPage';
 import LoginPage from './pages/login/LoginPage';
 import UserCentralPage2 from './pages/usercentral/UserCentralPage2';
@@ -19,6 +18,8 @@ import UserManagement from './pages/usermanagement/UserManagementPage';
 import UpgradeItemDetailPage from './pages/itemdetailpage/UpgradeItemDetailPage';
 import UpgradedCartPage from './pages/cartpage/UpgradedCartPage';
 import OrderDetailPage from './pages/orderdetailpage/OrderDetailPage';
+import UpgradedHomePage from './pages/homepage/UpgradedHomePage';
+import HomePage from './pages/homepage/HomePage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -32,7 +33,7 @@ root.render(
           <Routes>
             <Route
               path='/'
-              Component={HomePage}
+              Component={UpgradedHomePage}
             />
             <Route
               path="/cart"
