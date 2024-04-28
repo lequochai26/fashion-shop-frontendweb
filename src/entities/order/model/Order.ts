@@ -10,6 +10,8 @@ export default class Order {
     private _createdBy?: User | undefined;
     private _orderedBy?: User | undefined;
     private _items: OrderItem[];
+    private _status?: string | undefined;
+    private _paymentMethod?: string | undefined;
 
     // Constructors:
     public constructor(
@@ -19,7 +21,9 @@ export default class Order {
         totalPrice?: number | undefined,
         createdBy?: User | undefined,
         orderedBy?: User | undefined,
-        items?: OrderItem[] | undefined
+        items?: OrderItem[] | undefined,
+        status?: string | undefined,
+        paymentMethod?: string | undefined
     ) {
         this._id = id;
         this._type = type;
@@ -28,9 +32,25 @@ export default class Order {
         this._createdBy = createdBy;
         this._orderedBy = orderedBy;
         this._items = items || [];
+        this._status = status;
+        this._paymentMethod = paymentMethod;
     }
 
     // Getters / setters:
+    public get paymentMethod(): string | undefined {
+        return this._paymentMethod;
+    }
+    public set paymentMethod(value: string | undefined) {
+        this._paymentMethod = value;
+    }
+
+    public get status(): string | undefined {
+        return this._status;
+    }
+    public set status(value: string | undefined) {
+        this._status = value;
+    }
+
     public get items(): OrderItem[] {
         return this._items;
     }
