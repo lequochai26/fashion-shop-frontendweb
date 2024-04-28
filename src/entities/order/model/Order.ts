@@ -2,6 +2,18 @@ import OrderItem from "./OrderItem";
 import User from "./User";
 
 export default class Order {
+    // Static methods:
+    public static getStatusTitle(status: string): string {
+        switch (status) {
+            case 'APPROVEMENT_AWAITING': return "Đang chờ xác nhận";
+            case 'DELIVERING': return "Đang giao";
+            case 'SUCCESS': return "Đã hoàn tất";
+            case 'PAYMENT_AWAITING': return "Đang chờ thanh toán";
+            case 'CANCELLED': return "Đã hủy";
+            default: return "Không rõ";
+        }
+    }
+
     // Fields:
     private _id?: string | undefined;
     private _type?: string | undefined;
