@@ -108,12 +108,12 @@ export default function OrderDetailPage() {
                 {
                     order?.items.map(
                         orderItem => (
-                            <div className="h-fit flex flex-row justify-between border border-black border-solid" key={orderItem.id}>
+                            <div className="h-fit flex flex-row justify-between border border-black border-solid" key={orderItem.item.id}>
                                 {/* Avatar */}
                                 <div className="w-fit">
                                     <img
                                         alt="Item's avatar"
-                                        src={makeAPIUrl(orderItem.avatar)}
+                                        src={makeAPIUrl(orderItem.item.avatar)}
                                         className="w-36 h-36 m-3 border border-black border-solid"
                                     />
                                 </div>
@@ -122,7 +122,7 @@ export default function OrderDetailPage() {
                                 <div className="flex-1 flex flex-col justify-between p-3">
                                     {/* Name */}
                                     <p className="text-xl font-bold">
-                                        { orderItem.name }
+                                        { orderItem.item.name }
                                     </p>
 
                                     {/* Price */}
