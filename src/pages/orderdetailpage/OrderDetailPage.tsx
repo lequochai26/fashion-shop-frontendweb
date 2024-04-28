@@ -8,6 +8,7 @@ import NoAccessPage from "../noaccesspage/NoAccessPage";
 import LoadingPage from "../loadingpage/LoadingPage";
 import LoadOrderController, { LoadOrderParam } from "../../controllers/orderdetailpage/LoadOrderController";
 import Order from "../../entities/order/model/Order";
+import { redirect } from "../../utils/Redirector";
 
 export default function OrderDetailPage() {
     // Queries
@@ -65,6 +66,10 @@ export default function OrderDetailPage() {
                 console.error(error);
             },
         });
+    }
+
+    async function onBackButtonClick() {
+        redirect("/orderedorders")
     }
 
     // Styles:
@@ -161,17 +166,42 @@ export default function OrderDetailPage() {
 
             {/* Actions */}
             {
-                (order.status === "APPROVEMENT_AWAITING")
-                &&
-                <div className="h-fit text-right">
+                // (order.status === "APPROVEMENT_AWAITING")
+                // &&
+                // <div className="h-fit text-right">
+                //     <button
+                //         className="text-lg font-bold border border-black border-solid rounded-md pt-1 pb-1 pl-4 pr-4 cursor-pointer mr-3"
+                //         onClick={onCancelButtonClick}
+                //     >
+                //         Hủy
+                //     </button>
+                // </div>
+            }
+
+            {/* Actions */}
+            <div
+                className="flex flex-row justify-between mt-5 mb-3"
+            >
+                {/* Back button */}
+                <button
+                    className="text-lg border border-black border-solid rounded-md pt-1 pb-1 pl-4 pr-4 cursor-pointer ml-3"
+                    onClick={onBackButtonClick}
+                >
+                    Quay lại
+                </button>
+
+                {/* Cancel button */}
+                {
+                    (order.status === "APPROVEMENT_AWAITING")
+                    &&
                     <button
-                        className="text-lg font-bold border border-black border-solid rounded-md pt-1 pb-1 pl-4 pr-4 cursor-pointer mr-3"
+                        className="text-lg rounded-md pt-1 pb-1 pl-4 pr-4 cursor-pointer mr-3 bg-red-600 text-white"
                         onClick={onCancelButtonClick}
                     >
                         Hủy
                     </button>
-                </div>
-            }
+                }
+            </div>
         </div>
     );
 }
