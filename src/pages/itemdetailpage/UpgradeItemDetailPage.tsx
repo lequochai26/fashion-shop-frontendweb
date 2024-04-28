@@ -106,24 +106,6 @@ export default function UpgradeItemDetailPage() {
     };
 
     const onAddToCartButtonClick = async (item: Item) => {
-        if (item.metadata) {
-            const optionsKey = Object.keys(item?.metadata.options);
-            if (!metadata) {
-                alert("Vui lòng lựa chọn phân loại trước khi thêm vào giỏ hàng!");
-                return;
-            }
-
-            if (
-                //Kiểm tra các thuộc tính của metadata có khác undefined hay không, dựa vào các key đã được định nghĩa trong metadata của item
-                optionsKey.every((key) => metadata[key] !== undefined)
-            ) {
-                
-            } else {
-                alert("Vui lòng lựa chọn phân loại trước khi thêm vào giỏ hàng!");
-                return;
-            }
-        }
-
         if (metadata) {
             //Create metadata without "price, amount, buyPrice"
             var filteredMetadata = Object.keys(metadata)
