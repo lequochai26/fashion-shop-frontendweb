@@ -1,11 +1,11 @@
+import { MetadataHolder } from "../../MetadataHolder";
 import Item from "./Item";
 
-export default class OrderItem {
+export default class OrderItem extends MetadataHolder {
     // Fields:
     private _item?: Item | undefined;
     private _amount?: number | undefined;
     private _price?: number | undefined;
-    private _metadata?: any;
 
     // Constructors:
     public constructor(
@@ -14,10 +14,10 @@ export default class OrderItem {
         price?: number | undefined,
         metadata?: any
     ) {
+        super(metadata);
         this._item = item;
         this._amount = amount;
         this._price = price;
-        this._metadata = metadata;
     }
 
     // Methods:
@@ -47,13 +47,6 @@ export default class OrderItem {
     }
 
     // Getters / setters:
-    public get metadata(): any {
-        return this._metadata;
-    }
-    public set metadata(value: any) {
-        this._metadata = value;
-    }
-
     public get price(): number | undefined {
         return this._price;
     }
