@@ -6,10 +6,10 @@ import { makeAPIUrl } from "../../utils/APIFetcher";
 import CancelOrderController, { CancelOrderParam } from "../../controllers/orderdetailpage/CancelOrderController";
 import NoAccessPage from "../noaccesspage/NoAccessPage";
 import LoadingPage from "../loadingpage/LoadingPage";
-import UpgradedLoadOrderController, { LoadOrderParam } from "../../controllers/orderdetailpage/UpgradedLoadOrderController";
+import LoadOrderController, { LoadOrderParam } from "../../controllers/orderdetailpage/LoadOrderController";
 import Order from "../../entities/order/model/Order";
 
-export default function UpgradedOrderDetailPage() {
+export default function OrderDetailPage() {
     // Queries
     const [ searchParams ] = useSearchParams();
     const id: string | null = searchParams.get("id");
@@ -18,7 +18,7 @@ export default function UpgradedOrderDetailPage() {
     const [ order, setOrder ] = useState<Order | undefined | null>(undefined);
 
     // Controllers:
-    const loadOrderController: Controller<LoadOrderParam> = new UpgradedLoadOrderController();
+    const loadOrderController: Controller<LoadOrderParam> = new LoadOrderController();
     const cancelOrderController: Controller<CancelOrderParam> = new CancelOrderController();
 
     // Init

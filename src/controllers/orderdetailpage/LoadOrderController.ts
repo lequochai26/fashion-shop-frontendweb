@@ -6,7 +6,7 @@ import { apiFetch } from "../../utils/APIFetcher";
 import Converter from "../../utils/Converter";
 import Controller from "../Controller";
 
-export default class UpgradedLoadOrderController implements Controller<LoadOrderParam> {
+export default class LoadOrderController implements Controller<LoadOrderParam> {
     // Fields:
     private orderConverter: Converter<OrderInfo, Order>;
 
