@@ -95,22 +95,22 @@ export default function OrderDetailPage() {
         >
             {/* ID */}
             <p className={`${labelsStyle} font-bold text-xl`}>
-                Mã đơn hàng: { order?.id }
+                <b>Mã đơn hàng:</b> { order?.id }
             </p>
 
             {/* Status */}
             <p className={labelsStyle}>
-                Trạng thái: { getOrderStatusTitle(order?.status as string) }
+                <b>Trạng thái:</b> { getOrderStatusTitle(order?.status as string) }
             </p>
 
             {/* Date */}
             <p className={labelsStyle}>
-                Ngày đặt: { order.toStringDate() }
+                <b>Ngày đặt:</b> { order.toStringDate() }
             </p>
 
             {/* Total price */}
             <p className={labelsStyle}>
-                Tổng giá trị: { order.totalPrice }
+                <b>Tổng giá trị:</b> { order.totalPrice }
             </p>
 
             {/* Order items */}
