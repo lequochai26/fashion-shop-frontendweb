@@ -28,10 +28,10 @@ export class MetadataHolder {
     }
 
     // Getters / setters:
-    protected get metadata(): any {
+    public get metadata(): any {
         return this._metadata;
     }
-    protected set metadata(value: any) {
+    public set metadata(value: any) {
         this._metadata = value;
     }
 }
