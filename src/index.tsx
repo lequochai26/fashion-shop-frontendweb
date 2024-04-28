@@ -5,12 +5,10 @@ import reportWebVitals from './reportWebVitals';
 import GeneralHeader from './pages/general/GeneralHeader';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/homepage/HomePage';
-import CartPage from './pages/cartpage/CartPage';
 import RegisterPage from './pages/registerpage/RegisterPage';
 import LoginPage from './pages/login/LoginPage';
 import UserCentralPage2 from './pages/usercentral/UserCentralPage2';
 
-import ItemDetailPage from './pages/itemdetailpage/ItemDetailPage';
 
 import UpdatePersonnalInfoPage from './pages/updatepersonalInfo/UpdatePersonalInfoPage';
 import OrderedOrdersPage from './pages/orderedorders/OrderedOrdersPage';
@@ -21,6 +19,7 @@ import ItemManagementPage from './pages/itemmanagementpage/ItemManagementPage';
 import UserManagement from './pages/usermanagement/UserManagementPage';
 import UpgradeItemDetailPage from './pages/itemdetailpage/UpgradeItemDetailPage';
 import UpgradedCartPage from './pages/cartpage/UpgradedCartPage';
+import UpgradedOrderDetailPage from './pages/orderdetailpage/UpgradedOrderDetailPage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -62,7 +61,7 @@ root.render(
             />
             <Route
               path="/orderdetail"
-              Component={OrderDetailPage}
+              Component={UpgradedOrderDetailPage}
             />
             <Route
               path="/updatepersonalinfo"
