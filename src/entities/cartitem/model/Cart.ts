@@ -26,7 +26,7 @@ export default class Cart {
     }
 
     public isEmpty(): boolean {
-        return this._items && this._items.length > 0;
+        return this._items && this._items.length <= 0;
     }
 
     // Getters / setters:
