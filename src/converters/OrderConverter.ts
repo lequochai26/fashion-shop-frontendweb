@@ -17,7 +17,7 @@ export default class OrderConverter implements Converter<OrderInfo, Order> {
     
     // Constructors:
     // eslint-disable-next-line @typescript-eslint/no-useless-constructor
-    public constructor() {
+    private constructor() {
         
     }
 

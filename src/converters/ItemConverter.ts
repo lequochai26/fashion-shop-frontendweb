@@ -16,7 +16,7 @@ export default class ItemConverter implements Converter<ItemInfo, Item> {
 
     // Constructors:
     // eslint-disable-next-line @typescript-eslint/no-useless-constructor
-    public constructor() {
+    private constructor() {
 
     }
 
