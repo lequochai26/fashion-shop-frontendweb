@@ -156,7 +156,7 @@ export default function UpgradedHomePage() {
                                                 ?
                                                 `${item.getPriceVND()}`
                                                 :
-                                                `${item.getLowestPriceVND()} - $${item.getHighestPriceVND()}`
+                                                `${item.getLowestPriceVND()} - ${item.getHighestPriceVND()}`
                                             }
                                         </p>
 
