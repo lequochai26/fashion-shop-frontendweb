@@ -1,3 +1,4 @@
+import CurrencyHelper from "../../../utils/CurrencyHelper";
 import Item from "../../Item/model/Item";
 
 export default class CartItem {
@@ -26,6 +27,10 @@ export default class CartItem {
         }
 
         return totalPrice;
+    }
+
+    public getTotalPriceVND(): string {
+        return CurrencyHelper.formatVND(this.calcTotalPrice());
     }
 
     // Getters / setters:
