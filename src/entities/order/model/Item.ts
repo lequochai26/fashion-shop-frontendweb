@@ -13,12 +13,14 @@ export default class Item {
         id?: string | undefined,
         name?: string | undefined,
         metadata?: any,
-        avatar?: string | undefined
+        avatar?: string | undefined,
+        price?: number | undefined
     ) {
         this._id = id;
         this._name = name;
         this._metadata = metadata;
         this._avatar = avatar;
+        this._price = price;
     }
 
     // Getters / setters:
