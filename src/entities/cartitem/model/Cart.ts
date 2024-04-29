@@ -25,6 +25,10 @@ export default class Cart {
         return CurrencyHelper.formatVND(this.calcTotalPrice());
     }
 
+    public isEmpty(): boolean {
+        return this._items && this._items.length > 0;
+    }
+
     // Getters / setters:
     public get items(): CartItem[] {
         return this._items;
