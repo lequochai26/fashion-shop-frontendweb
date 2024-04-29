@@ -1,3 +1,5 @@
+import CurrencyHelper from "../../../utils/CurrencyHelper";
+import { formatVNDate } from "../../../utils/DateHelper";
 import OrderItem from "./OrderItem";
 import User from "./User";
 
@@ -50,13 +52,13 @@ export default class Order {
 
     // Methods:
     public toStringDate(): string | undefined {
-        const date = this._date;
-
-        if (!date) {
-            return undefined;
+        if (this._date) {
+            return formatVNDate(this._date);
         }
-        
-        return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+    }
+
+    public getTotalPriceVND(): string {
+        return CurrencyHelper.formatVND(this._totalPrice || -1);
     }
 
     // Getters / setters:
