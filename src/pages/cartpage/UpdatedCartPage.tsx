@@ -282,7 +282,7 @@ export default function UpdatedCartPage() {
             >
                 {/* Total price */}
                 <div className="flex-1 ml-3 text-lg">
-                    <b>Tổng giá trị:</b> ${ cart.getTotalPriceVND() }
+                    <b>Tổng giá trị:</b> { cart.getTotalPriceVND() }
                 </div>
 
                 {/* Cancel button */}
