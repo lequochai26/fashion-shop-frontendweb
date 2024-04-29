@@ -1,5 +1,5 @@
 import Metadata from "../entities/Item/Metadata";
-import Item from "../entities/order/model/Item";
+import Item from "../entities/Item/model/Item";
 import Order from "../entities/order/model/Order";
 import OrderItem from "../entities/order/model/OrderItem";
 import User from "../entities/order/model/User";
@@ -39,18 +39,21 @@ export default class OrderConverter implements Converter<OrderInfo, Order> {
             new User(from.orderedBy.email, from.orderedBy.fullName)
         );
         order.items = from.items.map(
-            item => new OrderItem(
-                new Item(
-                    item.item.id,
-                    item.item.name,
-                    new Metadata(item.item.metadata),
-                    item.item.avatar,
-                    item.item.price
-                ),
-                item.amount,
-                item.price,
-                item.metadata
-            )
+            item => {
+                const orderItem: OrderItem = new OrderItem();
+                orderItem.amount = item.amount;
+                orderItem.price = item.price;
+                orderItem.metadata = item.metadata;
+
+                orderItem.item = new Item();
+                orderItem.item.id = item.item.id;
+                orderItem.item.name = item.item.name;
+                orderItem.item.metadata = item.item.metadata && new Metadata(item.item.metadata);
+                orderItem.item.avatar = item.item.avatar;
+                orderItem.item.price = item.item.price;
+
+                return orderItem;
+            }
         );
         order.status = from.status;
         order.paymentMethod = from.paymentMethod;
