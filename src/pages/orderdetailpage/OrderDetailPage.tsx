@@ -9,7 +9,7 @@ import LoadingPage from "../loadingpage/LoadingPage";
 import LoadOrderController, { LoadOrderParam } from "../../controllers/orderdetailpage/LoadOrderController";
 import Order from "../../entities/order/model/Order";
 import { redirect } from "../../utils/Redirector";
-import Item from "../../entities/order/model/Item";
+import Item from "../../entities/Item/model/Item";
 
 export default function OrderDetailPage() {
     // Queries
@@ -110,7 +110,7 @@ export default function OrderDetailPage() {
 
             {/* Total price */}
             <p className={labelsStyle}>
-                <b>Tổng giá trị:</b> ${ order.totalPrice }
+                <b>Tổng giá trị:</b> { order.getTotalPriceVND() }
             </p>
 
             {/* Order items */}
@@ -144,12 +144,12 @@ export default function OrderDetailPage() {
 
                                     {/* Item price */}
                                     <p className="text-lg">
-                                        <b>Đơn giá:</b> ${ orderItem.getItemPrice() }
+                                        <b>Đơn giá:</b> { orderItem.item?.getPriceVND(orderItem.metadata) }
                                     </p>
 
                                     {/* Price */}
                                     <p className="text-lg">
-                                        <b>Giá:</b> ${ orderItem.price }
+                                        <b>Giá:</b> { orderItem.getPriceVND() }
                                     </p>
 
                                     {/* Amount */}
