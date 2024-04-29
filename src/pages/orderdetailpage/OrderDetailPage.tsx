@@ -110,7 +110,7 @@ export default function OrderDetailPage() {
 
             {/* Total price */}
             <p className={labelsStyle}>
-                <b>Tổng giá trị:</b> { order.totalPrice }
+                <b>Tổng giá trị:</b> ${ order.totalPrice }
             </p>
 
             {/* Order items */}
@@ -144,12 +144,12 @@ export default function OrderDetailPage() {
 
                                     {/* Item price */}
                                     <p className="text-lg">
-                                        <b>Đơn giá:</b> { orderItem.getItemPrice() }
+                                        <b>Đơn giá:</b> ${ orderItem.getItemPrice() }
                                     </p>
 
                                     {/* Price */}
                                     <p className="text-lg">
-                                        <b>Giá:</b> { orderItem.price }
+                                        <b>Giá:</b> ${ orderItem.price }
                                     </p>
 
                                     {/* Amount */}
