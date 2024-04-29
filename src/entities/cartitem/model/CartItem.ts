@@ -25,7 +25,11 @@ export default class CartItem extends MetadataHolder {
         let totalPrice: number = 0;
 
         if (this._item && this._amount) {
-            totalPrice = this._amount * this._item.getPrice(this._metadata);
+            const itemPrice: number | undefined = this._item.getPrice(this._metadata);
+
+            if (itemPrice !== undefined) {
+                totalPrice = this._amount * itemPrice
+            }
         }
 
         return totalPrice;

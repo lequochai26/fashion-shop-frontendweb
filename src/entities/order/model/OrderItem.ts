@@ -22,8 +22,10 @@ export default class OrderItem extends MetadataHolder {
     }
 
     // Methods:
-    public getPriceVND(): string {
-        return CurrencyHelper.formatVND(this._price || -1);
+    public getPriceVND(): string | undefined {
+        if (this._price !== undefined) {
+            return CurrencyHelper.formatVND(this._price);
+        }
     }
 
     // Getters / setters:

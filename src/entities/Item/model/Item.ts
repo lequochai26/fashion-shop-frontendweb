@@ -53,7 +53,7 @@ export default class Item {
     // Methods:
     public isAvailable(): boolean {
         if (!this._metadata) {
-            if (this._amount) {
+            if (this._amount !== undefined) {
                 return this._amount > 0;
             }
         }
@@ -67,9 +67,9 @@ export default class Item {
         return false;
     }
 
-    public getLowestPrice(): number {
+    public getLowestPrice(): number | undefined {
         if (!this._metadata) {
-            if (this._price) {
+            if (this._price !== undefined) {
                 return this._price;
             }
         }
@@ -79,12 +79,11 @@ export default class Item {
             )[0].price;
             return lowestPrice;
         }
-        return -1;
     }
 
-    public getHighestPrice(): number {
+    public getHighestPrice(): number | undefined {
         if (!this._metadata) {
-            if (this._price) {
+            if (this._price !== undefined) {
                 return this._price;
             }
         }
@@ -94,20 +93,25 @@ export default class Item {
             )[0].price;
             return highestPrice;
         }
-        return -1;
     }
 
-    public getHighestPriceVND(): string {
-        return CurrencyHelper.formatVND(this.getHighestPrice());
+    public getHighestPriceVND(): string | undefined {
+        const highestPrice: number | undefined = this.getHighestPrice();
+        if (highestPrice !== undefined) {
+            return CurrencyHelper.formatVND(highestPrice);
+        }
     }
 
-    public getLowestPriceVND(): string {
-        return CurrencyHelper.formatVND(this.getLowestPrice());
+    public getLowestPriceVND(): string | undefined {
+        const lowestPrice: number | undefined = this.getLowestPrice();
+        if (lowestPrice !== undefined) {
+            return CurrencyHelper.formatVND(lowestPrice);
+        }
     }
 
-    public getPrice(metadata?: any): number {
+    public getPrice(metadata?: any): number | undefined {
         if (!this._metadata) {
-            if (this._price) {
+            if (this._price !== undefined) {
                 return this._price;
             }
         }
@@ -118,17 +122,18 @@ export default class Item {
                 return mapping.price;
             }
         }
-
-        return -1;
     }
 
-    public getPriceVND(metadata?: any): string {
-        return CurrencyHelper.formatVND(this.getPrice(metadata));
+    public getPriceVND(metadata?: any): string | undefined {
+        const price: number | undefined = this.getPrice(metadata);
+        if (price !== undefined) {
+            return CurrencyHelper.formatVND(price);
+        }
     }
 
-    public getBuyPrice(metadata?: any): number {
+    public getBuyPrice(metadata?: any): number | undefined {
         if (!this._metadata) {
-            if (this._buyPrice) {
+            if (this._buyPrice !== undefined) {
                 return this._buyPrice;
             }
         }
@@ -139,12 +144,11 @@ export default class Item {
                 return mapping.buyPrice;
             }
         }
-        return -1;
     }
 
-    public getAmount(metadata?: any): number {
+    public getAmount(metadata?: any): number | undefined {
         if (!this._metadata) {
-            if (this._amount) {
+            if (this._amount !== undefined) {
                 return this._amount;
             }
         }
@@ -155,7 +159,6 @@ export default class Item {
                 return mapping.amount;
             }
         }
-        return -1;
     }
 
     // Getters / setters:
