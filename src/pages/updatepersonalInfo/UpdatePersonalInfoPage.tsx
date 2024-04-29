@@ -114,7 +114,7 @@ export default function UpdatePersonnalInfoPage() {
                 {/* Form */}
                 <form action="" className="flex" style={{ width: "810px", height: "auto" }}>
                     {/* Avatar */}
-                    <div className="w-2/5 mr-10 flex flex-col items-center justify-center">
+                    <div className="w-2/5 mr-10 flex flex-col items-center">
                         <div onClick={handleAvatarClick} className="cursor-pointer">
                             <img
                                 src={
@@ -180,13 +180,12 @@ export default function UpdatePersonnalInfoPage() {
                         /> <br /><br />
 
                         {/* Address */}
-                        <input
-                            type="text"
-                            name="address"
+                        <textarea name="address"
                             placeholder={`Địa chỉ: ${user && user.address}`}
                             onChange={onChangedFields}
-                            className="w-96 h-6 border border-black rounded p-5 mt-3"
-                        /> <br /><br />
+                            className="w-96 h-32 border border-black rounded p-5 mt-3" >
+                        </textarea>
+                         <br /><br />
 
                         {/* button */}
                         <div className="flex">
