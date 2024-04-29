@@ -154,9 +154,9 @@ export default function UpgradedHomePage() {
                                             Giá: {
                                                 !item.metadata
                                                 ?
-                                                `$${item.price}`
+                                                `${item.getPriceVND()}`
                                                 :
-                                                `$${item.getLowestPrice()} - $${item.getHighestPrice()}`
+                                                `${item.getLowestPriceVND()} - $${item.getHighestPriceVND()}`
                                             }
                                         </p>
 
