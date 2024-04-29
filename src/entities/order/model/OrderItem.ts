@@ -1,6 +1,6 @@
 import CurrencyHelper from "../../../utils/CurrencyHelper";
 import { MetadataHolder } from "../../MetadataHolder";
-import Item from "./Item";
+import Item from "../../Item/model/Item";
 
 export default class OrderItem extends MetadataHolder {
     // Fields:
@@ -22,33 +22,8 @@ export default class OrderItem extends MetadataHolder {
     }
 
     // Methods:
-    public getItemPrice(): number {
-        // No metadata case
-        if (!this._metadata) {
-            if (!this._item?.price) {
-                return -1;
-            }
-
-            return this._item.price;
-        }
-        // Has metadata case
-        else {
-            if (!this._item?.metadata) {
-                return -1;
-            }
-
-            const mapping = this._item.metadata.getMapping(this._metadata);
-
-            if (!mapping) {
-                return -1;
-            }
-
-            return mapping.price;
-        }
-    }
-
-    public getItemPriceVND(): string {
-        return CurrencyHelper.formatVND(this.getItemPrice());
+    public getPriceVND(): string {
+        return CurrencyHelper.formatVND(this._price || -1);
     }
 
     // Getters / setters:
