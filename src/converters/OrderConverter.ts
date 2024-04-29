@@ -44,7 +44,8 @@ export default class OrderConverter implements Converter<OrderInfo, Order> {
                     item.item.id,
                     item.item.name,
                     new Metadata(item.item.metadata),
-                    item.item.avatar
+                    item.item.avatar,
+                    item.item.price
                 ),
                 item.amount,
                 item.price,
