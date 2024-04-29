@@ -1,3 +1,4 @@
+import CurrencyHelper from "../../../utils/CurrencyHelper";
 import { MetadataHolder } from "../../MetadataHolder";
 import Item from "./Item";
 
@@ -44,6 +45,10 @@ export default class OrderItem extends MetadataHolder {
 
             return mapping.price;
         }
+    }
+
+    public getItemPriceVND(): string {
+        return CurrencyHelper.formatVND(this.getItemPrice());
     }
 
     // Getters / setters:
