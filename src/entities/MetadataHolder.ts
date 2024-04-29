@@ -1,3 +1,5 @@
+import MetadataHelper from "../utils/MetadataHelper";
+
 export class MetadataHolder {
     // Fields:
     protected _metadata?: any;
@@ -11,20 +13,7 @@ export class MetadataHolder {
 
     // Methods:
     public toStringMetadata(): string | undefined {
-        if (!this._metadata) {
-            return undefined;
-        }
-
-        // Define string
-        let str: string = "";
-
-        // Converting
-        for (const key of Object.keys(this._metadata)) {
-            str += `${str !== '' ? ', ' : ''}${key}: ${this._metadata[key]}`;
-        }
-
-        // Return string
-        return str;
+        return this._metadata && MetadataHelper.toStringMetadata(this._metadata);
     }
 
     // Getters / setters:
