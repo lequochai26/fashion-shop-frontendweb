@@ -172,6 +172,12 @@ export default function UpdatedCartPage() {
         });
     }
 
+    async function onItemNameClick(cartItem: CartItem) {
+        if (cartItem.item?.id) {
+            redirect(`/itemdetail?id=${cartItem.item?.id}`);
+        }
+    }
+
     async function onBackButtonClick() {
         redirect("/");
     }
@@ -211,7 +217,7 @@ export default function UpdatedCartPage() {
                                 {/* Info area */}
                                 <div className="flex-1 mt-3 h-fit">
                                     {/* Name */}
-                                    <p className="font-bold text-lg">
+                                    <p className="font-bold text-lg cursor-pointer" onClick={() => onItemNameClick(cartItem)}>
                                         { cartItem.item?.name }
                                     </p>
 
