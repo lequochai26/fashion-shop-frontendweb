@@ -1,12 +1,11 @@
 import CurrencyHelper from "../../../utils/CurrencyHelper";
-import MetadataHelper from "../../../utils/MetadataHelper";
 import Item from "../../Item/model/Item";
+import { MetadataHolder } from "../../MetadataHolder";
 
-export default class CartItem {
+export default class CartItem extends MetadataHolder {
     // Fields:
     private _item?: Item | undefined;
     private _amount?: number | undefined;
-    private _metadata?: any;
 
     // Constructors:
     public constructor(
@@ -14,6 +13,8 @@ export default class CartItem {
         amount?: number | undefined,
         metadata?: any | undefined
     ) {
+        super(metadata);
+
         this._item = item;
         this._amount = amount;
         this._metadata = metadata;
@@ -34,18 +35,7 @@ export default class CartItem {
         return CurrencyHelper.formatVND(this.calcTotalPrice());
     }
 
-    public toStringMetadata(): string | undefined {
-        return this._metadata && MetadataHelper.toStringMetadata(this._metadata);
-    }
-
     // Getters / setters:
-    public get metadata(): any {
-        return this._metadata;
-    }
-    public set metadata(value: any) {
-        this._metadata = value;
-    }
-
     public get amount(): number | undefined {
         return this._amount;
     }
