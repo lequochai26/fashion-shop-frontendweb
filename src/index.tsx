@@ -19,7 +19,7 @@ import UpgradeItemDetailPage from './pages/itemdetailpage/UpgradeItemDetailPage'
 import UpgradedCartPage from './pages/cartpage/UpgradedCartPage';
 import OrderDetailPage from './pages/orderdetailpage/OrderDetailPage';
 import UpgradedHomePage from './pages/homepage/UpgradedHomePage';
-import HomePage from './pages/homepage/HomePage';
+import UpdatedCartPage from './pages/cartpage/UpdatedCartPage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -37,7 +37,7 @@ root.render(
             />
             <Route
               path="/cart"
-              Component={UpgradedCartPage}
+              Component={UpdatedCartPage}
             />
             <Route
               path="/usercentral"
