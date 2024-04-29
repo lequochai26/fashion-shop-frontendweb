@@ -15,7 +15,7 @@ import ThirdPartyAccountRegistrationFinishPage from './pages/thirdpartyaccountre
 import ItemTypeManagementPage from './pages/itemtypemanagement/ItemTypeManagementPage';
 import ItemManagementPage from './pages/itemmanagementpage/ItemManagementPage';
 import UserManagement from './pages/usermanagement/UserManagementPage';
-import UpgradeItemDetailPage from './pages/itemdetailpage/UpgradeItemDetailPage';
+import ItemDetailPage from './pages/itemdetailpage/ItemDetailPage';
 import UpgradedCartPage from './pages/cartpage/UpgradedCartPage';
 import OrderDetailPage from './pages/orderdetailpage/OrderDetailPage';
 import UpgradedHomePage from './pages/homepage/UpgradedHomePage';
@@ -57,7 +57,7 @@ root.render(
             />
             <Route
               path="/itemdetail"
-              Component={UpgradeItemDetailPage}
+              Component={ItemDetailPage}
             />
             <Route
               path="/orderdetail"

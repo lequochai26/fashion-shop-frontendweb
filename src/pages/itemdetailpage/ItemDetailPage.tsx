@@ -6,13 +6,8 @@ import Controller from "../../controllers/Controller";
 import { API_URL } from "../../utils/APIFetcher";
 import AddToCartController, { AddToCartParam } from "../../controllers/itemdetail/AddToCartController";
 import LoadingPage from "../loadingpage/LoadingPage";
+import CurrencyHelper from "../../utils/CurrencyHelper";
 
-interface Metadata {
-    size?: string;
-    color?: string;
-    amount?: number;
-    price?: number;
-}
 
 export default function ItemDetailPage() {
     //Get location 
@@ -29,19 +24,37 @@ export default function ItemDetailPage() {
     //States:
     const [item, setItem] = useState<Item>();
     const [selectedImage, setSelectedImage] = useState<string | undefined>(undefined);
-    const [metadata, setMetadata] = useState<Metadata | undefined>(undefined);
+    const [metadata, setMetadata] = useState<any | undefined>(undefined);
+    const [isButtonEnabled, setIsButtonEnabled] = useState<Boolean>(false);
+
 
     useEffect(() => {
-        if (metadata?.size && metadata.color) {
-            const result = item?.metadata.mappings.find((mapping: Metadata) => {
-                return mapping.size === metadata.size && mapping.color === metadata.color;
-            });
+        getMetadataProp();
+    }, [metadata])
 
-            if (result) {
-                setMetadata(result);
+    const getMetadataProp = () => {
+        if (item && item.metadata) {
+            var optionsKey = Object.keys(item?.metadata.options);
+
+            if (optionsKey) {
+                //Tìm ra một mapping có các thuộc tính giống với thuộc tính của metadata đã được chọn
+                const result = item?.metadata.mappings.find((mapping: any) => {
+                    return optionsKey.every((key) => {
+                        return metadata[key] === mapping[key];
+                    })
+                })
+
+                if (result) {
+                    setMetadata(result);
+                    if (result.amount !== 0) {
+                        setIsButtonEnabled(true);
+                    } else {
+                        setIsButtonEnabled(false);
+                    }
+                }
             }
         }
-    }, [metadata])
+    }
 
     useEffect(
         function () {
@@ -51,6 +64,9 @@ export default function ItemDetailPage() {
                         id: id,
                         onSuccess: (item: Item) => {
                             setItem(item);
+                            if (!item.metadata && item.amount !== 0) {
+                                setIsButtonEnabled(true);
+                            }
                         },
                         onError: function (error: any) {
                             console.error(error);
@@ -76,11 +92,9 @@ export default function ItemDetailPage() {
         setMetadata({ ...metadata, [name]: value });
     }
 
-    const dongVietNam = "\u20AB";
     const getPriceDefault = () => {
         const result = item?.metadata.mappings.sort((a: any, b: any) => a.price - b.price);
-        console.log(result);
-        return `${result[0].price} - $${result[result.length - 1].price}`;
+        return `${ CurrencyHelper.formatVND(result[0].price) } - ${CurrencyHelper.formatVND(result[result.length - 1].price)}`;
     }
     const sumAmount = (mappings: any) => {
         let totalAmount = 0;
@@ -90,20 +104,21 @@ export default function ItemDetailPage() {
         return totalAmount;
     };
 
-    const onAddToCartButtonClick = (item: Item) => {
-        console.log(metadata)
-        if (item.metadata && (metadata?.color === undefined || metadata.size === undefined)) {
-                alert("Vui lòng lựa chọn phân loại trước khi thêm vào giỏ hàng!");
-                return;
+    const onAddToCartButtonClick = async (item: Item) => {
+        if (metadata) {
+            //Create metadata without "price, amount, buyPrice"
+            var filteredMetadata = Object.keys(metadata)
+                .filter(key => key !== "price" && key !== "amount" && key !== "buyPrice")
+                .reduce((obj: any, key) => {
+                    obj[key] = metadata[key];
+                    return obj;
+                }, {});
         }
 
         addToCartController.execute(
             {
                 item: item,
-                metadata: metadata ? {
-                    size: metadata?.size,
-                    color: metadata?.color
-                } : undefined,
+                metadata: metadata ? filteredMetadata : undefined,
                 onSuccess: function () {
                     (window as any).reloadGeneralHeader();
                     alert("Thêm sản phẩm vào giỏ hàng thành công!")
@@ -168,69 +183,74 @@ export default function ItemDetailPage() {
                         </p><br />
 
                         {/* Price */}
-                        <p className="text-lg">Giá: ${item.metadata ? (metadata?.price ? metadata.price : (item && getPriceDefault())) : item.price}</p><br />
+                        <p className="text-lg">
+                            <b>Giá: </b>
+                            {item.metadata ? (metadata?.price !== undefined ?CurrencyHelper.formatVND(metadata.price) : getPriceDefault()) : CurrencyHelper.formatVND(item.price)}
+                        </p><br />
 
                         {/* Amount */}
-                        <p>Số lượng: {item.metadata ? (metadata?.amount ? metadata.amount : (item && sumAmount(item.metadata.mappings))) : item.amount}</p><br />
+                        <p>
+                            <b>Số lượng: </b>
+                            {item.metadata ? (metadata?.amount !== undefined ? metadata.amount : sumAmount(item.metadata.mappings)) : item.amount}
+                        </p><br />
 
                         {/* Description */}
-                        <p> Mô tả: {item && item.description} </p>
+                        <p>
+                            <b>Mô tả:</b>  {item && item.description}
+                        </p>
 
                         {/* Metadate */}
-                        <br /><p>Phân loại: {!item.metadata && "Không có phân loại"}</p>
+                        <br /><p>
+                            <b>Phân loại:</b> {!item.metadata && "Không có phân loại"}
+                        </p>
 
                         {
-                            (item && item.metadata) && (
+                            item.metadata && (
                                 <>
-                                    <p>Size:
-                                        {
-                                            item.metadata.options.size.map(
-                                                (size: string) => (
-                                                    <>
-                                                        <input type="radio" name="size" id={size} value={size} className="mr-1 ml-3" onChange={onChangedMetadata} />
-                                                        <label htmlFor={size} className="mr-5"> {size} </label>
-                                                    </>
-                                                )
+                                    {
+                                        Object.keys(item.metadata.options).map(
+                                            (optionKey) => (
+                                                OptionMetadata(optionKey)
                                             )
-                                        }
-                                    </p>
-
-                                    {/* Color */}
-                                    <br /><p>Màu:
-                                        {
-                                            item.metadata.options.color.map(
-                                                (color: string) => (
-                                                    <>
-                                                        <input type="radio" name="color" id={color} value={color} className="mr-1 ml-2" onChange={onChangedMetadata} />
-                                                        <label htmlFor={color} className="mr-5">{color}</label>
-                                                    </>
-                                                )
-                                            )
-                                        }
-                                    </p>
+                                        )
+                                    }
                                 </>
                             )
                         }
 
 
-
-                        {/* {
-                            (item && metadata?.size && metadata.color) && */}
                         <>
                             <br /><br /><button
                                 id="myButton"
                                 type="submit"
-                                className="border border-black rounded p-1 ml-40 cursor-pointer "
+                                className={`border border-black rounded p-1 ml-40 cursor-pointer ${isButtonEnabled ? '' : 'opacity-50'}`}
                                 onClick={() => onAddToCartButtonClick(item)}
+                                disabled={!isButtonEnabled}
                             >
                                 Thêm vào giỏ hàng
                             </button>
                         </>
-                        {/* } */}
 
                     </div>
                 </div>
             </div>
             )
     )
+
+    function OptionMetadata(optionKey: string) {
+        return (
+            <p>{`${optionKey}:`}
+                {
+                    item?.metadata.options[optionKey].map(
+                        (option: string) => (
+                            <div className="inline-block">
+                                <input type="radio" name={optionKey} id={optionKey} value={option} className="mr-1 ml-3" onChange={onChangedMetadata} />
+                                <label htmlFor={option} className="mr-5"> {option} </label>
+                            </div>
+                        )
+                    )
+                }
+            </p>
+        )
+    }
 }

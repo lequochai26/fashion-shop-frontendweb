@@ -7,6 +7,7 @@ import CancelOrderController, { CancelOrderControllerParam } from "../../control
 import { redirect } from "../../utils/Redirector"
 import LoadingPage from "../loadingpage/LoadingPage"
 import NoAccessPage from "../noaccesspage/NoAccessPage"
+import CurrencyHelper from "../../utils/CurrencyHelper"
 
 export default function OrderedOrdersPage() {
     //State:
@@ -92,7 +93,7 @@ export default function OrderedOrdersPage() {
                 :
                 (<div className="flex flex-col justify-stretch border border-black rounded-lg p-4 w-2/3  mt-[30px] overflow-hidden">
                     <div className="flex-1 p-3">
-                        <div className="p-3 text-center text-2xl font-bold top-0 bg-gray-200 border border-black m-0">
+                        <div className="p-3 text-center text-2xl font-bold top-0 bg-gray-200 border border-black rounded-t-md m-0">
                             ĐƠN HÀNG ĐÃ ĐẶT
                         </div>
                         <div className="overflow-scroll h-2/3">
@@ -102,7 +103,7 @@ export default function OrderedOrdersPage() {
                                         <p className="p-1 font-bold">
                                             {`Mã đơn hàng: ${order.id} (${getOrderStatusTitle(order.status)})`}</p>
                                         <p className="p-1">Ngày đặt hàng: {order.date.toString()} </p>
-                                        <p className="p-1">Tổng giá trị: ${order.totalPrice}</p>
+                                        <p className="p-1">Tổng giá trị: {CurrencyHelper.formatVND(order.totalPrice)}</p>
 
                                         <div className="text-center text-sm right-0 bottom-0 pr-3 pb-6 absolute">
 
