@@ -185,7 +185,7 @@ export default function UpgradeItemDetailPage() {
 
                         {/* Price */}
                         <p className="text-lg">
-                            <b>Giá:</b>
+                            <b>Giá: </b>
                             {dongVietNam}{item.metadata ? (metadata?.price !== undefined ? metadata.price : getPriceDefault()) : item.price}
                         </p><br />
 

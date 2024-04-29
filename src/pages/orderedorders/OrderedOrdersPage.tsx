@@ -83,30 +83,28 @@ export default function OrderedOrdersPage() {
 
     return (
         orders === undefined
-        ?
-        <LoadingPage />
-        :
-        !orders
-        ?
-        <NoAccessPage />
-        :
-        (<div className="flex flex-col justify-stretch border border-black rounded-lg p-4 w-[800px]  mt-[50px] overflow-hidden">
-            <div className="flex-1">
-                <table className=" border border-black border-collapse ml-[40px] mt-[20px] w-[90%] ">
-                    <thead>
-                        <th colSpan={2} className="p-3 text-center text-2xl sticky top-0 bg-gray-200 border border-black m-0">ĐƠN HÀNG ĐÃ ĐẶT</th>
-                    </thead>
-                    <div className="overflow-auto h-[375px] ">
-                        {
-                            orders.map((order) => (
-
-                                <tr key={order.id} className="h-fit">
-                                    <td className="border border-black w-[670px]  p-5 relative ">
-                                        <p className="p-1 font-bold">{`Mã đơn hàng: ${order.id} (${getOrderStatusTitle(order.status)})`}</p>
+            ?
+            <LoadingPage />
+            :
+            !orders
+                ?
+                <NoAccessPage />
+                :
+                (<div className="flex flex-col justify-stretch border border-black rounded-lg p-4 w-2/3  mt-[30px] overflow-hidden">
+                    <div className="flex-1 p-3">
+                        <div className="p-3 text-center text-2xl font-bold top-0 bg-gray-200 border border-black m-0">
+                            ĐƠN HÀNG ĐÃ ĐẶT
+                        </div>
+                        <div className="overflow-scroll h-2/3">
+                            {
+                                orders.map((order) => (
+                                    <div key={order.id} className="h-fit border border-black p-5 relative ">
+                                        <p className="p-1 font-bold">
+                                            {`Mã đơn hàng: ${order.id} (${getOrderStatusTitle(order.status)})`}</p>
                                         <p className="p-1">Ngày đặt hàng: {order.date.toString()} </p>
                                         <p className="p-1">Tổng giá trị: ${order.totalPrice}</p>
 
-                                        <div className="text-center text-sm absolute right-0 bottom-0 pr-3 pb-6">
+                                        <div className="text-center text-sm right-0 bottom-0 pr-3 pb-6 absolute">
 
                                             {
                                                 order.status === 'APPROVEMENT_AWAITING' &&
@@ -117,28 +115,25 @@ export default function OrderedOrdersPage() {
                                                     Hủy
                                                 </button>
                                             }
-                                            <button className="border border-black rounded-lg p-2 ml-[15px] hover:bg-gray-300"
+                                            <button className="border border-black rounded-lg p-2 ml-[15px]  hover:bg-gray-300"
                                                 onClick={(event) => onOrderDetail(event, order.id)}>
                                                 Xem chi tiết
                                             </button>
                                         </div>
-                                    </td>
-                                </tr>
-                            ))
-                        }
+                                    </div>
+                                ))
+                            }
+                        </div>
+                        <div>
+                            <button
+                                className="border border-black border-solid rounded-lg px-5 py-2 mt-2 cursor-pointer"
+                                onClick={onBackButtonClick}
+                            >
+                                Quay lại
+                            </button>
+                        </div>
                     </div>
-                </table>
-            </div>
-
-            <div>
-                <button
-                    className="border border-black border-solid rounded-lg px-5 py-2 cursor-pointer"
-                    onClick={onBackButtonClick}
-                >
-                    Quay lại
-                </button>
-            </div>
-        </div>
-        )
+                </div>
+                )
     )
 }
