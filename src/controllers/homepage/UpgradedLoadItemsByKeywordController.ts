@@ -12,7 +12,7 @@ export default class UpgradedLoadItemsByKeywordController implements Controller<
 
     // Constructors:
     public constructor() {
-        this.itemConverter = new ItemConverter();
+        this.itemConverter = ItemConverter.getInstance();
     }
 
     // Methods:

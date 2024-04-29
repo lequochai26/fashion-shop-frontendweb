@@ -12,7 +12,7 @@ export default class UpgradedLoadAllItemsController implements Controller<LoadAl
 
     // Constructors:
     public constructor() {
-        this.itemConverter = new ItemConverter();
+        this.itemConverter = ItemConverter.getInstance();
     }
 
     // Methods:
