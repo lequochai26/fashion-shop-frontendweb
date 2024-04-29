@@ -1,4 +1,5 @@
-import Metadata from "../Metadata";
+import CurrencyHelper from "../../../utils/CurrencyHelper";
+import Metadata, { Mapping } from "../Metadata";
 import Brand from "./Brand";
 import ItemType from "./ItemType";
 
@@ -66,9 +67,11 @@ export default class Item {
         return false;
     }
 
-    public getLowestPrice(): number | undefined {
+    public getLowestPrice(): number {
         if (!this._metadata) {
-            return this._price;
+            if (this._price) {
+                return this._price;
+            }
         }
         else {
             let lowestPrice: number = this._metadata.Mappings.sort(
@@ -76,11 +79,14 @@ export default class Item {
             )[0].price;
             return lowestPrice;
         }
+        return -1;
     }
 
-    public getHighestPrice(): number | undefined {
+    public getHighestPrice(): number {
         if (!this._metadata) {
-            return this._price;
+            if (this._price) {
+                return this._price;
+            }
         }
         else {
             let highestPrice: number = this._metadata.Mappings.sort(
@@ -88,6 +94,68 @@ export default class Item {
             )[0].price;
             return highestPrice;
         }
+        return -1;
+    }
+
+    public getHighestPriceVND(): string {
+        return CurrencyHelper.formatVND(this.getHighestPrice());
+    }
+
+    public getLowestPriceVND(): string {
+        return CurrencyHelper.formatVND(this.getLowestPrice());
+    }
+
+    public getPrice(metadata?: any): number {
+        if (!this._metadata) {
+            if (this._price) {
+                return this._price;
+            }
+        }
+        else if (metadata) {
+            const mapping: Mapping | undefined = this._metadata.getMapping(metadata);
+
+            if (mapping) {
+                return mapping.price;
+            }
+        }
+
+        return -1;
+    }
+
+    public getPriceVND(metadata?: any): string {
+        return CurrencyHelper.formatVND(this.getPrice(metadata));
+    }
+
+    public getBuyPrice(metadata?: any): number {
+        if (!this._metadata) {
+            if (this._buyPrice) {
+                return this._buyPrice;
+            }
+        }
+        else if (metadata) {
+            const mapping = this._metadata.getMapping(metadata);
+
+            if (mapping) {
+                return mapping.buyPrice;
+            }
+        }
+        return -1;
+    }
+
+    public getAmount(metadata?: any): number {
+        if (!this._metadata) {
+            if (this._amount) {
+                return this._amount;
+            }
+        }
+        else if (metadata) {
+            const mapping = this._metadata.getMapping(metadata);
+
+            if (mapping) {
+                return mapping.amount;
+            }
+        }
+        return -1;
     }
 
     // Getters / setters:
