@@ -30,7 +30,8 @@ export default function UpgradedHomePage() {
             {
                 keyword,
                 onEmpty() {
-                    alert(`Vui lòng nhập từ khóa tìm kiếm!`)
+                    alert(`Vui lòng nhập từ khóa tìm kiếm!`);
+                    setItems([]);
                 },
                 onSuccess: function (items) {
                     setItems(items);
