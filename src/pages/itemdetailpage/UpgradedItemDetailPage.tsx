@@ -72,15 +72,6 @@ export default function UpgradedItemDetailPage() {
         //Set state metadata
         setMetadata({ ...metadata, [name]: value });
     }
-
-    const sumAmount = (mappings: any) => {
-        let totalAmount = 0;
-        mappings.forEach((mapping: any) => {
-            totalAmount += mapping.amount;
-        });
-        return totalAmount;
-    };
-
     function getPriceMapping() {
         if (metadata && item?.getPriceVND(metadata)) {
             return item.getPriceVND(metadata);
