@@ -1,20 +1,19 @@
 import { useEffect, useState } from "react"
-import OrderInfo from "../../entities/order/Order"
 import Controller from "../../controllers/Controller"
-import LoadOrderedOrderController, { OrderedOrderControllerParam } from "../../controllers/orderedorders/LoadOrderedOrderController"
-import { getOrderStatusTitle } from "../../utils/OrderHelper"
 import CancelOrderController, { CancelOrderControllerParam } from "../../controllers/orderedorders/CancelOrderController"
 import { redirect } from "../../utils/Redirector"
 import LoadingPage from "../loadingpage/LoadingPage"
 import NoAccessPage from "../noaccesspage/NoAccessPage"
-import CurrencyHelper from "../../utils/CurrencyHelper"
+import Order from "../../entities/order/model/Order"
+import UpgradedLoadOrderedOrdersController, { UpgradedLoadOrderedOrdersParams } from "../../controllers/orderedorders/UpgradedLoadOrderedOrdersController"
 
-export default function OrderedOrdersPage() {
+
+export default function UpgradedOrderedOrdersPage() {
     //State:
-    const [orders, setOrders] = useState<OrderInfo[] | undefined | null>(undefined);
+    const [orders, setOrders] = useState<Order[] | undefined | null>(undefined);
 
     //Controller
-    const orderedOrderController: Controller<OrderedOrderControllerParam> = new LoadOrderedOrderController();
+    const orderedOrdersController: Controller<UpgradedLoadOrderedOrdersParams> = new UpgradedLoadOrderedOrdersController()
     const cancelOrderController: Controller<CancelOrderControllerParam> = new CancelOrderController();
 
 
@@ -24,9 +23,9 @@ export default function OrderedOrdersPage() {
 
     //Method
     function init() {
-        orderedOrderController.execute(
+        orderedOrdersController.execute(
             {
-                onSuccess: async function (orders: OrderInfo[]) {
+                onSuccess: async function (orders: Order[]) {
                     setOrders(orders);
                 },
                 onFailed(code, message) {
@@ -96,14 +95,15 @@ export default function OrderedOrdersPage() {
                         <div className="p-3 text-center text-2xl font-bold top-0 bg-gray-200 border border-black rounded-t-md m-0">
                             ĐƠN HÀNG ĐÃ ĐẶT
                         </div>
-                        <div className="overflow-scroll h-2/3">
+                        <div className="overflow-scroll h-1/2">
                             {
                                 orders.map((order) => (
                                     <div key={order.id} className="h-fit border border-black p-5 relative ">
                                         <p className="p-1 font-bold">
-                                            {`Mã đơn hàng: ${order.id} (${getOrderStatusTitle(order.status)})`}</p>
-                                        <p className="p-1">Ngày đặt hàng: {order.date.toString()} </p>
-                                        <p className="p-1">Tổng giá trị: {CurrencyHelper.formatVND(order.totalPrice)}</p>
+                                            {`Mã đơn hàng: ${order.id} (${Order.getStatusTitle(order.status as string)})`}
+                                        </p>
+                                        <p className="p-1">Ngày đặt hàng: {order.toStringDate()} </p>
+                                        <p className="p-1">Tổng giá trị: {order.getTotalPriceVND()}</p>
 
                                         <div className="text-center text-sm right-0 bottom-0 pr-3 pb-6 absolute">
 
@@ -111,13 +111,13 @@ export default function OrderedOrdersPage() {
                                                 order.status === 'APPROVEMENT_AWAITING' &&
                                                 <button
                                                     className="border border-black rounded-lg p-2 w-[60px] hover:bg-gray-300"
-                                                    onClick={(event) => onCancelOrder(event, order.id)}
+                                                    onClick={(event) => onCancelOrder(event, order.id as string)}
                                                 >
                                                     Hủy
                                                 </button>
                                             }
                                             <button className="border border-black rounded-lg p-2 ml-[15px]  hover:bg-gray-300"
-                                                onClick={(event) => onOrderDetail(event, order.id)}>
+                                                onClick={(event) => onOrderDetail(event, order.id as string)}>
                                                 Xem chi tiết
                                             </button>
                                         </div>
