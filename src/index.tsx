@@ -20,6 +20,8 @@ import UpgradedCartPage from './pages/cartpage/UpgradedCartPage';
 import OrderDetailPage from './pages/orderdetailpage/OrderDetailPage';
 import UpgradedHomePage from './pages/homepage/UpgradedHomePage';
 import UpdatedCartPage from './pages/cartpage/UpdatedCartPage';
+import UpgradedItemDetailPage from './pages/itemdetailpage/UpgradedItemDetailPage';
+import UpgradedOrderedOrdersPage from './pages/orderedorders/UpgradedOrderedOrdersPage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -53,11 +55,11 @@ root.render(
             />
             <Route
               path="/orderedorders"
-              Component={OrderedOrdersPage}
+              Component={UpgradedOrderedOrdersPage}
             />
             <Route
               path="/itemdetail"
-              Component={ItemDetailPage}
+              Component={UpgradedItemDetailPage}
             />
             <Route
               path="/orderdetail"
