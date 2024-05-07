@@ -1,5 +1,5 @@
 import { FormEventHandler, useEffect, useState } from "react";
-import ItemType from "../../entities/Item/ItemType";
+
 import Controller from "../../controllers/Controller";
 import LoadItemItypeController, { LoadItemTypeControllerParam } from "../../controllers/itemtypemanagement/LoadItemTypeController";
 import LoadingPage from "../loadingpage/LoadingPage";
@@ -12,6 +12,7 @@ import UpdateItemTypeController, { UpdateItemTypeParam } from "../../controllers
 import AddItemTypeController, { AddItemTypeParam } from "../../controllers/itemtypemanagement/AddItemTypeController";
 import LoadLoggedInUserController, { LoadLoggedInUserParam } from "../../controllers/LoadLoggedInUserController";
 import NoAccessPage from "../noaccesspage/NoAccessPage";
+import ItemType from "../../entities/itemtype/ItemType";
 
 export default function ItemTypeManagementPage(){
     //state
@@ -24,6 +25,9 @@ export default function ItemTypeManagementPage(){
 
     const[insertItemType,setInsert] = useState(false);
     const[updateItemType,setUpdate] = useState(false);
+
+   
+
     
     
 
@@ -89,7 +93,7 @@ export default function ItemTypeManagementPage(){
     }
 
     //insert
-    async function onAddUpdateItemType(event:any) {
+    async function onAddItemType(event:any) {
         event.preventDefault();
 
         if(!itemTypeInfo.id || !itemTypeInfo.name){
@@ -102,6 +106,7 @@ export default function ItemTypeManagementPage(){
                 itemTypeInfo,
                 onSuccess:function(){
                     alert("Thêm loại sản phẩm thành công");
+                    redirect("/management/itemtype");
 
                 },
                 onFailed:function(code,message){
@@ -145,6 +150,8 @@ export default function ItemTypeManagementPage(){
        
         
     }
+
+  
 
     //search by keyword
     async function onKeywordChange(event:any) {
@@ -191,7 +198,7 @@ export default function ItemTypeManagementPage(){
                     id:id,
                     onSuccess:async function () {
                         alert("Xóa thành công");
-                        redirect("/itemtypemanagementpage");
+                        redirect("/management/itemtype");
                     },
                     onError: console.error
                 }
@@ -268,7 +275,7 @@ export default function ItemTypeManagementPage(){
                                             </button>
                                             
                                             <button className="px-4 py-2 bg-blue-500 text-white rounded-lg ml-2 hover:bg-blue-600"
-                                                onClick={(event)=>onAddUpdateItemType(event)}
+                                                onClick={(event)=>onAddItemType(event)}
                                             >Thêm</button>
                                         </div>
                                     </div>
@@ -299,42 +306,46 @@ export default function ItemTypeManagementPage(){
                                                     <div >
                                                         <button 
                                                             className="border border-black rounded-lg p-2 w-[60px] bg-sky-500 text-white hover:bg-sky-600 mr-2" onClick={isOpenUpdateItemType}>Sửa</button>
-                                                            { updateItemType &&(
-                                                                        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-                                                                        <div className="bg-white rounded-lg shadow-lg p-6">
-                                                                        <div className="mb-4">
-                                                                                <input
-                                                                                    type="text"
-                                                                                    name="id"
-                                                                                    className="border border-gray-300 rounded-lg px-3 py-2 w-full mb-2"
-                                                                                    placeholder={`Mã loại sản phẩm: ${ itemType.id}`}
-                                                                                    required={true}
-                                                                                    onChange={onChangedFields}
-                                                                                    
-                                                                                />
-                                                                                <input
-                                                                                    type="text"
-                                                                                    name="name"
-                                                                                    className="border border-gray-300 rounded-lg px-3 py-2 w-full mb-4"
-                                                                                    placeholder={`Tên loại sản phẩm:`}
-                                                                                    required={true}
-                                                                                    onChange={onChangedFields}
-                                                                                    
-                                                                                />
-                                                                        </div>
-                                                                        <div className="flex justify-end">
-                                                                            <button onClick={isCloseUpdateItemType} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
-                                                                            Hủy
-                                                                            </button>
-                                                                            <button className="px-4 py-2 bg-blue-500 text-white rounded-lg ml-2 hover:bg-blue-600"
-                                                                                    onClick={(event)=>onUpdate(event)}
-                                                                                >Cập nhật</button>
-                                                                        </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    )
-
-                                                                }
+                                                            { updateItemType &&
+                                                                            (
+                                                                                <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-10">
+                                                                                    <div className="bg-white rounded-lg shadow-lg p-6">
+                                                                                        <div className="mb-4">
+                                                                                                <input
+                                                                                                    type="text"
+                                                                                                    name="id"
+                                                                                                    className="border border-gray-300 rounded-lg px-3 py-2 w-full mb-2"
+                                                                                                    placeholder="Mã loại sản phẩm"
+                                                                                                    required={true}
+                                                                                                    onChange={onChangedFields}
+                                                                                                    value={itemType.id}
+                                                                                                ></input>
+                                                                                                <input
+                                                                                                    type="text"
+                                                                                                    name="name"
+                                                                                                    className="border border-gray-300 rounded-lg px-3 py-2 w-full mb-4"
+                                                                                                    placeholder="Tên loại sản phẩm"
+                                                                                                    required={true}
+                                                                                                    onChange={onChangedFields}
+                                                                                                    value={itemType.name}
+                                                                                                   
+                                                                                                ></input>
+                                                                                                
+                                                                                        </div>
+                                                                                        
+                                                                                        <div className="flex justify-end">
+                                                                                            <button onClick={isCloseUpdateItemType} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                                                                                                Hủy
+                                                                                            </button>
+                                                                                            
+                                                                                            <button className="px-4 py-2 bg-blue-500 text-white rounded-lg ml-2 hover:bg-blue-600"
+                                                                                                onClick={(event)=>onUpdate(event)}
+                                                                                            >Sửa</button>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            )
+                                                            }
                                                         {/* delete     */}
                                                         <button 
                                                             className="border border-black rounded-lg p-2 w-[60px] bg-red-600 text-white hover:bg-red-700"

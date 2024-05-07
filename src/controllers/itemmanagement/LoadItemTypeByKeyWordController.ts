@@ -1,4 +1,5 @@
-import ItemType from "../../entities/Item/ItemType";
+
+import ItemType from "../../entities/itemtype/ItemType";
 import RestResponse from "../../interfaces/RestResponse";
 import { apiFetch } from "../../utils/APIFetcher";
 import Controller from "../Controller";
