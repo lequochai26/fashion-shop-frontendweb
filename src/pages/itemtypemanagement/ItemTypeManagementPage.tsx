@@ -174,6 +174,7 @@ export default function ItemTypeManagementPage(){
 
     //load itemtype
     async function onLoadItemType() {
+        setItemType(undefined);
         loadItemTypeController.execute(
             {
                 onSuccess:setItemType,
